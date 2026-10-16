@@ -141,6 +141,10 @@ input{font:inherit;font-size:20px;width:100%;padding:14px 16px;border-radius:14p
 .ans.struck .aw{text-decoration:line-through;text-decoration-thickness:3px;text-decoration-color:var(--bad)}
 .ans.bad:disabled{opacity:.45}
 .plet{font-family:var(--display);font-size:64px;line-height:1;color:var(--on-tile);background:var(--t6);border-radius:18px;width:1.4em;height:1.4em;display:grid;place-items:center}
+.seg{display:inline-flex;gap:6px;background:var(--panel);border:2px solid var(--line);border-radius:16px;padding:5px;align-self:flex-start;flex-wrap:wrap}
+.seg button{background:transparent;color:var(--muted);box-shadow:none;padding:10px 18px;border-radius:11px}
+.seg button.on{background:var(--t2);color:var(--on-tile)}
+.teen-badge{background:var(--t6);color:var(--on-tile);font-weight:700;font-size:13px;padding:5px 10px;border-radius:999px}
 /* phone */
 .phone{flex:1;display:flex;flex-direction:column;gap:18px;padding-block:18px max(18px,env(safe-area-inset-bottom,0px));max-width:520px;width:100%;margin:0 auto}
 .ptop{display:flex;justify-content:space-between;align-items:center;gap:10px}
@@ -183,6 +187,12 @@ const ROUNDS = [
     rules:"The wheel picks a letter. Fill in an answer for each category starting with that letter. A ‘The’ or ‘A’ at the start doesn’t count.",
     scoring:"2 points for an answer nobody else gave, 1 if someone matched you. The host can strike out anything the room rejects.",
     fixed:["Fruit or vegetable","Car make or model","Song title"],
+    teenFixed:["Fruit or vegetable","Video game","Song or singer"],
+    teenExtras:["Animal","Country","City","Football team","Film","TV show","Cartoon character","YouTuber or streamer","Superhero",
+      "Something in a school","School subject","Sport","Food","Snack or sweet","Pokémon","Video game character","Something in your bedroom",
+      "Something at the beach","Something you wear","Body part","Something in space","Pizza topping","Dog breed","Toy","Board game",
+      "Disney character","Harry Potter character","Musical instrument","Job","Something in a supermarket","Something cold",
+      "Something with wheels","App","Brand","Christmas thing","Holiday destination","Hobby","Insect","Ice cream flavour","Dessert","Drink","Boy’s name","Girl’s name"],
     extras:["Animal","Country","City","Boy’s name","Girl’s name","Football team","Film","TV show","Band or singer","Famous person","Job","Sport",
       "Something you wear","Something in a kitchen","Food","Drink","Thing at the beach","Christmas thing","Chocolate bar or sweet",
       "Something in a supermarket","Musical instrument","Hobby","Brand","Body part","Thing in a garden","Board game or video game",
@@ -197,6 +207,46 @@ const ROUNDS = [
     blurb:"Picture + clue, mashed together",
     rules:"You get a picture and a clue. Work out both answers, then smash them together where they overlap. Chicken + Kenya = Chickenya.",
     scoring:"2 points for a right answer, plus 1 for the fastest.",
+    teenPool:[
+      { emoji:"🍫", clue:"Falling-block puzzle game first made in the Soviet Union", answer:"Chocolatetris", parts:"Chocolate + Tetris" },
+      { emoji:"🍩", clue:"Chocolate hazelnut spread sold in a jar", answer:"Doughnutella", parts:"Doughnut + Nutella" },
+      { emoji:"🍋", clue:"Tiny country on the French Riviera with an F1 Grand Prix", answer:"Lemonaco", parts:"Lemon + Monaco" },
+      { emoji:"🐧", clue:"Small furry pet rodent that squeaks", answer:"Penguinea pig", parts:"Penguin + Guinea pig" },
+      { emoji:"🦊", clue:"English city famous for its very old university", answer:"Foxford", parts:"Fox + Oxford" },
+      { emoji:"🐻", clue:"North London football club nicknamed the Gunners", answer:"Bearsenal", parts:"Bear + Arsenal" },
+      { emoji:"🦓", clue:"Largest country in South America", answer:"Zebrazil", parts:"Zebra + Brazil" },
+      { emoji:"🌈", clue:"Spiky-shelled king who keeps kidnapping Princess Peach", answer:"Rainbowser", parts:"Rainbow + Bowser" },
+      { emoji:"🚀", clue:"Red tomato sauce you squirt on your chips", answer:"Rocketchup", parts:"Rocket + Ketchup" },
+      { emoji:"🐟", clue:"Green ogre who lives in a swamp", answer:"Fishrek", parts:"Fish + Shrek" },
+      { emoji:"🥔", clue:"Mushroom-headed helper of Princess Peach in Mario games", answer:"Potatoad", parts:"Potato + Toad" },
+      { emoji:"🐊", clue:"Danish toy bricks that click together", answer:"Crocodilego", parts:"Crocodile + Lego" },
+      { emoji:"🎸", clue:"South American country where Lionel Messi was born", answer:"Guitargentina", parts:"Guitar + Argentina" },
+      { emoji:"🐬", clue:"Asian country that is home to the Taj Mahal", answer:"Dolphindia", parts:"Dolphin + India" },
+      { emoji:"🦄", clue:"English county at the far south-western tip of Britain", answer:"Unicornwall", parts:"Unicorn + Cornwall" },
+      { emoji:"🍿", clue:"Crunchy breakfast cereal made famous by Kellogg’s", answer:"Popcornflakes", parts:"Popcorn + Cornflakes" },
+      { emoji:"🧲", clue:"Streaming service behind Stranger Things", answer:"Magnetflix", parts:"Magnet + Netflix" },
+      { emoji:"🚂", clue:"Pixar film set inside a girl’s mind, starring Joy and Sadness", answer:"Trainside Out", parts:"Train + Inside Out" },
+      { emoji:"🧊", clue:"Glasgow football club that plays in green and white hoops", answer:"Iceltic", parts:"Ice + Celtic" },
+      { emoji:"🔥", clue:"Spanish football giants who play at the Bernabéu", answer:"Fireal Madrid", parts:"Fire + Real Madrid" },
+      { emoji:"🐨", clue:"Layered Italian pasta bake loved by Garfield", answer:"Koalasagne", parts:"Koala + Lasagne" },
+      { emoji:"🦢", clue:"Mobile game where you catapult birds at green pigs", answer:"Swangry Birds", parts:"Swan + Angry Birds" },
+      { emoji:"🍊", clue:"European country whose capital is Berlin", answer:"Orangermany", parts:"Orange + Germany" },
+      { emoji:"🐫", clue:"Frozen’s snow queen, big sister of Anna", answer:"Camelsa", parts:"Camel + Elsa" },
+      { emoji:"⛄", clue:"Old Trafford football club nicknamed the Red Devils", answer:"Snowmanchester United", parts:"Snowman + Manchester United" },
+      { emoji:"🦸", clue:"Online platform where players make and play each other’s games", answer:"Superheroblox", parts:"Superhero + Roblox" },
+      { emoji:"🦩", clue:"World’s most used search engine", answer:"Flamingoogle", parts:"Flamingo + Google" },
+      { emoji:"👻", clue:"Lilo’s blue alien friend, also known as Experiment 626", answer:"Ghostitch", parts:"Ghost + Stitch" },
+      { emoji:"🦭", clue:"Disney hero who finds a magic lamp with a Genie inside", answer:"Sealaddin", parts:"Seal + Aladdin" },
+      { emoji:"🦍", clue:"Woolly South American animal related to the camel", answer:"Gorillama", parts:"Gorilla + Llama" },
+      { emoji:"🍑", clue:"West London football club that plays at Stamford Bridge", answer:"Peachelsea", parts:"Peach + Chelsea" },
+      { emoji:"🐇", clue:"Boot-shaped European country famous for pizza and pasta", answer:"Rabbitaly", parts:"Rabbit + Italy" },
+      { emoji:"🥑", clue:"Tie-wearing gorilla from Nintendo games", answer:"Avocadonkey Kong", parts:"Avocado + Donkey Kong" },
+      { emoji:"🌶️", clue:"Anfield club whose anthem is You’ll Never Walk Alone", answer:"Chilliverpool", parts:"Chilli + Liverpool" },
+      { emoji:"🍌", clue:"Simba’s childhood best friend in The Lion King", answer:"Bananala", parts:"Banana + Nala" },
+      { emoji:"🌋", clue:"Scandinavian country famous for its fjords", answer:"Volcanorway", parts:"Volcano + Norway" },
+      { emoji:"🍅", clue:"Capital city of Japan", answer:"Tomatokyo", parts:"Tomato + Tokyo" },
+      { emoji:"🦥", clue:"Marvel’s hammer-wielding god of thunder", answer:"Slothor", parts:"Sloth + Thor" }
+    ],
     pool:[
       { emoji:"🥕", clue:"Dutch port city with Europe’s biggest harbour", answer:"Carrotterdam", parts:"Carrot + Rotterdam" },
       { emoji:"🐘", clue:"The coldest continent on Earth", answer:"Elephantarctica", parts:"Elephant + Antarctica" },
@@ -358,6 +408,48 @@ const ROUNDS = [
     blurb:"Tap four things into sequence",
     rules:"Four things appear on your phone. Tap them in the right order, then lock in.",
     scoring:"1 point for every item in the right place.",
+    teenPool:[
+      { prompt:"Released earliest first", items:["Toy Story", "Monsters, Inc.", "The Incredibles", "Coco"], detail:"1995 · 2001 · 2004 · 2017" },
+      { prompt:"Earliest in the Harry Potter series first", items:["Philosopher’s Stone", "Prisoner of Azkaban", "Order of the Phoenix", "Deathly Hallows"], detail:"Book 1 · Book 3 · Book 5 · Book 7" },
+      { prompt:"Released earliest first", items:["Iron Man", "The Avengers", "Black Panther", "Spider-Man: No Way Home"], detail:"2008 · 2012 · 2018 · 2021" },
+      { prompt:"Released earliest first", items:["The Lion King", "Tangled", "Moana", "Encanto"], detail:"1994 · 2010 · 2016 · 2021" },
+      { prompt:"Released earliest first", items:["Game Boy", "Nintendo 64", "Wii", "Nintendo Switch"], detail:"1989 · 1996 · 2006 · 2017" },
+      { prompt:"Released earliest first", items:["PlayStation", "PlayStation 2", "PlayStation 3", "PlayStation 5"], detail:"1994 · 2000 · 2006 · 2020" },
+      { prompt:"Released earliest first", items:["Xbox", "Xbox 360", "Xbox One", "Xbox Series X"], detail:"2001 · 2005 · 2013 · 2020" },
+      { prompt:"Released earliest first", items:["Pac-Man", "Super Mario Bros.", "Minecraft", "Fortnite"], detail:"1980 · 1985 · 2011 · 2017" },
+      { prompt:"Released earliest first", items:["Sonic the Hedgehog", "The Sims", "Wii Sports", "Among Us"], detail:"1991 · 2000 · 2006 · 2018" },
+      { prompt:"Lowest Pokédex number first", items:["Bulbasaur", "Pikachu", "Mewtwo", "Lucario"], detail:"#1 · #25 · #150 · #448" },
+      { prompt:"Released earliest first", items:["Pokémon Red & Blue", "Pokémon Gold & Silver", "Pokémon Go", "Pokémon Scarlet & Violet"], detail:"1996 · 1999 · 2016 · 2022" },
+      { prompt:"Minecraft pickaxes: weakest to strongest", items:["Wooden pickaxe", "Stone pickaxe", "Iron pickaxe", "Diamond pickaxe"], detail:"59 · 131 · 250 · 1,561 uses" },
+      { prompt:"Minecraft: least health to most", items:["Chicken", "Zombie", "Iron Golem", "Ender Dragon"], detail:"2 · 10 · 50 · 100 hearts" },
+      { prompt:"First won the World Cup, earliest first", items:["England", "Argentina", "France", "Spain"], detail:"1966 · 1978 · 1998 · 2010" },
+      { prompt:"Stadium capacity: smallest to biggest", items:["Stamford Bridge", "Anfield", "Old Trafford", "Wembley"], detail:"about 40,000 · 61,000 · 74,000 · 90,000" },
+      { prompt:"Players per team on court or pitch: fewest to most", items:["Basketball", "Netball", "Football", "Rugby union"], detail:"5 · 7 · 11 · 15" },
+      { prompt:"Shortest to tallest", items:["Hummingbird", "Emperor penguin", "Ostrich", "Giraffe"], detail:"about 0.1 · 1.1 · 2.7 · 5.5 m" },
+      { prompt:"Top speed: slowest to fastest", items:["Garden snail", "Usain Bolt", "Racehorse", "Cheetah"], detail:"about 0.05 · 45 · 70 · 110 km/h" },
+      { prompt:"Typical lifespan: shortest to longest", items:["Adult mayfly", "Hamster", "Dog", "Giant tortoise"], detail:"about 1 day · 2–3 yrs · 12 yrs · 100+ yrs" },
+      { prompt:"Lightest to heaviest", items:["Golden retriever", "Gorilla", "Polar bear", "Blue whale"], detail:"about 30 · 160 · 450 · 150,000 kg" },
+      { prompt:"Fewest legs to most", items:["Snake", "Chicken", "Ant", "Spider"], detail:"0 · 2 · 6 · 8" },
+      { prompt:"Closest to the Sun first", items:["Mercury", "Earth", "Jupiter", "Neptune"], detail:"1st · 3rd · 5th · 8th planet" },
+      { prompt:"Smallest planet to biggest", items:["Mercury", "Mars", "Earth", "Jupiter"], detail:"about 4,900 · 6,800 · 12,700 · 140,000 km wide" },
+      { prompt:"Happened earliest first", items:["Sputnik launched", "First Moon landing", "Hubble launched", "James Webb launched"], detail:"1957 · 1969 · 1990 · 2021" },
+      { prompt:"Shortest to longest", items:["Millimetre", "Centimetre", "Metre", "Kilometre"], detail:"0.001 · 0.01 · 1 · 1,000 m" },
+      { prompt:"Smallest to biggest", items:["Kilobyte", "Megabyte", "Gigabyte", "Terabyte"], detail:"1 thousand · 1 million · 1 billion · 1 trillion bytes" },
+      { prompt:"Lightest to heaviest", items:["Milligram", "Gram", "Kilogram", "Tonne"], detail:"0.001 · 1 · 1,000 · 1,000,000 g" },
+      { prompt:"Smallest to biggest", items:["2³", "5²", "4³", "10²"], detail:"8 · 25 · 64 · 100" },
+      { prompt:"Smallest angle to biggest", items:["Half a right angle", "Right angle", "Straight line", "Full turn"], detail:"45° · 90° · 180° · 360°" },
+      { prompt:"Coldest to hottest", items:["Inside a freezer", "Water freezes", "Human body", "Water boils"], detail:"about −18 · 0 · 37 · 100 °C" },
+      { prompt:"Lowest atomic number first", items:["Hydrogen", "Carbon", "Oxygen", "Gold"], detail:"1 · 6 · 8 · 79" },
+      { prompt:"Mildest to hottest", items:["Bell pepper", "Jalapeño", "Scotch bonnet", "Carolina Reaper"], detail:"0 · about 5,000 · 200,000 · 1.6 million Scoville" },
+      { prompt:"Launched earliest first", items:["YouTube", "WhatsApp", "Snapchat", "TikTok"], detail:"2005 · 2009 · 2011 · 2017" },
+      { prompt:"Launched earliest first", items:["iPod", "iPhone", "iPad", "Apple Watch"], detail:"2001 · 2007 · 2010 · 2015" },
+      { prompt:"Lowest to highest", items:["Slieve Donard", "Scafell Pike", "Yr Wyddfa (Snowdon)", "Ben Nevis"], detail:"850 · 978 · 1,085 · 1,345 m" },
+      { prompt:"Population: smallest to biggest", items:["Inverness", "Cardiff", "Birmingham", "London"], detail:"about 50,000 · 360,000 · 1.1 million · 9 million" },
+      { prompt:"Area: smallest to biggest", items:["Northern Ireland", "Wales", "Scotland", "England"], detail:"about 14,000 · 21,000 · 78,000 · 130,000 km²" },
+      { prompt:"Furthest north to furthest south", items:["Aberdeen", "Newcastle", "Birmingham", "Brighton"], detail:"about 57.1 · 55.0 · 52.5 · 50.8 °N" },
+      { prompt:"Fewest sides to most", items:["Triangle", "Pentagon", "Hexagon", "Octagon"], detail:"3 · 5 · 6 · 8" },
+      { prompt:"Lowest value to highest", items:["5p coin", "20p coin", "50p coin", "£2 coin"], detail:"5p · 20p · 50p · £2" }
+    ],
     pool:[
       { prompt:"Closest to the Sun first", items:["Venus","Earth","Mars","Jupiter"] },
       { prompt:"Earliest first", items:["Titanic sinks","Moon landing","Berlin Wall falls","First iPhone"], detail:"1912 · 1969 · 1989 · 2007" },
@@ -424,6 +516,47 @@ const ROUNDS = [
     blurb:"Pin the landmark on the map",
     rules:"A landmark appears on the big screen. Tap the map on your phone to zoom in, tap again to drop your pin, then lock in.",
     scoring:"Closest pin gets 3, next 2, then 1. Within 250 km earns 2 extra.",
+    teenPool:[
+      { emoji:"🗼", name:"Eiffel Tower", the:true, place:"Paris, France", lat:48.8584, lon:2.2945 },
+      { emoji:"🗽", name:"Statue of Liberty", the:true, place:"New York City, USA", lat:40.6892, lon:-74.0445 },
+      { emoji:"🔺", name:"Great Pyramid of Giza", the:true, place:"Giza, Egypt", lat:29.9792, lon:31.1342 },
+      { emoji:"🧱", name:"Great Wall of China", the:true, place:"Badaling, near Beijing, China", lat:40.3599, lon:116.02 },
+      { emoji:"🕰️", name:"Big Ben", the:false, place:"London, UK", lat:51.5007, lon:-0.1246 },
+      { emoji:"🏰", name:"Disneyland Paris", the:false, place:"Near Paris, France", lat:48.8722, lon:2.7758 },
+      { emoji:"🐭", name:"Walt Disney World", the:false, place:"Orlando, Florida, USA", lat:28.4177, lon:-81.5812 },
+      { emoji:"🧩", name:"Legoland Windsor", the:false, place:"Windsor, England", lat:51.4637, lon:-0.6505 },
+      { emoji:"🎢", name:"Alton Towers", the:false, place:"Staffordshire, England", lat:52.9874, lon:-1.8865 },
+      { emoji:"🎡", name:"Thorpe Park", the:false, place:"Chertsey, Surrey, England", lat:51.4044, lon:-0.5147 },
+      { emoji:"🏟️", name:"Wembley Stadium", the:false, place:"London, UK", lat:51.556, lon:-0.2796 },
+      { emoji:"🔴", name:"Old Trafford", the:false, place:"Manchester, England", lat:53.4631, lon:-2.2913 },
+      { emoji:"⚽", name:"Anfield", the:false, place:"Liverpool, England", lat:53.4308, lon:-2.9608 },
+      { emoji:"🔵", name:"Camp Nou", the:false, place:"Barcelona, Spain", lat:41.3809, lon:2.1228 },
+      { emoji:"⚪", name:"Santiago Bernabéu Stadium", the:true, place:"Madrid, Spain", lat:40.4531, lon:-3.6883 },
+      { emoji:"🧙", name:"Alnwick Castle, Hogwarts in the films", the:false, place:"Northumberland, England", lat:55.4155, lon:-1.7059 },
+      { emoji:"🕳️", name:"Hobbiton Movie Set", the:true, place:"Matamata, New Zealand", lat:-37.8721, lon:175.6829 },
+      { emoji:"🎬", name:"Hollywood Sign", the:true, place:"Los Angeles, USA", lat:34.1341, lon:-118.3215 },
+      { emoji:"🏜️", name:"Grand Canyon", the:true, place:"Arizona, USA", lat:36.1069, lon:-112.1129 },
+      { emoji:"💦", name:"Niagara Falls", the:false, place:"USA–Canada border", lat:43.0799, lon:-79.0747 },
+      { emoji:"🏔️", name:"Mount Everest", the:false, place:"Nepal–China border", lat:27.9881, lon:86.925 },
+      { emoji:"🐠", name:"Great Barrier Reef", the:true, place:"Off Queensland, Australia", lat:-18.29, lon:147.7 },
+      { emoji:"🚀", name:"Kennedy Space Center", the:false, place:"Cape Canaveral, Florida, USA", lat:28.5729, lon:-80.649 },
+      { emoji:"⚛️", name:"CERN (home of the Large Hadron Collider)", the:false, place:"Near Geneva, Switzerland", lat:46.234, lon:6.0533 },
+      { emoji:"🏛️", name:"Colosseum", the:true, place:"Rome, Italy", lat:41.8902, lon:12.4922 },
+      { emoji:"🕌", name:"Taj Mahal", the:true, place:"Agra, India", lat:27.1751, lon:78.0421 },
+      { emoji:"🎭", name:"Sydney Opera House", the:true, place:"Sydney, Australia", lat:-33.8568, lon:151.2153 },
+      { emoji:"✝️", name:"Christ the Redeemer", the:false, place:"Rio de Janeiro, Brazil", lat:-22.9519, lon:-43.2105 },
+      { emoji:"🦙", name:"Machu Picchu", the:false, place:"Andes, Peru", lat:-13.1631, lon:-72.545 },
+      { emoji:"🏙️", name:"Burj Khalifa", the:true, place:"Dubai, UAE", lat:25.1972, lon:55.2744 },
+      { emoji:"🍕", name:"Leaning Tower of Pisa", the:true, place:"Pisa, Italy", lat:43.723, lon:10.3966 },
+      { emoji:"🪨", name:"Stonehenge", the:false, place:"Wiltshire, England", lat:51.1789, lon:-1.8262 },
+      { emoji:"🌈", name:"Victoria Falls", the:false, place:"Zambia–Zimbabwe border", lat:-17.9243, lon:25.8572 },
+      { emoji:"🦒", name:"Mount Kilimanjaro", the:false, place:"Tanzania", lat:-3.0674, lon:37.3556 },
+      { emoji:"🗻", name:"Mount Fuji", the:false, place:"Honshu, Japan", lat:35.3606, lon:138.7274 },
+      { emoji:"🐪", name:"Petra", the:false, place:"Jordan", lat:30.3285, lon:35.4444 },
+      { emoji:"🦜", name:"middle of the Amazon rainforest", the:true, place:"Amazonas, Brazil", lat:-3.4653, lon:-62.2159 },
+      { emoji:"⛰️", name:"Table Mountain", the:false, place:"Cape Town, South Africa", lat:-33.9628, lon:18.4098 },
+      { emoji:"🟥", name:"Uluru", the:false, place:"Northern Territory, Australia", lat:-25.3444, lon:131.0369 }
+    ],
     pool:[
       { emoji:"🗼", name:"Eiffel Tower", place:"Paris, France", lat:48.858, lon:2.294 },
       { emoji:"🗽", name:"Statue of Liberty", place:"New York, USA", lat:40.689, lon:-74.045 },
@@ -514,6 +647,41 @@ const ROUNDS = [
     blurb:"Nobody knows, nearest guess scores",
     rules:"Type a number. You don’t need to be right, just closer than everyone else.",
     scoring:"Closest gets 3, next 2, then 1. Spot on earns 2 extra.",
+    teenPool:[
+      { prompt:"How many Pokémon were in the original Red and Blue games?", answer:151 },
+      { prompt:"In what year was the first Harry Potter film released?", answer:2001, plain:true },
+      { prompt:"How many bones are in an adult human body?", answer:206 },
+      { prompt:"In what year did England win the football World Cup?", answer:1966, plain:true },
+      { prompt:"How many hours are there in a week?", answer:168, unit:"hours" },
+      { prompt:"In what year did the Titanic sink?", answer:1912, plain:true },
+      { prompt:"In what year did humans first walk on the Moon?", answer:1969, plain:true },
+      { prompt:"How many keys are on a standard piano?", answer:88 },
+      { prompt:"How many teeth does an adult human have, including wisdom teeth?", answer:32 },
+      { prompt:"How many hearts does an octopus have?", answer:3 },
+      { prompt:"In what year was Minecraft officially released (version 1.0)?", answer:2011, plain:true },
+      { prompt:"In what year was the first Toy Story film released?", answer:1995, plain:true },
+      { prompt:"In what year was the first iPhone released?", answer:2007, plain:true },
+      { prompt:"In what year was the Battle of Hastings?", answer:1066, plain:true },
+      { prompt:"How many players are in a rugby union team on the pitch?", answer:15 },
+      { prompt:"What is the maximum possible break in snooker?", answer:147, unit:"points" },
+      { prompt:"What is the highest score possible with three darts?", answer:180, unit:"points" },
+      { prompt:"Roughly how many km does light travel in one second?", answer:299792, unit:"km" },
+      { prompt:"In what year was Queen Elizabeth II crowned?", answer:1953, plain:true },
+      { prompt:"In what year was the first Super Mario Bros. game released?", answer:1985, plain:true },
+      { prompt:"How many Wonders of the Ancient World were there?", answer:7 },
+      { prompt:"At what temperature in Fahrenheit does water freeze?", answer:32, unit:"°F" },
+      { prompt:"How many seconds are there in one hour?", answer:3600, unit:"seconds" },
+      { prompt:"In what year did the Channel Tunnel open?", answer:1994, plain:true },
+      { prompt:"In what year did London host the Olympic Games most recently?", answer:2012, plain:true },
+      { prompt:"How many legs does a lobster have, including its claws?", answer:10 },
+      { prompt:"In what year was Disney’s original animated The Lion King released?", answer:1994, plain:true },
+      { prompt:"How many films are in the Star Wars ‘Skywalker Saga’?", answer:9 },
+      { prompt:"How many moons does Mars have?", answer:2 },
+      { prompt:"How many coloured stickers are on a standard 3x3 Rubik’s Cube?", answer:54 },
+      { prompt:"In what year did Fortnite Battle Royale launch?", answer:2017, plain:true },
+      { prompt:"In seconds, what was Usain Bolt’s famous 2009 100m world record time?", answer:9.58, unit:"seconds" },
+      { prompt:"In what year was Disney’s Frozen released?", answer:2013, plain:true }
+    ],
     pool:[
       { prompt:"How many keys are on a standard piano?", answer:88 },
       { prompt:"In what year was the first Harry Potter book published?", answer:1997, plain:true },
@@ -675,7 +843,7 @@ const NO_THE = new Set(["Machu Picchu","Christ the Redeemer","Big Ben","Stonehen
   "Neuschwanstein Castle","Edinburgh Castle","Giant’s Causeway","Easter Island’s moai","Hagia Sophia","Tower Bridge","Blackpool Tower",
   "Loch Ness","Snowdon (Yr Wyddfa)","Mont-Saint-Michel","Charles Bridge","Marina Bay Sands","Ha Long Bay","Iguazu Falls","Angel Falls",
   "Lake Titicaca","Timbuktu","Stone Town","Milford Sound","Bora Bora","Pearl Harbor","Old Faithful geyser"]);
-const whereIs = n => /^The /.test(n) ? `Where is the ${n.slice(4)}?` : NO_THE.has(n) ? `Where is ${n}?` : `Where is the ${n}?`;
+const whereIs = (n, the) => /^The /.test(n) ? `Where is the ${n.slice(4)}?` : (the === false || (the === undefined && NO_THE.has(n))) ? `Where is ${n}?` : `Where is the ${n}?`;
 
 /* ============================================================ start screen */
 function renderStart(){
@@ -697,8 +865,10 @@ function renderStart(){
 
 /* ============================================================ HOST */
 const VOTE_SECS = 15;
+/* Question set: "adult" (default) or "teen" (ages 11–14). Rounds without a teenPool share one set. */
+const poolFor = r => H.mode === "teen" && r.teenPool ? r.teenPool : r.pool;
 const H = { net:null, connected:false, gid:"", code:"", ph:"lobby", ri:0, qi:0, endsAt:0, dur:1, scores:{}, answers:{}, players:[], shown:[], reveal:null,
-            played:[], qs:[], cats:[], strikes:{}, spinStart:0, spinTo:0, opts:[], votes:{}, tally:{}, tie:false };
+            mode:(store.get("hpq-mode") === "teen" ? "teen" : "adult"), played:[], qs:[], cats:[], strikes:{}, spinStart:0, spinTo:0, opts:[], votes:{}, tally:{}, tie:false };
 const vKey = () => `${H.gid}.v${H.played.length}`;
 const curR = () => ROUNDS[H.ri];
 const curQ = () => H.qs[H.qi];
@@ -769,13 +939,14 @@ function startVote(){
 function pickRound(i){ H.ri = i; H.qi = 0; H.played.push(i); H.qs = drawQuestions(ROUNDS[i]); }
 /* Random draw each game. Questions already seen on this screen are held back until the pool runs low. */
 function drawQuestions(r){
-  const k = "hpq-used-" + r.id;
+  const k = "hpq-used-" + r.id + (H.mode === "teen" && r.teenPool ? "-teen" : "");
+  const pool = poolFor(r);
   let used = []; try { used = JSON.parse(store.get(k) || "[]"); } catch(e){}
-  let fresh = r.pool.map((_, i) => i).filter(i => !used.includes(i));
-  if(fresh.length < r.perGame){ used = []; fresh = r.pool.map((_, i) => i); }
+  let fresh = pool.map((_, i) => i).filter(i => !used.includes(i));
+  if(fresh.length < r.perGame){ used = []; fresh = pool.map((_, i) => i); }
   const pick = fresh.sort(() => Math.random() - .5).slice(0, r.perGame);
   store.set(k, JSON.stringify(used.concat(pick)));
-  return pick.map(i => r.pool[i]);
+  return pick.map(i => pool[i]);
 }
 function resolveVote(){
   if(H.ph !== "vote") return;
@@ -794,7 +965,8 @@ function startQ(){
   H.shown = curR().type === "order" ? shuffled(curQ().items) : [];
   if(curR().type === "letters"){
     const r = curR();
-    H.cats = r.fixed.concat(r.extras.slice().sort(() => Math.random() - .5).slice(0, 2));
+    const teen = H.mode === "teen";
+    H.cats = (teen ? r.teenFixed : r.fixed).concat((teen ? r.teenExtras : r.extras).slice().sort(() => Math.random() - .5).slice(0, 2));
     H.spinTo = 360 * 6 - WHEEL.indexOf(curQ().letter) * (360 / WHEEL.length);
     H.spinStart = Date.now(); H.ph = "spin";
     push(); renderHost(); requestAnimationFrame(spinLoop); return;
@@ -903,7 +1075,7 @@ function publicState(){
     if(r.type === "pair") s.q = { c1:q.c1, c2:q.c2 };
     if(r.type === "order") s.q = { prompt:q.prompt, items:H.shown };
     if(r.type === "number") s.q = { prompt:q.prompt, unit:q.unit || "" };
-    if(r.type === "map") s.q = { name:q.name, emoji:q.emoji };
+    if(r.type === "map") s.q = { name:q.name, emoji:q.emoji, the:q.the };
     if(r.type === "letters") s.q = { letter:q.letter, cats:H.cats };
   }
   if(H.ph === "reveal"){ s.rv = { main:H.reveal.main, res:H.reveal.res };
@@ -934,6 +1106,11 @@ function renderHost(){
     body = `
       <div class="stack" style="gap:8px"><div class="label">Room code</div><div class="code-big">${H.code.split("").map(ch => `<div>${ch}</div>`).join("")}</div></div>
       <p class="rules">On your phone, open this same page, tap <b>Join on phone</b> and enter the code.</p>
+      <div class="stack" style="gap:8px"><div class="label">Questions for</div>
+        <div class="seg" role="radiogroup" aria-label="Question set">
+          <button type="button" role="radio" id="m-adult" aria-checked="${H.mode === "adult"}" class="${H.mode === "adult" ? "on" : ""}">Grown-ups</button>
+          <button type="button" role="radio" id="m-teen" aria-checked="${H.mode === "teen"}" class="${H.mode === "teen" ? "on" : ""}">Young teens</button>
+        </div></div>
       <div class="stack" style="gap:10px"><div class="label">${H.players.length} player${H.players.length === 1 ? "" : "s"} in</div>
         <div class="chips">${H.players.map(n => `<span class="chip" style="--c:${colorFor(n)}">${esc(n)}</span>`).join("") || `<span class="chip wait">Waiting for players…</span>`}</div></div>`;
     ctrl = "Start game";
@@ -974,7 +1151,7 @@ function renderHost(){
     if(r.type === "order") qhtml = `<div class="qtext">${esc(q.prompt)}</div><div class="order-items">${(H.ph === "reveal" ? q.items : H.shown).map((it, i) => `<div class="oi">${H.ph === "reveal" ? (i + 1) + ". " : ""}${esc(it)}</div>`).join("")}</div>`;
     if(r.type === "number") qhtml = `<div class="qtext">${esc(q.prompt)}</div>${q.unit ? `<div class="reveal-sub">Answer in ${esc(q.unit)}</div>` : ""}`;
     if(r.type === "letters") qhtml = `<div class="row" style="gap:28px;align-items:center"><div class="letter-tile">${esc(q.letter)}</div><ol class="cat-list">${H.cats.map(x => `<li>${esc(x)}</li>`).join("")}</ol></div>`;
-    if(r.type === "map") qhtml = `<div class="smash"><div class="emoji" style="font-size:clamp(60px,9vw,110px)">${q.emoji}</div><div class="qtext" style="flex:1;min-width:200px">${esc(whereIs(q.name))}</div></div>
+    if(r.type === "map") qhtml = `<div class="smash"><div class="emoji" style="font-size:clamp(60px,9vw,110px)">${q.emoji}</div><div class="qtext" style="flex:1;min-width:200px">${esc(whereIs(q.name, q.the))}</div></div>
       ${H.ph === "q" ? `<div class="host-map">${mapSvg(FULL)}</div>` : ""}`;
     const head = `<div class="row" style="justify-content:space-between"><div class="round-no" style="color:${c}">${esc(r.title)}</div><div class="round-no">Q${H.qi + 1} / ${H.qs.length}</div></div>`;
     if(H.ph === "q"){
@@ -1021,12 +1198,14 @@ function renderHost(){
 
   app.innerHTML = `
     <div class="hbar"><div class="logo" style="font-size:28px"><span>House</span> <span>Party</span> <span>Quiz</span></div>
-      <div class="row"><span class="label">Code</span><span class="code-chip">${H.code}</span></div></div>
+      <div class="row">${H.mode === "teen" ? `<span class="teen-badge">Young teens</span>` : ""}<span class="label">Code</span><span class="code-chip">${H.code}</span></div></div>
     ${status}
     <div class="stage">${body}</div>
     <div class="controls"><span class="label">Space bar = next</span>
       <div class="row">${H.ph !== "lobby" && H.ph !== "final" ? `<button class="ghost" id="h-end">End game</button>` : ""}<button id="h-next" ${H.ph === "lobby" && !H.players.length && H.net ? "disabled" : ""}>${esc(ctrl)}</button></div></div>`;
   $("#h-next").onclick = next;
+  const setMode = m => { H.mode = m; store.set("hpq-mode", m); renderHost(); };
+  if($("#m-adult")){ $("#m-adult").onclick = () => setMode("adult"); $("#m-teen").onclick = () => setMode("teen"); }
   document.querySelectorAll(".ans[data-k]").forEach(b => b.onclick = () => toggleStrike(b.dataset.k));
   if(H.ph === "spin") requestAnimationFrame(spinLoop);
   const end = $("#h-end"); if(end) end.onclick = () => { H.ph = "final"; push(); renderHost(); };
@@ -1119,7 +1298,7 @@ function renderPlayer(force){
     if(s.rt === "order"){ P.pick = []; main = `${top}<div class="pclue">${esc(q.prompt)}. Tap in order.</div><div class="pick" id="pick"></div>
       <div class="row"><button class="ghost" id="preset" type="button">Reset</button><button id="plock" type="button" style="flex:1" disabled>Lock in</button></div>`; }
     if(s.rt === "map"){ P.map = { vb:FULL.slice(), pin:null };
-      main = `${top}<div class="pclue">${esc(whereIs(q.name))} ${q.emoji || ""}</div><div class="pmap" id="pmap"></div>
+      main = `${top}<div class="pclue">${esc(whereIs(q.name, q.the))} ${q.emoji || ""}</div><div class="pmap" id="pmap"></div>
       <div class="pmap-hint" id="phint">Tap the map to zoom in.</div>
       <div class="row"><button class="ghost" id="pzoom" type="button">Zoom out</button><button id="plock" type="button" style="flex:1" disabled>Lock in</button></div>`; }
     if(s.rt === "letters") main = `${top}<div class="row" style="gap:14px"><div class="plet">${esc(q.letter)}</div><p style="margin:0;flex:1;min-width:0">Everything starts with <b>${esc(q.letter)}</b>. Fill in what you can.</p></div>
