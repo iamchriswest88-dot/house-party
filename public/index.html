@@ -13,7 +13,7 @@
 :root{
   --studio:#15112e; --panel:#221c4a; --panel-2:#2c2560; --line:#40378a;
   --text:#f7f4ff; --muted:#b4acdf;
-  --t1:#ff7a2f; --t2:#14c4b0; --t3:#ff4f9a; --t4:#ffd23f; --t5:#8e9bff; --t6:#b5e655;
+  --t1:#ff7a2f; --t2:#14c4b0; --t3:#ff4f9a; --t4:#ffd23f; --t5:#8e9bff; --t6:#b5e655; --t7:#5ec8ff;
   --sea:#1d3a63; --land:#3f8f6b; --land-edge:#5fb88f;
   --good:#40e08a; --bad:#ff6363; --on-tile:#15112e;
   --display:"Bowlby One","Arial Black",Impact,sans-serif;
@@ -141,6 +141,9 @@ input{font:inherit;font-size:20px;width:100%;padding:14px 16px;border-radius:14p
 .ans.struck .aw{text-decoration:line-through;text-decoration-thickness:3px;text-decoration-color:var(--bad)}
 .ans.bad:disabled{opacity:.45}
 .plet{font-family:var(--display);font-size:64px;line-height:1;color:var(--on-tile);background:var(--t6);border-radius:18px;width:1.4em;height:1.4em;display:grid;place-items:center}
+.kind-chip{align-self:flex-start;font-weight:700;font-size:clamp(16px,1.8vw,22px);padding:8px 16px;border-radius:999px;background:var(--t7);color:var(--on-tile)}
+.kind-chip.small{font-size:14px;padding:5px 12px}
+.emoji-clue{font-size:clamp(64px,10vw,140px);line-height:1.15;letter-spacing:.08em;overflow-wrap:anywhere}
 .seg{display:inline-flex;gap:6px;background:var(--panel);border:2px solid var(--line);border-radius:16px;padding:5px;align-self:flex-start;flex-wrap:wrap}
 .seg button{background:transparent;color:var(--muted);box-shadow:none;padding:10px 18px;border-radius:11px}
 .seg button.on{background:var(--t2);color:var(--on-tile)}
@@ -643,6 +646,122 @@ const ROUNDS = [
       { emoji:"⚓", name:"Pearl Harbor", place:"Hawaii, USA", lat:21.3649, lon:-157.95 },
       { emoji:"🌱", name:"Svalbard Global Seed Vault", place:"Svalbard, Norway", lat:78.2358, lon:15.4913 }
     ]},
+  { id:"emoji", type:"emoji", title:"Emoji Charades", secs:30, color:"--t7", perGame:5,
+    blurb:"Films and songs spelled in emoji",
+    rules:"Each puzzle is a film or song title spelled out in emoji. Type the title on your phone. Small spelling slips and a missing ‘The’ are fine.",
+    scoring:"2 points for a right answer, plus 1 for the fastest.",
+    teenPool:[ 
+      { kind:"film", emoji:"🦁👑", answer:"The Lion King", year:1994 },
+      { kind:"film", emoji:"🔍🐠", answer:"Finding Nemo", year:2003 },
+      { kind:"film", emoji:"🥶❄️⛄", answer:"Frozen", year:2013 },
+      { kind:"film", emoji:"⬆️🎈🏠", answer:"Up", year:2009 },
+      { kind:"film", emoji:"🚗🚗🏁", answer:"Cars", year:2006 },
+      { kind:"film", emoji:"🧠😄😢😡😱", answer:"Inside Out", year:2015 },
+      { kind:"film", emoji:"🕷️👨🚫🛣️🏠", answer:"Spider-Man: No Way Home", year:2021, alt:["Spider-Man No Way Home", "Spiderman No Way Home", "No Way Home"] },
+      { kind:"film", emoji:"❓🚂🫵🐉", answer:"How to Train Your Dragon", year:2010 },
+      { kind:"film", emoji:"⚡👓🧙‍♂️🪨", answer:"Harry Potter and the Philosopher's Stone", year:2001, alt:["Harry Potter and the Philosophers Stone", "Harry Potter and the Sorcerer's Stone", "Philosopher's Stone", "Philosophers Stone"] },
+      { kind:"film", emoji:"⭐⚔️🚀", answer:"Star Wars", year:1977 },
+      { kind:"film", emoji:"🥋🐼", answer:"Kung Fu Panda", year:2008 },
+      { kind:"film", emoji:"🦖🌍", answer:"Jurassic World", year:2015 },
+      { kind:"film", emoji:"🐀👨‍🍳🍲", answer:"Ratatouille", year:2007 },
+      { kind:"film", emoji:"🤖🗑️🌱", answer:"WALL-E", year:2008, alt:["Wall E", "WallE"] },
+      { kind:"film", emoji:"👹👾🏢", answer:"Monsters, Inc.", year:2001, alt:["Monsters Inc", "Monsters Incorporated"] },
+      { kind:"film", emoji:"🦸‍♂️🦸‍♀️👧👦👶", answer:"The Incredibles", year:2004 },
+      { kind:"film", emoji:"🥥💀🎸", answer:"Coco", year:2017 },
+      { kind:"film", emoji:"🌊🛶👧🐔", answer:"Moana", year:2016 },
+      { kind:"film", emoji:"🦊🐰🚓🏙️", answer:"Zootropolis", year:2016, alt:["Zootopia"] },
+      { kind:"film", emoji:"🧞🪔🐒", answer:"Aladdin", year:1992 },
+      { kind:"film", emoji:"🤏🧜‍♀️", answer:"The Little Mermaid", year:1989 },
+      { kind:"film", emoji:"🌹👸➕👹", answer:"Beauty and the Beast", year:1991 },
+      { kind:"film", emoji:"🟢👹🫏🏰", answer:"Shrek", year:2001 },
+      { kind:"film", emoji:"💛👓🍌", answer:"Minions", year:2015 },
+      { kind:"film", emoji:"🧸📖3️⃣", answer:"Toy Story 3", year:2010 },
+      { kind:"film", emoji:"🐻🧥🍊🥪", answer:"Paddington", year:2014 },
+      { kind:"film", emoji:"🦸‍♂️🦸‍♀️🔚🎮", answer:"Avengers: Endgame", year:2019, alt:["Avengers Endgame", "Endgame"] },
+      { kind:"film", emoji:"⬛🐆", answer:"Black Panther", year:2018 },
+      { kind:"song", emoji:"🔷🔶🫵", answer:"Shape of You", by:"Ed Sheeran" },
+      { kind:"song", emoji:"🤔💭📢", answer:"Thinking Out Loud", by:"Ed Sheeran" },
+      { kind:"song", emoji:"👎🔁💅", answer:"Bad Habits", by:"Ed Sheeran" },
+      { kind:"song", emoji:"🫨📴", answer:"Shake It Off", by:"Taylor Swift" },
+      { kind:"song", emoji:"❤️📖", answer:"Love Story", by:"Taylor Swift" },
+      { kind:"song", emoji:"⬜🌌", answer:"Blank Space", by:"Taylor Swift" },
+      { kind:"song", emoji:"🚫🦸", answer:"Anti-Hero", by:"Taylor Swift", alt:["Antihero", "Anti Hero"] },
+      { kind:"song", emoji:"🧍‍♀️⬆️🛸", answer:"Levitating", by:"Dua Lipa" },
+      { kind:"song", emoji:"🚫🏁⏰", answer:"Don't Start Now", by:"Dua Lipa", alt:["Dont Start Now"] },
+      { kind:"song", emoji:"😈👨", answer:"Bad Guy", by:"Billie Eilish" },
+      { kind:"song", emoji:"🌊👀", answer:"Ocean Eyes", by:"Billie Eilish" },
+      { kind:"song", emoji:"👤🫵❤️", answer:"Someone You Loved", by:"Lewis Capaldi" },
+      { kind:"song", emoji:"❄️👸🎤🚶‍♀️", answer:"Let It Go", by:"Idina Menzel" },
+      { kind:"song", emoji:"❓📏🌊🛶", answer:"How Far I'll Go", by:"Auli'i Cravalho", alt:["How Far Ill Go"] },
+      { kind:"song", emoji:"🤫🗣️🧔🔮", answer:"We Don't Talk About Bruno", by:"Encanto cast", alt:["We Dont Talk About Bruno"] },
+      { kind:"song", emoji:"😀🎩👏", answer:"Happy", by:"Pharrell Williams" },
+      { kind:"song", emoji:"🚫🛑🥰💃", answer:"Can't Stop the Feeling!", by:"Justin Timberlake", alt:["Can't Stop the Feeling", "Cant Stop the Feeling"] },
+      { kind:"song", emoji:"🦁🗣️", answer:"Roar", by:"Katy Perry" },
+      { kind:"song", emoji:"⬆️🏙️🕺", answer:"Uptown Funk", by:"Mark Ronson ft. Bruno Mars" },
+      { kind:"song", emoji:"🔢⭐⭐", answer:"Counting Stars", by:"OneRepublic" },
+      { kind:"song", emoji:"💃🐒", answer:"Dance Monkey", by:"Tones and I" },
+      { kind:"song", emoji:"🥶❤️", answer:"Cold Heart", by:"Elton John & Dua Lipa", alt:["Cold Heart (Pnau Remix)"] }
+     ],
+    pool:[ 
+      { kind:"film", emoji:"🦁👑", answer:"The Lion King", year:1994, alt:["Lion King"] },
+      { kind:"film", emoji:"🕷️👨", answer:"Spider-Man", year:2002, alt:["Spiderman", "Spider Man"] },
+      { kind:"film", emoji:"⭐⚔️", answer:"Star Wars", year:1977, alt:["Starwars"] },
+      { kind:"film", emoji:"🏴‍☠️🌴🌊", answer:"Pirates of the Caribbean", year:2003, alt:["Pirates of the Carribean", "Pirates of the Caribbean: The Curse of the Black Pearl"] },
+      { kind:"film", emoji:"🦖🏞️", answer:"Jurassic Park", year:1993 },
+      { kind:"film", emoji:"🔙2️⃣🔮", answer:"Back to the Future", year:1985 },
+      { kind:"film", emoji:"🧸📖", answer:"Toy Story", year:1995 },
+      { kind:"film", emoji:"👻👊", answer:"Ghostbusters", year:1984, alt:["Ghost Busters"] },
+      { kind:"film", emoji:"🤴💍💍", answer:"The Lord of the Rings", year:2001, alt:["Lord of the Rings", "The Fellowship of the Ring", "Lord of the Rings: The Fellowship of the Ring"] },
+      { kind:"film", emoji:"🔍🐠", answer:"Finding Nemo", year:2003 },
+      { kind:"film", emoji:"🏠1️⃣🧒", answer:"Home Alone", year:1990 },
+      { kind:"film", emoji:"👦🍫🏭", answer:"Charlie and the Chocolate Factory", year:2005, alt:["Charlie & the Chocolate Factory"] },
+      { kind:"film", emoji:"🦇👨", answer:"Batman", year:1989, alt:["Bat Man"] },
+      { kind:"film", emoji:"🖤🐆", answer:"Black Panther", year:2018 },
+      { kind:"film", emoji:"👸➕🐸", answer:"The Princess and the Frog", year:2009, alt:["Princess and the Frog", "The Princess & the Frog"] },
+      { kind:"film", emoji:"🤏🧜‍♀️", answer:"The Little Mermaid", year:1989, alt:["Little Mermaid"] },
+      { kind:"film", emoji:"🌙🏛️", answer:"Night at the Museum", year:2006 },
+      { kind:"film", emoji:"🥋🐼", answer:"Kung Fu Panda", year:2008, alt:["Kungfu Panda"] },
+      { kind:"film", emoji:"🔝🔫", answer:"Top Gun", year:1986 },
+      { kind:"film", emoji:"👨👨⚫", answer:"Men in Black", year:1997, alt:["MIB"] },
+      { kind:"film", emoji:"4️⃣💒⚰️", answer:"Four Weddings and a Funeral", year:1994, alt:["4 Weddings and a Funeral", "Four Weddings & a Funeral"] },
+      { kind:"film", emoji:"⭐👶", answer:"A Star Is Born", year:2018, alt:["Star Is Born"] },
+      { kind:"film", emoji:"🏫🎸", answer:"School of Rock", year:2003 },
+      { kind:"film", emoji:"🐔🏃", answer:"Chicken Run", year:2000 },
+      { kind:"film", emoji:"📥📤", answer:"Inside Out", year:2015 },
+      { kind:"film", emoji:"👹👹🏢", answer:"Monsters, Inc.", year:2001, alt:["Monsters Inc", "Monsters Incorporated"] },
+      { kind:"film", emoji:"💅➕👹", answer:"Beauty and the Beast", year:1991, alt:["Beauty & the Beast"] },
+      { kind:"film", emoji:"💨😡🚗", answer:"The Fast and the Furious", year:2001, alt:["Fast and the Furious", "Fast and Furious", "Fast & Furious", "The Fast & the Furious"] },
+      { kind:"song", emoji:"💜🌧️", answer:"Purple Rain", by:"Prince" },
+      { kind:"song", emoji:"🔥➡️🌧️", answer:"Set Fire to the Rain", by:"Adele" },
+      { kind:"song", emoji:"🍉🍬", answer:"Watermelon Sugar", by:"Harry Styles" },
+      { kind:"song", emoji:"🚀👨", answer:"Rocket Man", by:"Elton John", alt:["Rocketman"] },
+      { kind:"song", emoji:"💃👑", answer:"Dancing Queen", by:"ABBA" },
+      { kind:"song", emoji:"👁️🐅", answer:"Eye of the Tiger", by:"Survivor" },
+      { kind:"song", emoji:"🧊🧊👶", answer:"Ice Ice Baby", by:"Vanilla Ice" },
+      { kind:"song", emoji:"🤔🧱", answer:"Wonderwall", by:"Oasis", alt:["Wonder Wall"] },
+      { kind:"song", emoji:"🔷🫵", answer:"Shape of You", by:"Ed Sheeran" },
+      { kind:"song", emoji:"🔥👷", answer:"Firework", by:"Katy Perry", alt:["Fireworks"] },
+      { kind:"song", emoji:"💎💎♾️", answer:"Diamonds Are Forever", by:"Shirley Bassey" },
+      { kind:"song", emoji:"💧🚽", answer:"Waterloo", by:"ABBA" },
+      { kind:"song", emoji:"👨🪞", answer:"Man in the Mirror", by:"Michael Jackson" },
+      { kind:"song", emoji:"👧👧🎉", answer:"Girls Just Want to Have Fun", by:"Cyndi Lauper", alt:["Girls Just Wanna Have Fun"] },
+      { kind:"song", emoji:"🚶☀️", answer:"Walking on Sunshine", by:"Katrina and the Waves" },
+      { kind:"song", emoji:"🏝️🏝️🏞️", answer:"Islands in the Stream", by:"Kenny Rogers and Dolly Parton" },
+      { kind:"song", emoji:"❤️🛖", answer:"Love Shack", by:"The B-52's" },
+      { kind:"song", emoji:"🦇🚪🔥", answer:"Bat Out of Hell", by:"Meat Loaf" },
+      { kind:"song", emoji:"🕯️🌬️", answer:"Candle in the Wind", by:"Elton John" },
+      { kind:"song", emoji:"🤪❤️", answer:"Crazy in Love", by:"Beyoncé" },
+      { kind:"song", emoji:"🎨⚫", answer:"Paint It Black", by:"The Rolling Stones", alt:["Paint It, Black"] },
+      { kind:"song", emoji:"❤️🍸", answer:"Heart of Glass", by:"Blondie" },
+      { kind:"song", emoji:"🍬🧒⛏️", answer:"Sweet Child o' Mine", by:"Guns N' Roses", alt:["Sweet Child of Mine", "Sweet Child O Mine"] },
+      { kind:"song", emoji:"🌉⬆️😟🌊", answer:"Bridge over Troubled Water", by:"Simon & Garfunkel", alt:["Bridge Over Troubled Waters"] },
+      { kind:"song", emoji:"📼🔪📻⭐", answer:"Video Killed the Radio Star", by:"The Buggles" },
+      { kind:"song", emoji:"👧🔥", answer:"Girl on Fire", by:"Alicia Keys" },
+      { kind:"song", emoji:"🙈💡💡", answer:"Blinding Lights", by:"The Weeknd" },
+      { kind:"song", emoji:"🟤👁️👧", answer:"Brown Eyed Girl", by:"Van Morrison", alt:["Brown Eyes Girl"] },
+      { kind:"song", emoji:"⭐👨", answer:"Starman", by:"David Bowie", alt:["Star Man"] },
+      { kind:"song", emoji:"💃🌙", answer:"Dancing in the Moonlight", by:"Toploader", alt:["Dancing in the Moon Light"] }
+     ]},
   { id:"closest", type:"number", title:"Closest Wins", secs:25, color:"--t4", perGame:4,
     blurb:"Nobody knows, nearest guess scores",
     rules:"Type a number. You don’t need to be right, just closer than everyone else.",
@@ -1025,6 +1144,8 @@ function score(){
   const names = Object.keys(A);
   const speedRank = ok => names.filter(ok).sort((a, b) => A[a].t - A[b].t).forEach((n, i) => res[n] = 2 + (i === 0 ? 1 : 0));
   if(r.type === "text") speedRank(n => close(A[n].v, q.answer));
+  if(r.type === "emoji"){ const strip = x => String(x || "").replace(/^\s*(the|a|an)\s+/i, "");
+    speedRank(n => [q.answer].concat(q.alt || []).some(t => close(strip(A[n].v), strip(t)))); }
   if(r.type === "pair") speedRank(n => { const v = Array.isArray(A[n].v) ? A[n].v : []; const [x, y] = q.answer;
     if(norm(v[0]) === norm(v[1])) return false;
     return (close(v[0], x) && close(v[1], y)) || (close(v[0], y) && close(v[1], x)); });
@@ -1049,6 +1170,7 @@ function answerText(){
   if(r.type === "order") return { main:q.items.join(" → "), sub:q.detail || "" };
   if(r.type === "map") return { main:q.place, sub:q.name };
   if(r.type === "letters") return { main:"Letter " + q.letter, sub:"" };
+  if(r.type === "emoji") return { main:q.answer, sub:q.kind === "song" ? `Song by ${q.by}` : `Film, ${q.year}` };
   return { main:fmtNum(q.answer, q.plain) + (q.unit ? " " + q.unit : ""), sub:"" };
 }
 
@@ -1077,6 +1199,7 @@ function publicState(){
     if(r.type === "number") s.q = { prompt:q.prompt, unit:q.unit || "" };
     if(r.type === "map") s.q = { name:q.name, emoji:q.emoji, the:q.the };
     if(r.type === "letters") s.q = { letter:q.letter, cats:H.cats };
+    if(r.type === "emoji") s.q = { emoji:q.emoji, kind:q.kind };
   }
   if(H.ph === "reveal"){ s.rv = { main:H.reveal.main, res:H.reveal.res };
     if(r.type === "map"){ s.rv.km = {}; Object.entries(H.answers).forEach(([n, a]) => { if(Array.isArray(a.v)) s.rv.km[n] = Math.round(km(a.v, [q.lat, q.lon])); }); } }
@@ -1150,6 +1273,7 @@ function renderHost(){
     if(r.type === "pair") qhtml = `<div class="pair"><div class="clue">${esc(q.c1)}</div><div class="plus">+</div><div class="clue">${esc(q.c2)}</div></div>`;
     if(r.type === "order") qhtml = `<div class="qtext">${esc(q.prompt)}</div><div class="order-items">${(H.ph === "reveal" ? q.items : H.shown).map((it, i) => `<div class="oi">${H.ph === "reveal" ? (i + 1) + ". " : ""}${esc(it)}</div>`).join("")}</div>`;
     if(r.type === "number") qhtml = `<div class="qtext">${esc(q.prompt)}</div>${q.unit ? `<div class="reveal-sub">Answer in ${esc(q.unit)}</div>` : ""}`;
+    if(r.type === "emoji") qhtml = `<div class="kind-chip">${q.kind === "song" ? "🎵 Song" : "🎬 Film"}</div><div class="emoji-clue">${q.emoji}</div>`;
     if(r.type === "letters") qhtml = `<div class="row" style="gap:28px;align-items:center"><div class="letter-tile">${esc(q.letter)}</div><ol class="cat-list">${H.cats.map(x => `<li>${esc(x)}</li>`).join("")}</ol></div>`;
     if(r.type === "map") qhtml = `<div class="smash"><div class="emoji" style="font-size:clamp(60px,9vw,110px)">${q.emoji}</div><div class="qtext" style="flex:1;min-width:200px">${esc(whereIs(q.name, q.the))}</div></div>
       ${H.ph === "q" ? `<div class="host-map">${mapSvg(FULL)}</div>` : ""}`;
@@ -1301,6 +1425,8 @@ function renderPlayer(force){
       main = `${top}<div class="pclue">${esc(whereIs(q.name, q.the))} ${q.emoji || ""}</div><div class="pmap" id="pmap"></div>
       <div class="pmap-hint" id="phint">Tap the map to zoom in.</div>
       <div class="row"><button class="ghost" id="pzoom" type="button">Zoom out</button><button id="plock" type="button" style="flex:1" disabled>Lock in</button></div>`; }
+    if(s.rt === "emoji") main = `${top}<div class="pclue stack" style="gap:8px;align-items:flex-start"><span class="kind-chip small">${q.kind === "song" ? "🎵 Song" : "🎬 Film"}</span><div style="font-size:44px;line-height:1.15;letter-spacing:.06em">${q.emoji}</div></div>
+      <form id="pf" class="stack"><input id="pa" autocomplete="off" autocapitalize="words" placeholder="${q.kind === "song" ? "Song title" : "Film title"}"><button class="full" type="submit">Lock in</button></form>`;
     if(s.rt === "letters") main = `${top}<div class="row" style="gap:14px"><div class="plet">${esc(q.letter)}</div><p style="margin:0;flex:1;min-width:0">Everything starts with <b>${esc(q.letter)}</b>. Fill in what you can.</p></div>
       <form id="pf" class="stack">${(q.cats || []).map((x, i) => `<label class="stack" style="gap:4px"><span class="label">${esc(x)}</span><input id="pl${i}" autocomplete="off" autocapitalize="words" placeholder="${esc(q.letter)}…"></label>`).join("")}<button class="full" type="submit">Lock in</button></form>`;
     if(s.rt === "number") main = `${top}<div class="pclue">${esc(q.prompt)}${q.unit ? ` (${esc(q.unit)})` : ""}</div>
