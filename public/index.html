@@ -13,7 +13,7 @@
 :root{
   --studio:#15112e; --panel:#221c4a; --panel-2:#2c2560; --line:#40378a;
   --text:#f7f4ff; --muted:#b4acdf;
-  --t1:#ff7a2f; --t2:#14c4b0; --t3:#ff4f9a; --t4:#ffd23f; --t5:#8e9bff; --t6:#b5e655; --t7:#5ec8ff;
+  --t1:#ff7a2f; --t2:#14c4b0; --t3:#ff4f9a; --t4:#ffd23f; --t5:#8e9bff; --t6:#b5e655; --t7:#5ec8ff; --t8:#f7a8ff; --t9:#ffb347;
   --sea:#1d3a63; --land:#3f8f6b; --land-edge:#5fb88f;
   --good:#40e08a; --bad:#ff6363; --on-tile:#15112e;
   --display:"Bowlby One","Arial Black",Impact,sans-serif;
@@ -152,6 +152,22 @@ div.ans{cursor:default}
 .chk.no{border-color:var(--bad);background:var(--panel)}
 .chk.no span{text-decoration:line-through;text-decoration-color:var(--bad);text-decoration-thickness:3px}
 .chk.no b{color:var(--bad)}
+.odd-items .oi{font-size:clamp(20px,2.6vw,30px);padding:22px;text-align:center;transition:opacity .3s,transform .3s}
+.oi.dim{opacity:.3}.oi.hit{transform:scale(1.06);outline:5px solid var(--text);outline-offset:3px}
+.hl{display:grid;grid-template-columns:1fr auto 1fr;gap:18px;align-items:stretch}
+.hlc{background:var(--panel-2);border-radius:20px;padding:22px;display:flex;flex-direction:column;gap:8px;justify-content:center;min-width:0}
+.hlc b{font-size:clamp(20px,2.6vw,32px);overflow-wrap:anywhere}
+.hlc .hv{font-family:var(--display);font-size:clamp(28px,4vw,54px);color:var(--t9);font-variant-numeric:tabular-nums}
+.hlc.hidden .hv{font-family:var(--body);font-weight:700;font-size:clamp(18px,2vw,26px);color:var(--muted)}
+.hlvs{align-self:center;font-family:var(--display);font-size:clamp(28px,4vw,56px);color:var(--muted)}
+.chip.out{text-decoration:line-through}
+.podd{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.podd button{min-height:96px;font-size:18px;overflow-wrap:anywhere}
+.podd button:nth-child(1){background:var(--t1)}.podd button:nth-child(2){background:var(--t2)}.podd button:nth-child(3){background:var(--t3)}.podd button:nth-child(4){background:var(--t4)}
+.phl{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.phl button{min-height:110px;font-size:24px}
+.phl button:first-child{background:var(--good)}.phl button:last-child{background:var(--t3)}
+@media (max-width:720px){.hl{grid-template-columns:1fr}.hlvs{text-align:center}}
 .plet{font-family:var(--display);font-size:64px;line-height:1;color:var(--on-tile);background:var(--t6);border-radius:18px;width:1.4em;height:1.4em;display:grid;place-items:center}
 .kind-chip{align-self:flex-start;font-weight:700;font-size:clamp(16px,1.8vw,22px);padding:8px 16px;border-radius:999px;background:var(--t7);color:var(--on-tile)}
 .kind-chip.small{font-size:14px;padding:5px 12px}
@@ -774,6 +790,135 @@ const ROUNDS = [
       { kind:"song", emoji:"⭐👨", answer:"Starman", by:"David Bowie", alt:["Star Man"] },
       { kind:"song", emoji:"💃🌙", answer:"Dancing in the Moonlight", by:"Toploader", alt:["Dancing in the Moon Light"] }
      ]},
+  { id:"odd", type:"odd", title:"Odd One Out", secs:20, color:"--t8", perGame:5,
+    blurb:"Four things, one doesn’t belong",
+    rules:"Four things appear. Tap the one that doesn’t belong with the others.",
+    scoring:"2 points for the odd one out, plus 1 for the fastest.",
+    teenPool:[ 
+      { items:["Warden", "Wither", "Bowser", "Ender Dragon"], odd:2, why:"The others are Minecraft mobs – Bowser is from Mario." },
+      { items:["Pikachu", "Charmander", "Sonic", "Bulbasaur"], odd:2, why:"The others are Pokémon – Sonic is a Sega hedgehog." },
+      { items:["Shrek", "Toy Story", "Cars", "Up"], odd:0, why:"The others are Pixar films – Shrek is by DreamWorks." },
+      { items:["Hulk", "Thor", "Iron Man", "Batman"], odd:3, why:"The others are Marvel heroes – Batman is DC." },
+      { items:["Gryffindor", "Ravenclaw", "Hufflepuff", "Hogsmeade"], odd:3, why:"The others are Hogwarts houses – Hogsmeade is a village." },
+      { items:["Link", "Toad", "Yoshi", "Bowser"], odd:0, why:"The others are from Mario games – Link is from Zelda." },
+      { items:["Chelsea", "Tottenham", "Celtic", "Arsenal"], odd:2, why:"The others are London clubs – Celtic are from Glasgow." },
+      { items:["Seal", "Whale", "Shark", "Dolphin"], odd:2, why:"The others are mammals – a shark is a fish." },
+      { items:["Polaris", "Moon", "Sirius", "Sun"], odd:1, why:"The others are stars – the Moon is a moon." },
+      { items:["Anna", "Olaf", "Moana", "Elsa"], odd:2, why:"The others are from Frozen – Moana has her own film." },
+      { items:["Pentagon", "Circle", "Square", "Triangle"], odd:1, why:"The others have straight sides and corners – a circle doesn’t." },
+      { items:["Risotto", "Pasta", "Sushi", "Pizza"], odd:2, why:"The others are Italian foods – sushi is Japanese." },
+      { items:["Battle Bus", "The Nether", "The Storm", "Victory Royale"], odd:1, why:"The others are from Fortnite – the Nether is in Minecraft." },
+      { items:["Hermione", "Ron", "Draco", "Harry"], odd:2, why:"The others are in Gryffindor – Draco is in Slytherin." },
+      { items:["Tiger", "Cheetah", "Lion", "Wolf"], odd:3, why:"The others are big cats – a wolf is a dog." },
+      { items:["French", "German", "Spanish", "Physics"], odd:3, why:"The others are languages – physics is a science." },
+      { items:["Venus", "Mars", "Earth", "Sun"], odd:3, why:"The others are planets – the Sun is a star." },
+      { items:["Dory", "Simba", "Nala", "Mufasa"], odd:0, why:"The others are from The Lion King – Dory is from Finding Nemo." },
+      { items:["Newt", "Toad", "Snake", "Frog"], odd:2, why:"The others are amphibians – a snake is a reptile." },
+      { items:["Hyrule", "Overworld", "The End", "Nether"], odd:0, why:"The others are Minecraft dimensions – Hyrule is from Zelda." },
+      { items:["Water", "Fire", "Wood", "Grass"], odd:2, why:"The others are Pokémon types – there’s no Wood type." },
+      { items:["Goalkeeper", "Striker", "Umpire", "Defender"], odd:2, why:"The others are football positions – an umpire is an official." },
+      { items:["Jessie", "Woody", "Lightning McQueen", "Buzz"], odd:2, why:"The others are from Toy Story – Lightning McQueen is from Cars." },
+      { items:["Crookshanks", "Hedwig", "Dobby", "Scabbers"], odd:2, why:"The others are Hogwarts pets – Dobby is a house-elf." },
+      { items:["Strawberry", "Broccoli", "Apple", "Banana"], odd:1, why:"The others are fruits – broccoli is a vegetable." },
+      { items:["Arctic fox", "Penguin", "Polar bear", "Walrus"], odd:1, why:"The others live in the Arctic – penguins live in the south." },
+      { items:["Wii", "Switch", "PlayStation", "GameCube"], odd:2, why:"The others are Nintendo consoles – PlayStation is Sony." },
+      { items:["Peely", "Creeper", "Alex", "Steve"], odd:0, why:"The others are from Minecraft – Peely is from Fortnite." },
+      { items:["Usain Bolt", "Buzz Aldrin", "Neil Armstrong", "Tim Peake"], odd:0, why:"The others are astronauts – Usain Bolt is a sprinter." },
+      { items:["Happy", "Sad", "Angry", "Run"], odd:3, why:"The others are adjectives – run is a verb." },
+      { items:["Crisps", "Rice", "Chips", "Mash"], odd:1, why:"The others are made from potatoes – rice is a grain." },
+      { items:["Falcon", "Hawk", "Parrot", "Eagle"], odd:2, why:"The others are birds of prey – a parrot isn’t." },
+      { items:["Champions League", "Premier League", "Six Nations", "FA Cup"], odd:2, why:"The others are football competitions – Six Nations is rugby." },
+      { items:["Rocket", "Groot", "Gamora", "Yoda"], odd:3, why:"The others are Guardians of the Galaxy – Yoda is from Star Wars." },
+      { items:["Ariel", "Belle", "Jasmine", "Ursula"], odd:3, why:"The others are Disney princesses – Ursula is a villain." },
+      { items:["Nile", "Everest", "Amazon", "Thames"], odd:1, why:"The others are rivers – Everest is a mountain." },
+      { items:["Ribs", "Skull", "Femur", "Lungs"], odd:3, why:"The others are bones – the lungs are organs." },
+      { items:["March", "June", "April", "September"], odd:0, why:"The others have 30 days – March has 31." }
+     ],
+    pool:[ 
+      { items:["Pluto", "Venus", "Mercury", "Neptune"], odd:0, why:"The others are planets – Pluto is a dwarf planet." },
+      { items:["Edinburgh", "Belfast", "Manchester", "Cardiff"], odd:2, why:"The others are capitals of UK nations – Manchester isn’t." },
+      { items:["Cod", "Salmon", "Dolphin", "Trout"], odd:2, why:"The others are fish – a dolphin is a mammal." },
+      { items:["Bronze", "Copper", "Gold", "Silver"], odd:0, why:"The others are chemical elements – bronze is an alloy." },
+      { items:["Danube", "Nile", "Amazon", "Sahara"], odd:3, why:"The others are rivers – the Sahara is a desert." },
+      { items:["Sapphire", "Pearl", "Emerald", "Ruby"], odd:1, why:"The others are gemstones from rock – a pearl grows in an oyster." },
+      { items:["Anfield", "Twickenham", "Old Trafford", "Wembley"], odd:1, why:"The others are football grounds – Twickenham is a rugby stadium." },
+      { items:["Siamese", "Spaniel", "Beagle", "Labrador"], odd:0, why:"The others are dog breeds – Siamese is a cat breed." },
+      { items:["Edward VI", "Mary I", "Henry VII", "Charles I"], odd:3, why:"The others were Tudors – Charles I was a Stuart." },
+      { items:["Rome", "Sydney", "Madrid", "Paris"], odd:1, why:"The others are capital cities – Australia’s capital is Canberra." },
+      { items:["Iron", "Oxygen", "Nitrogen", "Helium"], odd:0, why:"The others are gases at room temperature – iron is a solid metal." },
+      { items:["Paella", "Scouse", "Lancashire hotpot", "Haggis"], odd:0, why:"The others are British dishes – paella is from Spain." },
+      { items:["Trumpet", "Harp", "Violin", "Cello"], odd:0, why:"The others are string instruments – a trumpet is brass." },
+      { items:["Oasis", "Nirvana", "The Beatles", "Blur"], odd:1, why:"The others are British bands – Nirvana were American." },
+      { items:["Macbeth", "Oliver Twist", "Othello", "Hamlet"], odd:1, why:"The others are Shakespeare plays – Oliver Twist is by Dickens." },
+      { items:["Ant", "Bee", "Beetle", "Spider"], odd:3, why:"The others are insects – a spider is an arachnid with eight legs." },
+      { items:["Squash", "Golf", "Badminton", "Tennis"], odd:1, why:"The others are racket sports – golf uses clubs." },
+      { items:["Cube", "Hexagon", "Pentagon", "Octagon"], odd:0, why:"The others are flat 2D shapes – a cube is 3D." },
+      { items:["Kilimanjaro", "Everest", "Annapurna", "K2"], odd:0, why:"The others are in Asia – Kilimanjaro is in Africa." },
+      { items:["Lizard", "Frog", "Newt", "Toad"], odd:0, why:"The others are amphibians – a lizard is a reptile." },
+      { items:["EastEnders", "Emmerdale", "Coronation Street", "Friends"], odd:3, why:"The others are British soaps – Friends is an American sitcom." },
+      { items:["Saturn", "Jupiter", "Mars", "Uranus"], odd:2, why:"The others are giant planets – Mars is small and rocky." },
+      { items:["Eagle", "Ostrich", "Emu", "Penguin"], odd:0, why:"The others are flightless birds – eagles can fly." },
+      { items:["Roquefort", "Brie", "Cheddar", "Camembert"], odd:2, why:"The others are French cheeses – Cheddar is English." },
+      { items:["Jurassic Park", "Jaws", "E.T.", "Titanic"], odd:3, why:"The others were directed by Spielberg – Titanic was James Cameron." },
+      { items:["Austria", "Japan", "Madagascar", "Iceland"], odd:0, why:"The others are island nations – Austria is landlocked." },
+      { items:["Boxing Day", "Christmas Day", "Halloween", "New Year’s Day"], odd:2, why:"The others are UK bank holidays – Halloween isn’t." },
+      { items:["Bee", "Wasp", "Hornet", "Butterfly"], odd:3, why:"The others can sting – butterflies can’t." },
+      { items:["Wombat", "Koala", "Panda", "Kangaroo"], odd:2, why:"The others are marsupials – a panda is a bear." },
+      { items:["Beethoven", "Mozart", "Bach", "Picasso"], odd:3, why:"The others were composers – Picasso was a painter." },
+      { items:["Owl", "Whale", "Hedgehog", "Bat"], odd:0, why:"The others are mammals – an owl is a bird." },
+      { items:["Leeds", "Bradford", "Sheffield", "Liverpool"], odd:3, why:"The others are in Yorkshire – Liverpool is on Merseyside." },
+      { items:["Bonjour", "Gracias", "Merci", "Grazie"], odd:0, why:"The others mean “thank you” – bonjour means “hello”." },
+      { items:["Noun", "Comma", "Adjective", "Verb"], odd:1, why:"The others are word classes – a comma is punctuation." },
+      { items:["Oak", "Ash", "Elm", "Rose"], odd:3, why:"The others are trees – a rose is a shrub." },
+      { items:["Asia", "Greenland", "Africa", "Europe"], odd:1, why:"The others are continents – Greenland is an island." },
+      { items:["Waterloo", "Agincourt", "Hastings", "Trafalgar"], odd:3, why:"The others were land battles – Trafalgar was fought at sea." },
+      { items:["Let It Be", "Hey Jude", "Wonderwall", "Yesterday"], odd:2, why:"The others are Beatles songs – Wonderwall is by Oasis." },
+      { items:["Lemon", "Lime", "Orange", "Banana"], odd:3, why:"The others are citrus fruits – a banana isn’t." },
+      { items:["Kidney", "Heart", "Femur", "Liver"], odd:2, why:"The others are organs – the femur is a bone." },
+      { items:["Thames", "Trent", "Severn", "Snowdon"], odd:3, why:"The others are rivers – Snowdon is a mountain." },
+      { items:["Try", "Albatross", "Birdie", "Eagle"], odd:0, why:"The others are golf scores – a try is scored in rugby." },
+      { items:["Navy", "Maroon", "Scarlet", "Crimson"], odd:0, why:"The others are shades of red – navy is blue." },
+      { items:["Rook", "Joker", "King", "Queen"], odd:1, why:"The others are chess pieces – the joker is a playing card." },
+      { items:["Cumulus", "Stratus", "Monsoon", "Cirrus"], odd:2, why:"The others are cloud types – a monsoon is a seasonal wind." }
+     ]},
+  { id:"hilo", type:"hilo", title:"Higher or Lower", secs:12, color:"--t9", perGame:2,
+    blurb:"Ride the chain without slipping",
+    rules:"You see one thing and its number. Is the next one higher or lower? Get it wrong and you’re out until the next chain.",
+    scoring:"2 points for each right call. Survive a whole chain for 3 bonus points.",
+    teenPool:[ 
+      { topic:"Year released", unit:"", year:true, items:[{"name": "Toy Story", "value": 1995}, {"name": "Snow White (Disney)", "value": 1937}, {"name": "Frozen", "value": 2013}, {"name": "Star Wars (first film)", "value": 1977}, {"name": "Encanto", "value": 2021}, {"name": "Shrek", "value": 2001}] },
+      { topic:"Year released", unit:"", year:true, items:[{"name": "Nintendo Wii", "value": 2006}, {"name": "Game Boy", "value": 1989}, {"name": "PlayStation 4", "value": 2013}, {"name": "PlayStation 2", "value": 2000}, {"name": "PlayStation 5", "value": 2020}, {"name": "Xbox 360", "value": 2005}] },
+      { topic:"Year released", unit:"", year:true, items:[{"name": "Pokémon Go", "value": 2016}, {"name": "Pac-Man", "value": 1980}, {"name": "Fortnite", "value": 2017}, {"name": "Super Mario Bros.", "value": 1985}, {"name": "Roblox", "value": 2006}, {"name": "First Pokémon games", "value": 1996}] },
+      { topic:"Diameter", unit:"km", items:[{"name": "Mars", "value": 6779}, {"name": "Earth", "value": 12742}, {"name": "Jupiter", "value": 139820}, {"name": "Uranus", "value": 50724}, {"name": "Mercury", "value": 4879}, {"name": "Saturn", "value": 116460}] },
+      { topic:"Distance from the Sun", unit:"million km", items:[{"name": "Mars", "value": 228}, {"name": "Venus", "value": 108}, {"name": "Neptune", "value": 4500}, {"name": "Earth", "value": 150}, {"name": "Saturn", "value": 1430}, {"name": "Jupiter", "value": 778}] },
+      { topic:"Top speed", unit:"km/h", items:[{"name": "Lion", "value": 80}, {"name": "African elephant", "value": 40}, {"name": "Cheetah", "value": 112}, {"name": "Grizzly bear", "value": 56}, {"name": "Kangaroo", "value": 70}, {"name": "Garden snail", "value": 0.05}] },
+      { topic:"Number of legs", unit:"", items:[{"name": "Spider", "value": 8}, {"name": "Snake", "value": 0}, {"name": "Ant", "value": 6}, {"name": "Human", "value": 2}, {"name": "Crab", "value": 10}, {"name": "Cow", "value": 4}] },
+      { topic:"Stadium capacity", unit:"seats", items:[{"name": "Wembley", "value": 90000}, {"name": "Stamford Bridge", "value": 40000}, {"name": "Old Trafford", "value": 74000}, {"name": "Vitality (Bournemouth)", "value": 11000}, {"name": "St James' Park", "value": 52000}, {"name": "Twickenham", "value": 82000}] },
+      { topic:"Year launched", unit:"", year:true, items:[{"name": "YouTube", "value": 2005}, {"name": "Google", "value": 1998}, {"name": "ChatGPT", "value": 2022}, {"name": "Instagram", "value": 2010}, {"name": "Amazon", "value": 1994}, {"name": "Snapchat", "value": 2011}] },
+      { topic:"Height", unit:"m", items:[{"name": "London Eye", "value": 135}, {"name": "Angel of the North", "value": 20}, {"name": "The Shard", "value": 310}, {"name": "Big Ben's tower", "value": 96}, {"name": "Blackpool Tower", "value": 158}, {"name": "Nelson's Column", "value": 52}] },
+      { topic:"Length", unit:"m", items:[{"name": "Blue whale", "value": 30}, {"name": "Great white shark", "value": 6}, {"name": "T. rex", "value": 12}, {"name": "Saltwater crocodile", "value": 6}, {"name": "Diplodocus", "value": 26}, {"name": "Humpback whale", "value": 15}] },
+      { topic:"Year first published", unit:"", year:true, items:[{"name": "Matilda", "value": 1988}, {"name": "Alice in Wonderland", "value": 1865}, {"name": "The Hobbit", "value": 1937}, {"name": "Diary of a Wimpy Kid", "value": 2007}, {"name": "The Gruffalo", "value": 1999}, {"name": "Fantastic Mr Fox", "value": 1970}] },
+      { topic:"Height", unit:"m", items:[{"name": "Adult human", "value": 1.7}, {"name": "African elephant", "value": 3.3}, {"name": "Emperor penguin", "value": 1.1}, {"name": "Giraffe", "value": 5.5}, {"name": "Ostrich", "value": 2.5}, {"name": "Chihuahua", "value": 0.2}] },
+      { topic:"How many?", unit:"", items:[{"name": "Pokémon in original games", "value": 151}, {"name": "Squares on a chessboard", "value": 64}, {"name": "Days in a year", "value": 365}, {"name": "Football match (minutes)", "value": 90}, {"name": "Seconds in an hour", "value": 3600}, {"name": "Sides on a hexagon", "value": 6}] }
+     ],
+    pool:[ 
+      { topic:"Height", unit:"m", items:[{"name": "Eiffel Tower", "value": 330}, {"name": "Leaning Tower of Pisa", "value": 56}, {"name": "Great Pyramid of Giza", "value": 139}, {"name": "Burj Khalifa", "value": 828}, {"name": "Statue of Liberty", "value": 93}, {"name": "Empire State Building", "value": 381}] },
+      { topic:"Year first published", unit:"", year:true, items:[{"name": "Pride and Prejudice", "value": 1813}, {"name": "The Hobbit", "value": 1937}, {"name": "Oliver Twist", "value": 1838}, {"name": "Harry Potter (book 1)", "value": 1997}, {"name": "Frankenstein", "value": 1818}, {"name": "Nineteen Eighty-Four", "value": 1949}] },
+      { topic:"Year it happened", unit:"", year:true, items:[{"name": "Great Fire of London", "value": 1666}, {"name": "Battle of Hastings", "value": 1066}, {"name": "Battle of Waterloo", "value": 1815}, {"name": "Spanish Armada", "value": 1588}, {"name": "First Moon landing", "value": 1969}, {"name": "Magna Carta sealed", "value": 1215}] },
+      { topic:"River length", unit:"km", items:[{"name": "River Thames", "value": 346}, {"name": "River Danube", "value": 2850}, {"name": "River Severn", "value": 354}, {"name": "River Nile", "value": 6650}, {"name": "River Rhine", "value": 1230}, {"name": "River Amazon", "value": 6400}] },
+      { topic:"Top speed", unit:"km/h", items:[{"name": "Greyhound", "value": 72}, {"name": "Cheetah", "value": 112}, {"name": "Usain Bolt (top speed)", "value": 44}, {"name": "Peregrine falcon (dive)", "value": 390}, {"name": "Ostrich", "value": 70}, {"name": "Grizzly bear", "value": 56}] },
+      { topic:"Area", unit:"km²", items:[{"name": "United Kingdom", "value": 243000}, {"name": "Australia", "value": 7690000}, {"name": "Iceland", "value": 103000}, {"name": "Canada", "value": 9980000}, {"name": "Japan", "value": 378000}, {"name": "Spain", "value": 506000}] },
+      { topic:"Population", unit:"million people", items:[{"name": "United Kingdom", "value": 68}, {"name": "Republic of Ireland", "value": 5}, {"name": "USA", "value": 335}, {"name": "Australia", "value": 26}, {"name": "India", "value": 1430}, {"name": "Japan", "value": 124}] },
+      { topic:"Players per team on the pitch", unit:"", items:[{"name": "Football", "value": 11}, {"name": "Basketball", "value": 5}, {"name": "Rugby union", "value": 15}, {"name": "Netball", "value": 7}, {"name": "Rugby league", "value": 13}, {"name": "Polo", "value": 4}] },
+      { topic:"Distance from London (straight line)", unit:"km", items:[{"name": "Paris", "value": 344}, {"name": "New York", "value": 5570}, {"name": "Manchester", "value": 262}, {"name": "Sydney", "value": 17000}, {"name": "Edinburgh", "value": 534}, {"name": "Rome", "value": 1435}] },
+      { topic:"Year first on TV", unit:"", year:true, items:[{"name": "EastEnders", "value": 1985}, {"name": "Blue Peter", "value": 1958}, {"name": "Strictly Come Dancing", "value": 2004}, {"name": "Fawlty Towers", "value": 1975}, {"name": "Great British Bake Off", "value": 2010}, {"name": "Doctor Who", "value": 1963}] },
+      { topic:"Year released", unit:"", year:true, items:[{"name": "Bohemian Rhapsody", "value": 1975}, {"name": "Wonderwall", "value": 1995}, {"name": "Love Me Do", "value": 1962}, {"name": "Adele's album 21", "value": 2011}, {"name": "Thriller (album)", "value": 1982}, {"name": "Wannabe", "value": 1996}] },
+      { topic:"Height", unit:"m", items:[{"name": "Ben Nevis", "value": 1345}, {"name": "Scafell Pike", "value": 978}, {"name": "Mount Everest", "value": 8849}, {"name": "Mont Blanc", "value": 4806}, {"name": "Snowdon (Yr Wyddfa)", "value": 1085}, {"name": "Kilimanjaro", "value": 5895}] },
+      { topic:"Year it happened", unit:"", year:true, items:[{"name": "Sony Walkman launched", "value": 1979}, {"name": "Bell patents telephone", "value": 1876}, {"name": "First powered flight", "value": 1903}, {"name": "First iPhone released", "value": 2007}, {"name": "Penicillin discovered", "value": 1928}, {"name": "Google founded", "value": 1998}] },
+      { topic:"Length", unit:"m", items:[{"name": "Titanic", "value": 269}, {"name": "Olympic swimming pool", "value": 50}, {"name": "Humber Bridge main span", "value": 1410}, {"name": "Cricket pitch", "value": 20}, {"name": "Blue whale", "value": 30}, {"name": "Tower Bridge", "value": 244}] },
+      { topic:"Year completed", unit:"", year:true, items:[{"name": "London Eye", "value": 2000}, {"name": "St Paul's Cathedral", "value": 1710}, {"name": "Eiffel Tower", "value": 1889}, {"name": "Channel Tunnel", "value": 1994}, {"name": "Big Ben's clock tower", "value": 1859}, {"name": "Angel of the North", "value": 1998}] },
+      { topic:"How many?", unit:"", items:[{"name": "Keys on a piano", "value": 88}, {"name": "Cards in a deck", "value": 52}, {"name": "Bones in an adult human", "value": 206}, {"name": "Squares on a chessboard", "value": 64}, {"name": "Days in a leap year", "value": 366}, {"name": "Dominoes in a full set", "value": 28}] }
+     ]},
   { id:"closest", type:"number", title:"Closest Wins", secs:25, color:"--t4", perGame:4,
     blurb:"Nobody knows, nearest guess scores",
     rules:"Type a number. You don’t need to be right, just closer than everyone else.",
@@ -1041,7 +1186,7 @@ function hostPeers(list){
     if(H.ph === "check" && d.a && d.a.k === cKey() && !(H.checkVotes[name] && H.checkVotes[name].done))
       H.checkVotes[name] = { v:(Array.isArray(d.a.v) ? d.a.v : []).filter(i => Number.isInteger(i)), done:!!d.a.done };
   }
-  if(H.ph === "q" && H.players.length && H.players.every(n => H.answers[n] && H.answers[n].done)) doReveal();
+  if(H.ph === "q" && (curR().type === "hilo" ? hlActive() : H.players).length && (curR().type === "hilo" ? hlActive() : H.players).every(n => H.answers[n] && H.answers[n].done)) doReveal();
   else if(H.ph === "vote" && H.players.length && H.players.every(n => n in H.votes)) resolveVote();
   else if(H.ph === "check" && checkVoters().every(n => H.checkVotes[n] && H.checkVotes[n].done)) finishCheck();
   else renderHost();
@@ -1061,7 +1206,9 @@ function next(){
   else if(H.ph === "spin"){ beginLetters(); return; }
   else if(H.ph === "q") doReveal();
   else if(H.ph === "check"){ finishCheck(); return; }
-  else if(H.ph === "reveal"){ if(H.qi < H.qs.length - 1){ H.qi++; startQ(); return; } H.ph = "board"; }
+  else if(H.ph === "reveal"){ let j = H.qi + 1;
+    if(curR().type === "hilo" && H.players.length && !hlActive().length){ const c = curQ().chain; while(j < H.qs.length && H.qs[j].chain === c) j++; }
+    if(j < H.qs.length){ H.qi = j; startQ(); return; } H.ph = "board"; }
   else if(H.ph === "board"){ if(H.played.length < ROUNDS.length){ startVote(); return; } H.ph = "final"; }
   push(); renderHost();
 }
@@ -1073,7 +1220,13 @@ function startVote(){
   H.ph = "vote"; H.dur = VOTE_SECS * 1000; H.endsAt = Date.now() + H.dur;
   push(); renderHost();
 }
-function pickRound(i){ H.ri = i; H.qi = 0; H.played.push(i); H.qs = drawQuestions(ROUNDS[i]); }
+function pickRound(i){ H.ri = i; H.qi = 0; H.played.push(i); H.qs = drawQuestions(ROUNDS[i]); if(ROUNDS[i].type === "hilo") H.qs = hiloSteps(H.qs); }
+/* Higher or Lower: each chain of 6 becomes 5 steps (A known, guess B). */
+function hiloSteps(chains){ const out = [];
+  chains.forEach((c, ci) => c.items.slice(1).forEach((b, k) => out.push({ topic:c.topic, unit:c.unit || "", year:!!c.year, a:c.items[k], b, chain:ci, step:k, steps:c.items.length - 1, last:k === c.items.length - 2 })));
+  return out; }
+const hlFmt = (v, q) => q.year ? String(v) : Number(v).toLocaleString("en-GB") + (q.unit ? " " + q.unit : "");
+const hlActive = () => H.players.filter(n => !(H.out && H.out.has(n)));
 /* Random draw each game. Questions already seen on this screen are held back until the pool runs low. */
 function drawQuestions(r){
   const k = "hpq-used-" + r.id + (H.mode === "teen" && r.teenPool ? "-teen" : "");
@@ -1099,7 +1252,8 @@ function resolveVote(){
 const SPIN_MS = 4500;
 function startQ(){
   H.ph = "q"; H.answers = {}; H.reveal = null; H.strikes = {}; H.voted = {}; H.chk = []; H.checkVotes = {}; H.checked = false;
-  H.shown = curR().type === "order" ? shuffled(curQ().items) : [];
+  H.shown = curR().type === "order" || curR().type === "odd" ? shuffled(curQ().items) : [];
+  if(curR().type === "hilo" && (curQ().step === 0 || !H.out)) H.out = new Set();
   if(curR().type === "letters"){
     const r = curR();
     const teen = H.mode === "teen";
@@ -1220,6 +1374,10 @@ function score(){
   if(r.type === "pair") speedRank(n => { const v = Array.isArray(A[n].v) ? A[n].v : []; const [x, y] = q.answer;
     if(norm(v[0]) === norm(v[1])) return false;
     return (close(v[0], x) && close(v[1], y)) || (close(v[0], y) && close(v[1], x)); });
+  if(r.type === "odd") speedRank(n => H.shown[A[n].v] === q.items[q.odd]);
+  if(r.type === "hilo"){ const up = q.b.value > q.a.value;
+    [...new Set(H.players.concat(names))].forEach(n => { if(H.out.has(n)) return; const a = A[n];
+      if(a && (a.v === "h") === up) res[n] = 2 + (q.last ? 3 : 0); else H.out.add(n); }); }
   if(r.type === "order") names.forEach(n => { const v = Array.isArray(A[n].v) ? A[n].v : []; const c = q.items.filter((it, i) => v[i] === it).length; if(c) res[n] = c; });
   if(r.type === "letters") lettersDetail().forEach(c => c.rows.forEach(x => { if(x.pts) res[x.n] = (res[x.n] || 0) + x.pts; }));
   if(r.type === "map"){
@@ -1241,6 +1399,8 @@ function answerText(){
   if(r.type === "order") return { main:q.items.join(" → "), sub:q.detail || "" };
   if(r.type === "map") return { main:q.place, sub:q.name };
   if(r.type === "letters") return { main:"Letter " + q.letter, sub:"" };
+  if(r.type === "odd") return { main:q.items[q.odd], sub:q.why };
+  if(r.type === "hilo") return { main:`${q.b.name}: ${hlFmt(q.b.value, q)}`, sub:`${q.b.value > q.a.value ? "Higher" : "Lower"} than ${q.a.name} (${hlFmt(q.a.value, q)})` };
   if(r.type === "emoji") return { main:q.answer, sub:q.kind === "song" ? `Song by ${q.by}` : `Film, ${q.year}` };
   return { main:fmtNum(q.answer, q.plain) + (q.unit ? " " + q.unit : ""), sub:"" };
 }
@@ -1269,6 +1429,8 @@ function publicState(){
     if(r.type === "text") s.q = { clue:q.clue };
     if(r.type === "pair") s.q = { c1:q.c1, c2:q.c2 };
     if(r.type === "order") s.q = { prompt:q.prompt, items:H.shown };
+    if(r.type === "odd") s.q = { items:H.shown };
+    if(r.type === "hilo") s.q = { topic:q.topic, a:{ n:q.a.name, v:hlFmt(q.a.value, q) }, b:{ n:q.b.name }, step:q.step, steps:q.steps, out:[...H.out] };
     if(r.type === "number") s.q = { prompt:q.prompt, unit:q.unit || "" };
     if(r.type === "map") s.q = { name:q.name, emoji:q.emoji, the:q.the };
     if(r.type === "letters") s.q = { letter:q.letter, cats:H.cats };
@@ -1356,6 +1518,13 @@ function renderHost(){
     let qhtml = "";
     if(r.type === "text") qhtml = `<div class="smash"><div class="emoji" aria-label="picture clue">${q.emoji}</div><div class="plus">+</div><div class="qtext" style="flex:1;min-width:200px">${esc(q.clue)}</div></div>`;
     if(r.type === "pair") qhtml = `<div class="pair"><div class="clue">${esc(q.c1)}</div><div class="plus">+</div><div class="clue">${esc(q.c2)}</div></div>`;
+    if(r.type === "odd") qhtml = `<div class="qtext">Which is the odd one out?</div><div class="order-items odd-items">${H.shown.map(it => `<div class="oi ${H.ph === "reveal" ? (it === q.items[q.odd] ? "hit" : "dim") : ""}">${esc(it)}</div>`).join("")}</div>`;
+    if(r.type === "hilo"){ const up = q.b.value > q.a.value;
+      qhtml = `<div class="row" style="justify-content:space-between"><div class="label">${esc(q.topic)}</div><div class="label">Step ${q.step + 1} of ${q.steps}</div></div>
+        <div class="hl"><div class="hlc"><b>${esc(q.a.name)}</b><span class="hv">${esc(hlFmt(q.a.value, q))}</span></div>
+        <div class="hlvs">${H.ph === "reveal" ? (up ? "⬆" : "⬇") : "vs"}</div>
+        <div class="hlc ${H.ph === "reveal" ? "shown" : "hidden"}"><b>${esc(q.b.name)}</b><span class="hv">${H.ph === "reveal" ? esc(hlFmt(q.b.value, q)) : "Higher or lower?"}</span></div></div>
+        ${H.players.length ? `<div class="chips">${H.players.map(n => `<span class="chip ${H.out.has(n) ? "wait out" : H.ph === "reveal" || (H.answers[n] && H.answers[n].done) ? "done" : "wait"}" style="--c:${colorFor(n)}">${esc(n)}${H.out.has(n) ? " · out" : ""}</span>`).join("")}</div>` : ""}`; }
     if(r.type === "order") qhtml = `<div class="qtext">${esc(q.prompt)}</div><div class="order-items">${(H.ph === "reveal" ? q.items : H.shown).map((it, i) => `<div class="oi">${H.ph === "reveal" ? (i + 1) + ". " : ""}${esc(it)}</div>`).join("")}</div>`;
     if(r.type === "number") qhtml = `<div class="qtext">${esc(q.prompt)}</div>${q.unit ? `<div class="reveal-sub">Answer in ${esc(q.unit)}</div>` : ""}`;
     if(r.type === "emoji") qhtml = `<div class="kind-chip">${q.kind === "song" ? "🎵 Song" : "🎬 Film"}</div><div class="emoji-clue">${q.emoji}</div>`;
@@ -1365,19 +1534,21 @@ function renderHost(){
     const head = `<div class="row" style="justify-content:space-between"><div class="round-no" style="color:${c}">${esc(r.title)}</div><div class="round-no">Q${H.qi + 1} / ${H.qs.length}</div></div>`;
     if(H.ph === "q"){
       const done = Object.values(H.answers).filter(a => a.done).length;
+      const need = r.type === "hilo" ? hlActive() : H.players;
       body = `${head}<div class="qwrap"><div class="qcard" style="--c:${c}">${qhtml}</div>
         <div class="stack" style="align-items:center">${timerHtml(c)}
-        <div class="answered">${done} / ${H.players.length} in</div></div></div>
-        <div class="chips">${H.players.map(n => `<span class="chip ${H.answers[n] && H.answers[n].done ? "done" : "wait"}" style="--c:${colorFor(n)}">${esc(n)}</span>`).join("")}</div>`;
+        <div class="answered">${need.filter(n => H.answers[n] && H.answers[n].done).length} / ${need.length} in</div></div></div>
+        ${r.type === "hilo" ? "" : `<div class="chips">${H.players.map(n => `<span class="chip ${H.answers[n] && H.answers[n].done ? "done" : "wait"}" style="--c:${colorFor(n)}">${esc(n)}</span>`).join("")}</div>`}`;
       ctrl = "Reveal now";
     } else {
       const rows = H.players.concat(Object.keys(H.answers).filter(n => !H.players.includes(n))).map(n => {
         const a = H.answers[n]; const p = H.reveal.res[n] || 0;
-        const said = !a ? "No answer" : r.type === "map" ? (Array.isArray(a.v) ? Math.round(km(a.v, [q.lat, q.lon])).toLocaleString("en-GB") + " km away" : "No pin") : Array.isArray(a.v) ? a.v.join(r.type === "order" ? ", " : " ") : a.v;
+        const said = !a ? (r.type === "hilo" && H.out.has(n) && !a ? "Out" : "No answer") : r.type === "odd" ? String(H.shown[a.v] ?? "") : r.type === "hilo" ? (a.v === "h" ? "⬆ Higher" : "⬇ Lower") : r.type === "map" ? (Array.isArray(a.v) ? Math.round(km(a.v, [q.lat, q.lon])).toLocaleString("en-GB") + " km away" : "No pin") : Array.isArray(a.v) ? a.v.join(r.type === "order" ? ", " : " ") : a.v;
         return `<div class="res"><div style="min-width:0"><div class="who">${esc(n)}</div><div class="what">${esc(said)}</div></div><div class="pts ${p ? "" : "zero"}">+${p}</div></div>`;
       }).join("");
       const mapReveal = r.type === "map" ? `<div class="host-map">${mapSvg(FULL, Object.entries(H.answers).filter(([, a]) => Array.isArray(a.v)).map(([n, a]) => `<line x1="${toXY(a.v[0], a.v[1])[0]}" y1="${toXY(a.v[0], a.v[1])[1]}" x2="${toXY(q.lat, q.lon)[0]}" y2="${toXY(q.lat, q.lon)[1]}" stroke="${colorFor(n)}" stroke-width=".5" stroke-dasharray="1.5 1.5"/>`).join("") + Object.entries(H.answers).filter(([, a]) => Array.isArray(a.v)).map(([n, a]) => pin(a.v[0], a.v[1], colorFor(n), 360, n)).join("") + star(q.lat, q.lon, 360))}</div>` : "";
-      body = `${head}${mapReveal}<div class="stack" style="gap:8px"><div class="label">The answer</div><div class="reveal-ans" style="--c:${c}">${esc(H.reveal.main)}</div>${H.reveal.sub ? `<div class="reveal-sub">${esc(H.reveal.sub)}</div>` : ""}</div>
+      const cardReveal = r.type === "odd" || r.type === "hilo" ? `<div class="qcard" style="--c:${c}">${qhtml}</div>` : "";
+      body = `${head}${mapReveal}${cardReveal}<div class="stack" style="gap:8px"><div class="label">The answer</div><div class="reveal-ans" style="--c:${c}">${esc(H.reveal.main)}</div>${H.reveal.sub ? `<div class="reveal-sub">${esc(H.reveal.sub)}</div>` : ""}</div>
         <div class="results">${rows}</div>`;
       if(r.type === "letters"){
         const det = lettersDetail();
@@ -1514,6 +1685,14 @@ function renderPlayer(force){
       <label class="stack" style="gap:6px"><span class="pclue">${esc(q.c1)}</span><input id="pa" autocomplete="off" placeholder="First word"></label>
       <label class="stack" style="gap:6px"><span class="pclue">${esc(q.c2)}</span><input id="pb" autocomplete="off" placeholder="Rhyming word"></label>
       <button class="full" type="submit">Lock in</button></form>`;
+    if(s.rt === "odd") main = `${top}<div class="big-msg" style="font-size:clamp(24px,6vw,32px)">Which is the odd one out?</div>
+      <div class="podd">${(q.items || []).map((it, i) => `<button type="button" data-v="${i}">${esc(it)}</button>`).join("")}</div>`;
+    if(s.rt === "hilo") main = (q.out || []).includes(P.name)
+      ? `<div class="big-msg">You’re out of this chain</div><p class="reveal-sub" style="margin:0">You’ll be back in for the next one. Watch the big screen.</p>`
+      : `${top}<div class="label">${esc(q.topic)} · step ${q.step + 1} of ${q.steps}</div>
+      <div class="pclue stack" style="gap:2px"><b>${esc(q.a.n)}</b><span style="font-family:var(--display);font-size:28px">${esc(q.a.v)}</span></div>
+      <p style="margin:0;font-size:19px">Is <b>${esc(q.b.n)}</b> higher or lower?</p>
+      <div class="phl"><button type="button" data-v="h">⬆ Higher</button><button type="button" data-v="l">⬇ Lower</button></div>`;
     if(s.rt === "order"){ P.pick = []; main = `${top}<div class="pclue">${esc(q.prompt)}. Tap in order.</div><div class="pick" id="pick"></div>
       <div class="row"><button class="ghost" id="preset" type="button">Reset</button><button id="plock" type="button" style="flex:1" disabled>Lock in</button></div>`; }
     if(s.rt === "map"){ P.map = { vb:null, pin:null };
@@ -1564,6 +1743,8 @@ function renderPlayer(force){
     $("#chk-done").onclick = () => { P.sent = s.k; send(true); renderPlayer(true); };
   }
   document.querySelectorAll(".pvote button").forEach(b => b.onclick = () => submit(+b.dataset.v));
+  document.querySelectorAll(".podd button").forEach(b => b.onclick = () => submit(+b.dataset.v));
+  document.querySelectorAll(".phl button").forEach(b => b.onclick = () => submit(b.dataset.v));
   playerTick();
 }
 
