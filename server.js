@@ -8,7 +8,7 @@ const { WebSocketServer } = require("ws");
 
 const PORT = process.env.PORT || 3000;
 const PAGE = path.join(__dirname, "public", "index.html");
-const MAX_STATE = 8 * 1024;       // bytes of state per player
+const MAX_STATE = 32 * 1024;      // bytes of state per player
 const MAX_PEERS = 60;             // per room
 const GRACE_MS = 15000;           // keep a dropped player listed while they reconnect
 
@@ -43,7 +43,7 @@ function broadcast(code) {
   });
 }
 
-const wss = new WebSocketServer({ server, path: "/ws", maxPayload: 16 * 1024 });
+const wss = new WebSocketServer({ server, path: "/ws", maxPayload: 64 * 1024 });
 
 wss.on("connection", ws => {
   let code = null, id = null;
