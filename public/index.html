@@ -218,7 +218,21 @@ body.xmas #app{position:relative;z-index:1}
 .pick button.sel{background:var(--t2);color:var(--on-tile);border-color:var(--t2)}
 .pick button.sel .n{background:var(--on-tile);color:var(--t2)}
 .delta{font-family:var(--display);font-size:72px;line-height:1}
-.delta.good{color:var(--good)}.delta.none{color:var(--muted)}
+.delta.good{color:var(--good)}.delta.bad{color:var(--bad)}
+.res .pts.neg{color:var(--bad)}
+.kind-chip.secret-chip{background:var(--bad)}
+.secret-alarm{display:flex;flex-direction:column;gap:22px;border:4px solid var(--bad);border-radius:26px;padding:clamp(18px,3vw,34px);animation:alarm 1s ease-in-out infinite}
+.secret-title{font-family:var(--display);color:var(--bad);font-size:clamp(40px,7vw,88px);line-height:1}
+@keyframes alarm{0%,100%{box-shadow:0 0 0 0 rgba(255,99,99,0)}50%{box-shadow:0 0 40px 6px rgba(255,99,99,.55)}}
+.bz-btn{width:min(72vw,300px);aspect-ratio:1;border-radius:50%;align-self:center;font-family:var(--display);font-size:clamp(44px,13vw,64px);color:#fff;background:radial-gradient(circle at 35% 30%,#ff8a8a,var(--bad) 55%,#b8323a);border:0;box-shadow:0 12px 0 #8c2430,0 18px 40px rgba(255,99,99,.45);touch-action:manipulation;-webkit-user-select:none;user-select:none}
+.bz-btn:active{transform:translateY(8px);box-shadow:0 4px 0 #8c2430,0 8px 20px rgba(255,99,99,.45)}
+.bz-big{font-size:96px;line-height:1;text-align:center}.bz-big.you{animation:alarm 1s infinite;border-radius:50%}
+.bz-who{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;border:3px solid var(--c);border-radius:22px;padding:18px 24px}
+.bz-who b{font-family:var(--display);font-size:clamp(34px,5vw,60px);line-height:1;color:var(--c)}
+.bz-who button{font-size:24px;padding:14px 26px}.bz-who button small{opacity:.6;font-size:15px}
+.bz-yes{background:var(--good);color:var(--on-tile)}.bz-no{background:var(--bad);color:#fff}
+.bz-peek{align-self:flex-start;font-size:15px}
+.bz-paused{font-size:72px;line-height:1;opacity:.6}.delta.none{color:var(--muted)}
 .full{width:100%;font-size:20px;padding:18px}
 @media (max-width:720px){
   .qwrap{grid-template-columns:1fr}.timer{width:110px;height:110px}.timer b{font-size:38px}
@@ -1270,6 +1284,191 @@ const ROUNDS = [
       {"title": "Don’t Leave Me This Way", "artist": "Thelma Houston"},
       {"title": "Things Can Only Get Better", "artist": "D:Ream"}
      ]},
+  { id:"secret", type:"buzz", secret:true, title:"Secret Buzzer Round", secs:20, color:"--bad", perGame:5,
+    blurb:"Surprise!", rules:"Everyone’s phone is a buzzer. Buzz first, then say your answer out loud. The quizmaster marks it.",
+    scoring:"Right answer 2 points. Wrong answer loses 1 point. The player who picked the category gets 2 extra for each one they get right.",
+    cats:{ adult:{
+      "Science & Nature":[
+        {"q": "What is the chemical symbol for gold?", "a": "Au"},
+        {"q": "How many legs does a spider have?", "a": "Eight"},
+        {"q": "Which planet is known as the Red Planet?", "a": "Mars"},
+        {"q": "What is the largest organ of the human body?", "a": "Skin"},
+        {"q": "At sea level, water boils at how many degrees Celsius?", "a": "100"},
+        {"q": "Which blood cells help the body fight infection?", "a": "White blood cells"},
+        {"q": "What is the hardest natural substance on Earth?", "a": "Diamond"}],
+      "History":[
+        {"q": "In which year did the Battle of Hastings take place?", "a": "1066"},
+        {"q": "Who was the UK’s first female Prime Minister?", "a": "Margaret Thatcher"},
+        {"q": "Which Tudor king had six wives?", "a": "Henry VIII"},
+        {"q": "In which year did the Second World War end?", "a": "1945"},
+        {"q": "Which liner sank on its maiden voyage in April 1912?", "a": "Titanic"},
+        {"q": "Who was caught guarding gunpowder beneath Parliament in 1605?", "a": "Guy Fawkes"},
+        {"q": "In which year did the Berlin Wall fall?", "a": "1989"}],
+      "Geography":[
+        {"q": "What is the capital city of Australia?", "a": "Canberra"},
+        {"q": "What is the longest river in the United Kingdom?", "a": "Severn"},
+        {"q": "What is the highest mountain in the United Kingdom?", "a": "Ben Nevis"},
+        {"q": "Which is the largest ocean on Earth?", "a": "Pacific"},
+        {"q": "What is the capital city of Canada?", "a": "Ottawa"},
+        {"q": "The city of Marrakesh is in which country?", "a": "Morocco"},
+        {"q": "Which stretch of water separates England from France?", "a": "English Channel"}],
+      "Sport":[
+        {"q": "How many players does each side have on the pitch in football?", "a": "Eleven"},
+        {"q": "In which sport do England and Australia contest the Ashes?", "a": "Cricket"},
+        {"q": "On what surface is Wimbledon played?", "a": "Grass"},
+        {"q": "How many points is a try worth in rugby union?", "a": "Five"},
+        {"q": "What is the standard maximum break in snooker?", "a": "147"},
+        {"q": "Which city hosted the 2012 Summer Olympics?", "a": "London"},
+        {"q": "What is the highest score possible with three darts?", "a": "180"}],
+      "Film & TV":[
+        {"q": "Which school of witchcraft and wizardry does Harry Potter attend?", "a": "Hogwarts"},
+        {"q": "What is the name of the pub in EastEnders?", "a": "The Queen Vic"},
+        {"q": "Which 1975 Steven Spielberg film is about a great white shark?", "a": "Jaws"},
+        {"q": "What is the name of Wallace’s dog in Wallace & Gromit?", "a": "Gromit"},
+        {"q": "Which TV time traveller flies around in the TARDIS?", "a": "The Doctor"},
+        {"q": "Coronation Street is set in which fictional town?", "a": "Weatherfield"},
+        {"q": "Which Disney film features the song ‘Let It Go’?", "a": "Frozen"}],
+      "Music":[
+        {"q": "Which band released the 1995 single ‘Wonderwall’?", "a": "Oasis"},
+        {"q": "Which Beatle was the band’s drummer?", "a": "Ringo Starr"},
+        {"q": "Freddie Mercury was the lead singer of which band?", "a": "Queen"},
+        {"q": "How many strings does a standard guitar have?", "a": "Six"},
+        {"q": "ABBA won Eurovision in 1974 representing which country?", "a": "Sweden"},
+        {"q": "Adele’s 2011 album was named after which number?", "a": "21"},
+        {"q": "Which composer wrote the ‘Moonlight Sonata’?", "a": "Beethoven"}],
+      "Food & Drink":[
+        {"q": "What is the main ingredient of guacamole?", "a": "Avocado"},
+        {"q": "Parmesan cheese originally comes from which country?", "a": "Italy"},
+        {"q": "Which pastry is used to make profiteroles?", "a": "Choux"},
+        {"q": "Lea & Perrins is famous for which sauce?", "a": "Worcestershire"},
+        {"q": "What is the main ingredient of hummus?", "a": "Chickpeas"},
+        {"q": "Which spirit is used in a classic Mojito?", "a": "Rum"},
+        {"q": "Paella is a traditional dish from which country?", "a": "Spain"}],
+      "Famous Brits":[
+        {"q": "Who wrote the play ‘Romeo and Juliet’?", "a": "William Shakespeare"},
+        {"q": "Which scientist wrote ‘A Brief History of Time’?", "a": "Stephen Hawking"},
+        {"q": "Who discovered penicillin in 1928?", "a": "Alexander Fleming"},
+        {"q": "Which nurse was known as ‘The Lady with the Lamp’?", "a": "Florence Nightingale"},
+        {"q": "Who wrote the Harry Potter books?", "a": "J.K. Rowling"},
+        {"q": "Who narrated and presented the BBC series ‘Blue Planet’?", "a": "David Attenborough"},
+        {"q": "Which Prime Minister led Britain for most of World War Two?", "a": "Winston Churchill"}]
+    },
+    teen:{
+      "Animals":[
+        {"q": "What is a baby kangaroo called?", "a": "Joey"},
+        {"q": "What is the fastest land animal?", "a": "Cheetah"},
+        {"q": "How many legs does a spider have?", "a": "8"},
+        {"q": "What is the largest animal ever to have lived?", "a": "Blue whale"},
+        {"q": "What do giant pandas mainly eat?", "a": "Bamboo"},
+        {"q": "Which black-and-white bird can’t fly but is a brilliant swimmer?", "a": "Penguin"},
+        {"q": "What is a group of lions called?", "a": "Pride"}],
+      "Space & Science":[
+        {"q": "Which planet is closest to the Sun?", "a": "Mercury"},
+        {"q": "What is the chemical formula for water?", "a": "H₂O"},
+        {"q": "Which planet is known as the Red Planet?", "a": "Mars"},
+        {"q": "What is the largest planet in our solar system?", "a": "Jupiter"},
+        {"q": "Which gas do plants take in from the air to make food?", "a": "Carbon dioxide"},
+        {"q": "At sea level, water boils at how many degrees Celsius?", "a": "100"},
+        {"q": "Who was the first person to walk on the Moon?", "a": "Neil Armstrong"}],
+      "Video Games":[
+        {"q": "What is the name of Mario’s brother?", "a": "Luigi"},
+        {"q": "What kind of animal is Sonic?", "a": "Hedgehog"},
+        {"q": "What type of Pokémon is Pikachu?", "a": "Electric"},
+        {"q": "What is the name of the hero in The Legend of Zelda games?", "a": "Link"},
+        {"q": "In Minecraft, which green mob explodes?", "a": "Creeper"},
+        {"q": "What colour is Kirby?", "a": "Pink"},
+        {"q": "Which princess does Mario often rescue from Bowser?", "a": "Peach"}],
+      "Films & Disney":[
+        {"q": "What is the name of the snowman in Frozen?", "a": "Olaf"},
+        {"q": "What is the name of the cowboy toy in Toy Story?", "a": "Woody"},
+        {"q": "In The Lion King, who is Simba’s father?", "a": "Mufasa"},
+        {"q": "In Finding Nemo, what kind of fish is Nemo?", "a": "Clownfish"},
+        {"q": "What kind of creature is Shrek?", "a": "Ogre"},
+        {"q": "What is the name of the demigod in Moana?", "a": "Maui"},
+        {"q": "In the Pixar film Up, what lifts Carl’s house into the sky?", "a": "Balloons"}],
+      "Football & Sport":[
+        {"q": "How many players does each team have on the pitch in football?", "a": "11"},
+        {"q": "How many rings are on the Olympic flag?", "a": "5"},
+        {"q": "Wimbledon is a famous competition in which sport?", "a": "Tennis"},
+        {"q": "Which sport uses a shuttlecock?", "a": "Badminton"},
+        {"q": "Which country is sprinter Usain Bolt from?", "a": "Jamaica"},
+        {"q": "Anfield is the home stadium of which football club?", "a": "Liverpool"},
+        {"q": "In darts, what is the highest score possible with three darts?", "a": "180"}],
+      "Around the World":[
+        {"q": "What is the capital of France?", "a": "Paris"},
+        {"q": "Which is the largest ocean on Earth?", "a": "Pacific"},
+        {"q": "Which country is shaped like a boot?", "a": "Italy"},
+        {"q": "What is the capital of Japan?", "a": "Tokyo"},
+        {"q": "In which city is the Statue of Liberty?", "a": "New York"},
+        {"q": "In which country are the Pyramids of Giza?", "a": "Egypt"},
+        {"q": "Which country has a red maple leaf on its flag?", "a": "Canada"}],
+      "Harry Potter":[
+        {"q": "What is the name of Harry Potter’s owl?", "a": "Hedwig"},
+        {"q": "What is the name of the school Harry goes to?", "a": "Hogwarts"},
+        {"q": "Which Hogwarts house is Harry sorted into?", "a": "Gryffindor"},
+        {"q": "What sport is played on broomsticks?", "a": "Quidditch"},
+        {"q": "What is Ron’s surname?", "a": "Weasley"},
+        {"q": "Which platform does the Hogwarts Express leave from?", "a": "9¾"},
+        {"q": "Who is the headmaster of Hogwarts in the first book?", "a": "Albus Dumbledore"}],
+      "Food":[
+        {"q": "What is the main ingredient in guacamole?", "a": "Avocado"},
+        {"q": "Which country is sushi originally from?", "a": "Japan"},
+        {"q": "Which nut is used to make marzipan?", "a": "Almond"},
+        {"q": "A Yorkshire pudding is made from what?", "a": "Batter"},
+        {"q": "Which fruit is dried to make raisins?", "a": "Grapes"},
+        {"q": "Which vegetable are chips made from?", "a": "Potatoes"},
+        {"q": "Which country does the pizza margherita come from?", "a": "Italy"}]
+    },
+    xmas:{
+      "Christmas Films":[
+        {"q": "Who plays Buddy in the film Elf?", "a": "Will Ferrell"},
+        {"q": "In Home Alone, what is the name of the boy left behind by his family?", "a": "Kevin"},
+        {"q": "Which Muppet plays Bob Cratchit in The Muppet Christmas Carol?", "a": "Kermit the Frog"},
+        {"q": "In the 1982 animation The Snowman, who do the boy and the Snowman meet at the party?", "a": "Father Christmas"},
+        {"q": "Which actor plays the Prime Minister in Love Actually?", "a": "Hugh Grant"},
+        {"q": "What is the name of the Grinch’s loyal dog?", "a": "Max"},
+        {"q": "Which city is the setting for the film Miracle on 34th Street?", "a": "New York"}],
+      "Carols & Songs":[
+        {"q": "Which band had the 1973 Christmas hit Merry Xmas Everybody?", "a": "Slade"},
+        {"q": "Who sang the 1994 hit All I Want for Christmas Is You?", "a": "Mariah Carey"},
+        {"q": "Which duo released the song Last Christmas in 1984?", "a": "Wham!"},
+        {"q": "Fairytale of New York is a duet between The Pogues and which singer?", "a": "Kirsty MacColl"},
+        {"q": "Which singer is most famous for recording White Christmas in 1942?", "a": "Bing Crosby"},
+        {"q": "The carol Silent Night was originally written in which language?", "a": "German"},
+        {"q": "Which band had the 1973 hit I Wish It Could Be Christmas Everyday?", "a": "Wizzard"}],
+      "Christmas Food":[
+        {"q": "Which small green vegetable, like a mini cabbage, is a UK Christmas dinner classic?", "a": "Brussels sprouts"},
+        {"q": "Which coin was traditionally hidden in a Christmas pudding for luck?", "a": "A silver sixpence"},
+        {"q": "Which drink is traditionally poured over Christmas pudding and set alight?", "a": "Brandy"},
+        {"q": "Mince pies are filled with ‘mincemeat’. What is it mainly made of today?", "a": "Dried fruit"},
+        {"q": "Pigs in blankets are small sausages wrapped in what?", "a": "Bacon"},
+        {"q": "Stollen is a fruity Christmas bread that comes from which country?", "a": "Germany"},
+        {"q": "Panettone is a Christmas sweet bread that comes from which country?", "a": "Italy"}],
+      "Christmas Around the World":[
+        {"q": "In which country is eating KFC a popular Christmas tradition?", "a": "Japan"},
+        {"q": "In Australia, Christmas Day falls in which season?", "a": "Summer"},
+        {"q": "Which country gives London a Christmas tree for Trafalgar Square each year?", "a": "Norway"},
+        {"q": "According to Italian legend, which kind witch brings children presents at Epiphany?", "a": "La Befana"},
+        {"q": "Sinterklaas is a gift-bringer celebrated mainly in which country?", "a": "The Netherlands"},
+        {"q": "Which red-leaved Christmas plant is native to Mexico?", "a": "Poinsettia"},
+        {"q": "According to Icelandic tradition, how many Yule Lads visit children before Christmas?", "a": "13"}],
+      "Santa & His Reindeer":[
+        {"q": "Which of Santa’s reindeer is famous for his shiny red nose?", "a": "Rudolph"},
+        {"q": "According to tradition, where does Santa live?", "a": "The North Pole"},
+        {"q": "How many reindeer pull Santa’s sleigh in the poem A Visit from St Nicholas?", "a": "Eight"},
+        {"q": "Name any one of Santa’s eight reindeer from the poem ‘A Visit from St Nicholas’.", "a": "Dasher, Dancer, Prancer, Vixen, Comet, Cupid, Donner or Blitzen"},
+        {"q": "According to the story, who makes the toys in Santa’s workshop?", "a": "Elves"},
+        {"q": "According to tradition, how does Santa get into houses to deliver presents?", "a": "Down the chimney"},
+        {"q": "Santa Claus is based on which saint?", "a": "St Nicholas"}],
+      "Christmas History":[
+        {"q": "Which royal helped make Christmas trees popular in Victorian Britain?", "a": "Prince Albert"},
+        {"q": "Who wrote the 1843 story A Christmas Carol?", "a": "Charles Dickens"},
+        {"q": "Which London sweet-maker is credited with inventing the Christmas cracker?", "a": "Tom Smith"},
+        {"q": "Who sent the first commercial Christmas card in 1843?", "a": "Sir Henry Cole"},
+        {"q": "Which king gave the first royal Christmas broadcast on the radio in 1932?", "a": "George V"},
+        {"q": "The famous Christmas truce of 1914 took place during which war?", "a": "First World War"},
+        {"q": "Which group banned Christmas celebrations in England in the 1640s?", "a": "The Puritans"}]
+    } }, pool:[] },
   { id:"hilo", type:"hilo", title:"Higher or Lower", secs:12, color:"--t9", perGame:2,
     blurb:"Ride the chain without slipping",
     rules:"You see one thing and its number. Is the next one higher or lower? Get it wrong and you’re out until the next chain.",
@@ -1573,7 +1772,7 @@ function renderStart(){
       <button class="choice c-join" id="go-join"><b>Join on phone</b><span>Enter the code and your name, then answer here.</span></button>
     </div>
     <div class="stack" style="gap:10px"><div class="label">Tonight’s rounds</div>
-      <div class="rounds-preview">${ROUNDS.map(r => `<div class="rp" style="--c:var(${r.color})"><b>${esc(r.title)}</b><small>${esc(r.blurb)}</small></div>`).join("")}</div>
+      <div class="rounds-preview">${ROUNDS.filter(r => !r.secret).map(r => `<div class="rp" style="--c:var(${r.color})"><b>${esc(r.title)}</b><small>${esc(r.blurb)}</small></div>`).join("")}</div>
     </div>
   </div></div>`;
   $("#go-host").onclick = startHost;
@@ -1582,6 +1781,8 @@ function renderStart(){
 
 /* ============================================================ HOST */
 const VOTE_SECS = 15;
+const NR = () => ROUNDS.filter(r => !r.secret).length;
+const SECRET_PICK_SECS = 20, SECRET_BONUS = 2, BUZZ_RIGHT = 2, BUZZ_WRONG = 1;
 /* Question set: "adult" (default) or "teen" (ages 11–14). Rounds without a teenPool share one set. */
 const poolFor = r => H.mode === "teen" && r.teenPool ? r.teenPool : H.mode === "xmas" && r.xmasPool && r.xmasPool.length ? r.xmasPool : r.pool;
 const MODES = { adult:"Grown-ups", teen:"Young teens", xmas:"Christmas" };
@@ -1606,7 +1807,8 @@ async function startHost(){
   }
   renderHost();
   setInterval(hostTick, 250);
-  document.addEventListener("keydown", e => { if(e.code === "Space" && e.target === document.body){ e.preventDefault(); next(); } });
+  document.addEventListener("keydown", e => { if(e.code === "Space" && e.target === document.body){ e.preventDefault(); next(); }
+    if(H.ph === "q" && curR().type === "buzz" && e.target === document.body && (e.key === "r" || e.key === "w")) bzMark(e.key === "r"); });
 }
 
 function hostPeers(list){
@@ -1623,7 +1825,10 @@ function hostPeers(list){
       else if(!H.answers[name]) H.answers[name] = { v:d.a.v, t:Date.now(), done:true };
     }
     if(H.ph === "vote" && d.a && d.a.k === vKey() && !(name in H.votes) && H.opts.includes(d.a.v)) H.votes[name] = d.a.v;
+    if(H.ph === "secret" && name === H.chooser && d.a && d.a.k === H.gid + ".secret" && H.secretOpts.includes(d.a.v)) H.secretPick = d.a.v;
   }
+  if(H.ph === "secret" && H.secretPick){ const c = H.secretPick; H.secretPick = null; pickSecretCat(c); return; }
+  if(H.ph === "q" && curR().type === "buzz"){ const was = H.bwas; bzSync(); if(H.bwas !== was) push(); renderHost(); return; }
   if(H.ph === "q" && (curR().type === "hilo" ? hlActive() : H.players).length && (curR().type === "hilo" ? hlActive() : H.players).every(n => H.answers[n] && H.answers[n].done)) doReveal();
   else if(H.ph === "vote" && H.players.length && H.players.every(n => n in H.votes)) resolveVote();
   else renderHost();
@@ -1636,7 +1841,7 @@ function shuffled(items){
 }
 
 function next(){
-  if(H.ph === "lobby" || H.ph === "final"){ if(H.ph === "final"){ Object.keys(H.scores).forEach(k => H.scores[k] = 0); H.gid = Math.random().toString(36).slice(2,7); } H.played = []; startVote(); return; }
+  if(H.ph === "lobby" || H.ph === "final"){ if(H.ph === "final"){ Object.keys(H.scores).forEach(k => H.scores[k] = 0); H.gid = Math.random().toString(36).slice(2,7); } H.played = []; H.secretDone = false; H.secretAt = 1 + Math.floor(Math.random() * (NR() - 1)); startVote(); return; }
   else if(H.ph === "vote"){ resolveVote(); return; }
   else if(H.ph === "voted") H.ph = "intro";
   else if(H.ph === "intro") startQ();
@@ -1646,12 +1851,63 @@ function next(){
   else if(H.ph === "reveal"){ let j = H.qi + 1;
     if(curR().type === "hilo" && H.players.length && !hlActive().length){ const c = curQ().chain; while(j < H.qs.length && H.qs[j].chain === c) j++; }
     if(j < H.qs.length){ H.qi = j; startQ(); return; } H.ph = "board"; }
-  else if(H.ph === "board"){ if(H.played.length < ROUNDS.length){ startVote(); return; } H.ph = "final"; }
+  else if(H.ph === "board"){ if(H.played.length < NR()){ if(maybeSecret()) return; startVote(); return; } H.ph = "final"; }
+  else if(H.ph === "secret"){ pickSecretCat(null); return; }
   push(); renderHost();
 }
 
+/* ---- Secret Buzzer Round: turns up once per game, after a random round's scoreboard ---- */
+function secretCats(){ const r = ROUNDS.find(x => x.secret); return r.cats[H.mode] || r.cats.adult; }
+function maybeSecret(){
+  if(H.secretDone || !H.players.length) return false;
+  if(!H.secretAt) H.secretAt = 1 + Math.floor(Math.random() * (NR() - 1));
+  if(H.played.length < H.secretAt) return false;
+  H.secretDone = true; H.secretChosen = false;
+  // the picker comes from the bottom third of the table (ties broken at random)
+  const sc = H.players.map(n => [n, H.scores[n] || 0, Math.random()]).sort((a, b) => a[1] - b[1] || a[2] - b[2]);
+  const low = sc.slice(0, Math.max(1, Math.ceil(sc.length / 3))).map(x => x[0]);
+  H.chooser = low[Math.floor(Math.random() * low.length)];
+  H.secretOpts = Object.keys(secretCats()).sort(() => Math.random() - .5).slice(0, 4);
+  H.ph = "secret"; H.dur = SECRET_PICK_SECS * 1000; H.endsAt = Date.now() + H.dur;
+  buzzSound(true); push(); renderHost(); return true;
+}
+function pickSecretCat(cat){
+  if(H.ph !== "secret") return;
+  H.secretAuto = !H.secretOpts.includes(cat);
+  if(H.secretAuto) cat = H.secretOpts[Math.floor(Math.random() * H.secretOpts.length)];
+  H.secretCat = cat;
+  H.ri = ROUNDS.findIndex(r => r.secret); H.qi = 0;
+  H.qs = secretCats()[cat].slice().sort(() => Math.random() - .5).slice(0, ROUNDS[H.ri].perGame);
+  H.ph = "intro"; push(); renderHost();
+}
+/* Buzzer queue: buzzes in the order the host received them; anyone marked wrong is out for that question. */
+const bzQueue = () => Object.keys(H.answers).sort((a, b) => H.answers[a].t - H.answers[b].t);
+const bzNow = () => bzQueue().find(n => !H.bout.includes(n)) || null;
+function bzSync(){
+  const now = bzNow();
+  if(now && !H.bwas){ H.bleft = Math.max(0, H.endsAt - Date.now()); buzzSound(false); }   // someone's answering: pause the clock
+  if(!now && H.bwas){ H.dur = Math.max(5000, H.bleft); H.endsAt = Date.now() + H.dur; }  // back to buzzing: restart it
+  H.bwas = now;
+}
+function bzMark(right){
+  const n = bzNow(); if(H.ph !== "q" || !n) return;
+  if(right){ H.bres[n] = (H.bres[n] || 0) + BUZZ_RIGHT + (n === H.chooser ? SECRET_BONUS : 0); H.bmark[n] = "right"; H.bwas = null; doReveal(); return; }
+  H.bres[n] = (H.bres[n] || 0) - BUZZ_WRONG; H.bmark[n] = "wrong"; H.bout.push(n);
+  bzSync();
+  if(H.players.length && H.players.every(p => H.bout.includes(p))){ doReveal(); return; }
+  push(); renderHost();
+}
+/* Buzzer sound made in the browser (the host has already clicked, so sound is allowed). */
+function buzzSound(alarm){
+  try { const C = window.AudioContext || window.webkitAudioContext; if(!C) return; const ac = H.ac || (H.ac = new C());
+    (alarm ? [0, .3, .6] : [0]).forEach((t, i) => { const o = ac.createOscillator(), g = ac.createGain(), at = ac.currentTime + t;
+      o.type = "sawtooth"; o.frequency.value = alarm ? (i % 2 ? 330 : 440) : 180;
+      g.gain.setValueAtTime(.0001, at); g.gain.exponentialRampToValueAtTime(.25, at + .02); g.gain.exponentialRampToValueAtTime(.0001, at + (alarm ? .26 : .45));
+      o.connect(g).connect(ac.destination); o.start(at); o.stop(at + .5); }); } catch(e){}
+}
+
 function startVote(){
-  H.opts = ROUNDS.map((_, i) => i).filter(i => !H.played.includes(i));
+  H.opts = ROUNDS.map((_, i) => i).filter(i => !H.played.includes(i) && !ROUNDS[i].secret);
   H.votes = {}; H.tally = {}; H.tie = false;
   if(H.opts.length === 1){ pickRound(H.opts[0]); H.ph = "intro"; push(); renderHost(); return; }
   H.ph = "vote"; H.dur = VOTE_SECS * 1000; H.endsAt = Date.now() + H.dur;
@@ -1688,7 +1944,7 @@ function resolveVote(){
 
 const SPIN_MS = 4500;
 function startQ(){
-  H.ph = "q"; H.answers = {}; H.reveal = null; H.strikes = {}; H.voted = {}; H.chk = []; H.decide = {}; H.checked = false;
+  H.ph = "q"; H.answers = {}; H.reveal = null; H.bout = []; H.bres = {}; H.bmark = {}; H.bwas = null; H.strikes = {}; H.voted = {}; H.chk = []; H.decide = {}; H.checked = false;
   H.shown = curR().type === "order" || curR().type === "odd" ? shuffled(curQ().items) : [];
   if(curR().type === "hilo" && (curQ().step === 0 || !H.out)) H.out = new Set();
   if(curR().type === "letters"){
@@ -1811,6 +2067,7 @@ function score(){
   if(r.type === "odd") speedRank(n => H.shown[A[n].v] === q.items[q.odd]);
   if(r.type === "titles"){ const start = H.endsAt - H.dur;
     names.filter(n => ltMatch(A[n].v, q)).forEach(n => { const t = A[n].t - start; res[n] = t <= H.dur / 3 ? 3 : t <= H.dur * 2 / 3 ? 2 : 1; }); }
+  if(r.type === "buzz") Object.assign(res, H.bres);
   if(r.type === "tf") speedRank(n => A[n].v === (q.answer ? "t" : "f"));
   if(r.type === "hilo"){ const up = q.b.value > q.a.value;
     [...new Set(H.players.concat(names))].forEach(n => { if(H.out.has(n)) return; const a = A[n];
@@ -1839,6 +2096,7 @@ function answerText(){
   if(r.type === "odd") return { main:q.items[q.odd], sub:q.why };
   if(r.type === "titles") return { main:q.title, sub:q.artist };
   if(r.type === "tf") return { main:q.answer ? "True" : "False", sub:q.why };
+  if(r.type === "buzz") return { main:q.a, sub:"" };
   if(r.type === "hilo") return { main:`${q.b.name}: ${hlFmt(q.b.value, q)}`, sub:`${q.b.value > q.a.value ? "Higher" : "Lower"} than ${q.a.name} (${hlFmt(q.a.value, q)})` };
   if(r.type === "emoji") return { main:q.answer, sub:q.kind === "song" ? `Song by ${q.by}` : `Film, ${q.year}` };
   return { main:fmtNum(q.answer, q.plain) + (q.unit ? " " + q.unit : ""), sub:"" };
@@ -1858,9 +2116,10 @@ function sortedScores(){ return Object.entries(H.scores).sort((a, b) => b[1] - a
 
 function publicState(){
   const r = curR(), q = curQ();
-  const s = { gid:H.gid, ph:H.ph, ri:H.ri, qi:H.qi, nr:ROUNDS.length, nq:H.qs.length, rt:r.type, title:r.title, col:r.color,
+  const s = { gid:H.gid, ph:H.ph, ri:H.ri, qi:H.qi, nr:NR(), secret:!!r.secret, chooser:H.chooser || "", cat:H.secretCat || "", nq:H.qs.length, rt:r.type, title:r.title, col:r.color,
               k:qKey(), endsAt:H.endsAt, now:Date.now(), rn:H.played.length };
   if(H.ph === "vote"){ s.k = vKey(); s.opts = H.opts.map(i => ({ i, t:ROUNDS[i].title, b:ROUNDS[i].blurb, c:ROUNDS[i].color })); }
+  if(H.ph === "secret"){ s.k = H.gid + ".secret"; s.opts = H.secretOpts; }
   if(H.ph === "voted"){ s.tie = H.tie; s.noVotes = !Object.keys(H.votes).length; }
   if(H.ph === "intro"){ s.rules = r.rules; s.scoring = r.scoring; }
   if(H.ph === "check") s.k = cKey();
@@ -1870,6 +2129,7 @@ function publicState(){
     if(r.type === "order") s.q = { prompt:q.prompt, items:H.shown };
     if(r.type === "odd") s.q = { items:H.shown };
     if(r.type === "tf") s.q = { statement:q.statement };
+    if(r.type === "buzz") s.q = { q:q.q, now:bzNow() || "", out:H.bout, queue:bzQueue() };
     if(r.type === "titles"){ const hn = H.ph === "q" ? ltHint() : { a:true, l:99 }; s.q = { mask:ltMask(q.title, hn.l), artist:hn.a ? q.artist : "" }; }
     if(r.type === "hilo") s.q = { topic:q.topic, a:{ n:q.a.name, v:hlFmt(q.a.value, q) }, b:{ n:q.b.name }, step:q.step, steps:q.steps, out:[...H.out] };
     if(r.type === "number") s.q = { prompt:q.prompt, unit:q.unit || "" };
@@ -1877,7 +2137,7 @@ function publicState(){
     if(r.type === "letters") s.q = { letter:q.letter, cats:H.cats };
     if(r.type === "emoji") s.q = { emoji:q.emoji, kind:q.kind };
   }
-  if(H.ph === "reveal"){ s.rv = { main:H.reveal.main, res:H.reveal.res };
+  if(H.ph === "reveal"){ s.rv = { main:H.reveal.main, res:H.reveal.res, mark:H.bmark };
     if(r.type === "letters"){ s.rv.out = {}; Object.keys(H.voted || {}).forEach(k => { if(!H.strikes[k]) return; const [n, ci] = k.split("|"); const a = H.answers[n]; if(a && Array.isArray(a.v)) (s.rv.out[n] = s.rv.out[n] || []).push(String(a.v[+ci] || "").slice(0, 30)); }); }
     if(r.type === "map"){ s.rv.km = {}; Object.entries(H.answers).forEach(([n, a]) => { if(Array.isArray(a.v)) s.rv.km[n] = Math.round(km(a.v, [q.lat, q.lon])); }); } }
   s.sc = sortedScores().slice(0, 20);
@@ -1889,12 +2149,13 @@ function push(){ if(H.net) H.net.set({ role:"h", s:publicState() }); }
 function hostTick(){
   if(H.ph === "q" && curR().type === "titles"){ const hn = ltHint(), key = hn.a + "|" + hn.l; if(key !== H.ltKey){ H.ltKey = key; push(); renderHost(); } }
   if(H.ph === "spin" && Date.now() - H.spinStart > SPIN_MS + 3000) beginLetters();
-  if(H.ph !== "q" && H.ph !== "vote") return;
+  if(H.ph !== "q" && H.ph !== "vote" && H.ph !== "secret") return;
+  if(H.ph === "q" && curR().type === "buzz" && H.bwas) return;   // clock paused while someone answers
   const left = Math.max(0, H.endsAt - Date.now());
   const el = $("#tleft"), ring = $("#tring");
   if(el) el.textContent = Math.ceil(left / 1000);
   if(ring){ const f = left / H.dur; ring.style.strokeDashoffset = String(440 * (1 - f)); }
-  if(left <= 0){ if(H.ph === "q") doReveal(); else resolveVote(); }
+  if(left <= 0){ if(H.ph === "q") doReveal(); else if(H.ph === "secret") pickSecretCat(null); else resolveVote(); }
 }
 
 function renderHost(){
@@ -1921,12 +2182,18 @@ function renderHost(){
   if(H.ph === "vote"){
     const t = {}; H.opts.forEach(i => t[i] = 0); Object.values(H.votes).forEach(v => t[v]++);
     const n = Object.keys(H.votes).length;
-    body = `<div class="round-no">Round ${H.played.length + 1} of ${ROUNDS.length}</div>
+    body = `<div class="round-no">Round ${H.played.length + 1} of ${NR()}</div>
       <div class="qwrap"><div class="stack"><h1 style="font-size:clamp(40px,6vw,76px);line-height:1">Vote for the next round</h1><p class="rules" style="margin:0">Pick on your phone. Most votes wins. A tie gets settled at random.</p></div>
         <div class="stack" style="align-items:center">${timerHtml("var(--t4)")}<div class="answered">${n} / ${H.players.length} voted</div></div></div>
       <div class="vote-opts">${H.opts.map(i => `<div class="vopt" style="--c:var(${ROUNDS[i].color})"><b>${esc(ROUNDS[i].title)}</b><small>${esc(ROUNDS[i].blurb)}</small><div class="vcount">${t[i]} vote${t[i] === 1 ? "" : "s"}</div><div class="track"><div class="fill" style="width:${n ? (t[i] / n * 100).toFixed(0) : 0}%"></div></div></div>`).join("")}</div>
       <div class="chips">${H.players.map(p => `<span class="chip ${p in H.votes ? "done" : "wait"}" style="--c:${colorFor(p)}">${esc(p)}</span>`).join("")}</div>`;
     ctrl = "Close voting";
+  }
+  if(H.ph === "secret"){
+    body = `<div class="secret-alarm"><div class="secret-title">🚨 SECRET BUZZER ROUND 🚨</div>
+      <p class="rules" style="margin:0;max-width:none">Surprise! <b>${esc(H.chooser)}</b> is near the bottom of the table, so they pick the category on their phone. Everyone can buzz in, but if ${esc(H.chooser)} gets one right they get <b>+${SECRET_BONUS} extra</b>.</p>
+      <div class="row" style="justify-content:space-between;align-items:center;gap:20px"><div class="vote-opts" style="flex:1">${H.secretOpts.map(x => `<div class="vopt" style="--c:var(--bad)"><b>${esc(x)}</b></div>`).join("")}</div>${timerHtml("var(--bad)")}</div></div>`;
+    ctrl = "Pick one at random";
   }
   if(H.ph === "voted"){
     const none = Object.values(H.tally).every(v => !v);
@@ -1936,7 +2203,11 @@ function renderHost(){
     ctrl = "Let’s go";
   }
   if(H.ph === "intro"){
-    body = `<div class="round-no">Round ${H.played.length} of ${ROUNDS.length}</div>
+    body = r.secret ? `<div class="round-no" style="color:var(--bad)">🚨 Secret Buzzer Round</div>
+      <h1 class="intro-title" style="--c:${c}">${esc(H.secretCat)}</h1>
+      <p class="rules">${H.secretAuto ? `Time ran out, so the category was picked at random for ${esc(H.chooser)}.` : `${esc(H.chooser)} picked this category.`} ${esc(r.rules)}</p>
+      <p class="reveal-sub" style="margin:0">Right answer <b>+${BUZZ_RIGHT}</b>. Wrong answer <b>−${BUZZ_WRONG}</b>. ${esc(H.chooser)} gets <b>+${SECRET_BONUS} extra</b> for each one they get right.</p>`
+      : `<div class="round-no">Round ${H.played.length} of ${NR()}</div>
       <h1 class="intro-title" style="--c:${c}">${esc(r.title)}</h1>
       <p class="rules">${esc(r.rules)}</p><p class="reveal-sub" style="margin:0">${esc(r.scoring)}</p>`;
     ctrl = "First question";
@@ -1963,6 +2234,7 @@ function renderHost(){
     if(r.type === "pair") qhtml = `<div class="pair"><div class="clue">${esc(q.c1)}</div><div class="plus">+</div><div class="clue">${esc(q.c2)}</div></div>`;
     if(r.type === "titles"){ const hn = H.ph === "q" ? ltHint() : { a:true, l:99 };
       qhtml = `<div class="kind-chip lt-chip">🎵 Name the song</div>${ltTiles(q.title, hn.l, H.ph === "reveal")}${hn.a ? `<div class="reveal-sub">Artist: <b style="color:var(--text)">${esc(q.artist)}</b></div>` : ""}`; }
+    if(r.type === "buzz") qhtml = `<div class="row" style="justify-content:space-between"><div class="kind-chip secret-chip">🚨 ${esc(H.secretCat)}</div><div class="label">${esc(H.chooser)} gets +${SECRET_BONUS} extra</div></div><div class="qtext">${esc(q.q)}</div>`;
     if(r.type === "tf") qhtml = `<div class="kind-chip tf-chip">True or false?</div><div class="qtext">${esc(q.statement)}</div>${H.ph === "reveal" ? `<div class="tf-verdict ${q.answer ? "yes" : "no"}">${q.answer ? "✓ True" : "✗ False"}</div>` : ""}`;
     if(r.type === "odd") qhtml = `<div class="qtext">Which is the odd one out?</div><div class="order-items odd-items">${H.shown.map(it => `<div class="oi ${H.ph === "reveal" ? (it === q.items[q.odd] ? "hit" : "dim") : ""}">${esc(it)}</div>`).join("")}</div>`;
     if(r.type === "hilo"){ const up = q.b.value > q.a.value;
@@ -1978,7 +2250,17 @@ function renderHost(){
     if(r.type === "map") qhtml = `<div class="smash"><div class="emoji" style="font-size:clamp(60px,9vw,110px)">${q.emoji}</div><div class="qtext" style="flex:1;min-width:200px">${esc(whereIs(q.name, q.the, q.are))}</div></div>
       ${H.ph === "q" ? `<div class="host-map">${mapSvg(FULL)}</div>` : ""}`;
     const head = `<div class="row" style="justify-content:space-between"><div class="round-no" style="color:${c}">${esc(r.title)}</div><div class="round-no">Q${H.qi + 1} / ${H.qs.length}</div></div>`;
-    if(H.ph === "q"){
+    if(H.ph === "q" && r.type === "buzz"){
+      const now = bzNow(), wait = bzQueue().filter(n => n !== now && !H.bout.includes(n));
+      body = `${head}<div class="qwrap"><div class="qcard" style="--c:${c}">${qhtml}</div>
+        <div class="stack" style="align-items:center">${now ? `<div class="bz-paused">⏸</div>` : timerHtml(c)}</div></div>
+        ${now ? `<div class="bz-who" style="--c:${colorFor(now)}"><div class="stack" style="gap:4px"><div class="label">Buzzed first</div><b>🔔 ${esc(now)}</b>${wait.length ? `<small>Next in line: ${wait.map(esc).join(", ")}</small>` : ""}</div>
+          <div class="row"><button type="button" class="bz-yes" id="bz-yes">✓ Right <small>(R)</small></button><button type="button" class="bz-no" id="bz-no">✗ Wrong <small>(W)</small></button></div></div>
+          <button type="button" class="ghost bz-peek" id="bz-peek">Hold to peek at the answer</button>`
+          : `<div class="big-msg" style="text-align:center">Read it out. Buzz on your phone!</div>`}
+        <div class="chips">${H.players.map(n => `<span class="chip ${H.bout.includes(n) ? "wait out" : n === now ? "done" : "wait"}" style="--c:${colorFor(n)}">${esc(n)}${H.bout.includes(n) ? " · out" : ""}</span>`).join("")}</div>`;
+      ctrl = "Nobody got it: reveal";
+    } else if(H.ph === "q"){
       const done = Object.values(H.answers).filter(a => a.done).length;
       const need = r.type === "hilo" ? hlActive() : H.players;
       body = `${head}<div class="qwrap"><div class="qcard" style="--c:${c}">${qhtml}</div>
@@ -1989,11 +2271,11 @@ function renderHost(){
     } else {
       const rows = H.players.concat(Object.keys(H.answers).filter(n => !H.players.includes(n))).map(n => {
         const a = H.answers[n]; const p = H.reveal.res[n] || 0;
-        const said = !a ? (r.type === "hilo" && H.out.has(n) && !a ? "Out" : "No answer") : r.type === "tf" ? (a.v === "t" ? "True" : "False") : r.type === "odd" ? String(H.shown[a.v] ?? "") : r.type === "hilo" ? (a.v === "h" ? "⬆ Higher" : "⬇ Lower") : r.type === "map" ? (Array.isArray(a.v) ? Math.round(km(a.v, [q.lat, q.lon])).toLocaleString("en-GB") + " km away" : "No pin") : Array.isArray(a.v) ? a.v.join(r.type === "order" ? ", " : " ") : a.v;
-        return `<div class="res"><div style="min-width:0"><div class="who">${esc(n)}</div><div class="what">${esc(said)}</div></div><div class="pts ${p ? "" : "zero"}">+${p}</div></div>`;
+        const said = r.type === "buzz" ? (H.bmark[n] === "right" ? "🔔 Got it" : H.bmark[n] === "wrong" ? "🔔 Wrong" : "Didn’t answer") : !a ? (r.type === "hilo" && H.out.has(n) && !a ? "Out" : "No answer") : r.type === "tf" ? (a.v === "t" ? "True" : "False") : r.type === "odd" ? String(H.shown[a.v] ?? "") : r.type === "hilo" ? (a.v === "h" ? "⬆ Higher" : "⬇ Lower") : r.type === "map" ? (Array.isArray(a.v) ? Math.round(km(a.v, [q.lat, q.lon])).toLocaleString("en-GB") + " km away" : "No pin") : Array.isArray(a.v) ? a.v.join(r.type === "order" ? ", " : " ") : a.v;
+        return `<div class="res"><div style="min-width:0"><div class="who">${esc(n)}</div><div class="what">${esc(said)}</div></div><div class="pts ${p > 0 ? "" : p < 0 ? "neg" : "zero"}">${p < 0 ? "−" + -p : "+" + p}</div></div>`;
       }).join("");
       const mapReveal = r.type === "map" ? `<div class="host-map">${mapSvg(FULL, Object.entries(H.answers).filter(([, a]) => Array.isArray(a.v)).map(([n, a]) => `<line x1="${toXY(a.v[0], a.v[1])[0]}" y1="${toXY(a.v[0], a.v[1])[1]}" x2="${toXY(q.lat, q.lon)[0]}" y2="${toXY(q.lat, q.lon)[1]}" stroke="${colorFor(n)}" stroke-width=".5" stroke-dasharray="1.5 1.5"/>`).join("") + Object.entries(H.answers).filter(([, a]) => Array.isArray(a.v)).map(([n, a]) => pin(a.v[0], a.v[1], colorFor(n), 360, n)).join("") + star(q.lat, q.lon, 360))}</div>` : "";
-      const cardReveal = r.type === "odd" || r.type === "hilo" || r.type === "tf" || r.type === "titles" ? `<div class="qcard" style="--c:${c}">${qhtml}</div>` : "";
+      const cardReveal = r.type === "odd" || r.type === "hilo" || r.type === "tf" || r.type === "titles" || r.type === "buzz" ? `<div class="qcard" style="--c:${c}">${qhtml}</div>` : "";
       body = `${head}${mapReveal}${cardReveal}<div class="stack" style="gap:8px"><div class="label">The answer</div><div class="reveal-ans" style="--c:${c}">${esc(H.reveal.main)}</div>${H.reveal.sub ? `<div class="reveal-sub">${esc(H.reveal.sub)}</div>` : ""}</div>
         <div class="results">${rows}</div>`;
       if(r.type === "letters"){
@@ -2009,9 +2291,9 @@ function renderHost(){
   }
   if(H.ph === "board"){
     const sc = sortedScores(), top = Math.max(1, ...sc.map(s => s[1]));
-    body = `<div class="round-no">After round ${H.played.length} of ${ROUNDS.length}</div><h2 style="font-size:clamp(36px,5vw,60px)">Scores</h2>
-      <div class="board">${sc.map(([n, p], i) => `<div class="bar" style="--c:${colorFor(n)}"><span class="pos">${i + 1}</span><span class="nm">${esc(n)}</span><div class="track"><div class="fill" style="width:${(p / top * 100).toFixed(1)}%"></div></div><span class="sc">${p}</span></div>`).join("") || `<p class="reveal-sub">No players yet.</p>`}</div>`;
-    ctrl = H.played.length < ROUNDS.length - 1 ? "Vote for the next round" : H.played.length < ROUNDS.length ? "Final round" : "Final results";
+    body = `<div class="round-no">After round ${H.played.length} of ${NR()}</div><h2 style="font-size:clamp(36px,5vw,60px)">Scores</h2>
+      <div class="board">${sc.map(([n, p], i) => `<div class="bar" style="--c:${colorFor(n)}"><span class="pos">${i + 1}</span><span class="nm">${esc(n)}</span><div class="track"><div class="fill" style="width:${(Math.max(0, p) / top * 100).toFixed(1)}%"></div></div><span class="sc">${p}</span></div>`).join("") || `<p class="reveal-sub">No players yet.</p>`}</div>`;
+    ctrl = H.played.length < NR() - 1 ? "Vote for the next round" : H.played.length < NR() ? "Final round" : "Final results";
   }
   if(H.ph === "final"){
     const sc = sortedScores(); const [a, b, d] = sc;
@@ -2037,6 +2319,9 @@ function renderHost(){
   document.querySelectorAll(".gm-yes, .gm-no").forEach(b => b.onclick = () => { const i = +b.dataset.i, v = b.classList.contains("gm-yes"); H.decide[i] = H.decide[i] === v ? undefined : v; renderHost(); });
   if($("#gm-all")) $("#gm-all").onclick = () => { H.chk.forEach(it => { if(H.decide[it.i] === undefined) H.decide[it.i] = true; }); renderHost(); };
   if(H.ph === "spin") requestAnimationFrame(spinLoop);
+  if($("#bz-yes")){ $("#bz-yes").onclick = () => bzMark(true); $("#bz-no").onclick = () => bzMark(false);
+    const pk = $("#bz-peek"), show = () => pk.textContent = "Answer: " + curQ().a, hide = () => pk.textContent = "Hold to peek at the answer";
+    pk.onpointerdown = show; pk.onpointerup = pk.onpointerleave = pk.onpointercancel = hide; }
   const end = $("#h-end"); if(end) end.onclick = () => { H.ph = "final"; push(); renderHost(); };
 }
 
@@ -2081,7 +2366,7 @@ function playerPeers(list){
   const j = JSON.stringify(s);
   if(j === P.sJSON) return;
   P.sJSON = j; P.s = s;
-  if(s && (s.ph === "q" || s.ph === "vote")) P.localEnd = Date.now() + (s.endsAt - s.now);
+  if(s && (s.ph === "q" || s.ph === "vote" || s.ph === "secret")) P.localEnd = Date.now() + (s.endsAt - s.now);
   renderPlayer();
 }
 
@@ -2101,7 +2386,7 @@ function myScore(){ const s = P.s; if(!s) return 0; const e = (s.sc || []).find(
 
 function renderPlayer(force){
   const s = P.s;
-  const view = !s ? "wait" : `${s.ph}|${s.k}|${P.sent === s.k}|${s.rv && s.rv.res ? (s.rv.res[P.name] || 0) : ""}`;
+  const view = !s ? "wait" : `${s.ph}|${s.k}|${P.sent === s.k}|${s.rv && s.rv.res ? (s.rv.res[P.name] || 0) : ""}|${s.rt === "buzz" && s.q ? s.q.now + "/" + (s.q.out || []).join(",") + "/" + (s.q.queue || []).indexOf(P.name) : ""}`;
   if(!force && view === P.view){ const ps = $("#pscore"); if(ps) ps.textContent = myScore() + " pts";
     if(s && s.rt === "titles" && s.ph === "q" && s.q){ const mk = $(".lt-mask"); if(mk && mk.textContent !== s.q.mask){ mk.textContent = s.q.mask; }
       if(s.q.artist && mk && !mk.nextElementSibling){ const d = document.createElement("div"); d.innerHTML = "Artist: <b></b>"; d.querySelector("b").textContent = s.q.artist; mk.after(d); } }
@@ -2110,14 +2395,26 @@ function renderPlayer(force){
   let main = "";
   if(!s) main = `<div class="big-msg">You’re in!</div><p class="reveal-sub" style="margin:0">Waiting for the host to start. Watch the big screen.</p>`;
   else if(s.ph === "lobby") main = `<div class="big-msg">You’re in!</div><p class="reveal-sub" style="margin:0">Look for your name on the big screen.</p>`;
+  else if(s.ph === "secret" && s.chooser === P.name && P.sent !== s.k) main = `<div class="secret-title" style="font-size:clamp(26px,8vw,40px)">🚨 SECRET ROUND</div><div class="big-msg">You pick the category!</div>
+      <p style="margin:0">It’s a buzzer round. Get questions right for <b>+${SECRET_BONUS} extra</b> each.</p><span class="ptimer" id="ptl"></span>
+      <div class="pvote">${(s.opts || []).map((x, i) => `<button type="button" class="psec" data-c="${i}" style="--c:var(--bad)"><b>${esc(x)}</b></button>`).join("")}</div>`;
+  else if(s.ph === "secret") main = `<div class="secret-title" style="font-size:clamp(26px,8vw,40px)">🚨 SECRET ROUND</div><div class="big-msg">${s.chooser === P.name ? "Category picked!" : esc(s.chooser) + " is choosing a category…"}</div><p class="reveal-sub" style="margin:0">Get ready to buzz. Watch the big screen.</p>`;
   else if(s.ph === "vote" && P.sent === s.k) main = `<div class="big-msg">Vote cast</div><p class="reveal-sub" style="margin:0">Watch the big screen for the result.</p>`;
   else if(s.ph === "vote") main = `<div class="row" style="justify-content:space-between"><span class="label">Round ${s.rn + 1} of ${s.nr}</span><span class="ptimer" id="ptl"></span></div>
       <div class="big-msg">Pick the next round</div>
       <div class="pvote">${(s.opts || []).map(o => `<button type="button" data-v="${o.i}" style="--c:var(${o.c})"><b>${esc(o.t)}</b><span>${esc(o.b)}</span></button>`).join("")}</div>`;
   else if(s.ph === "voted") main = `<div class="label">${s.noVotes ? "Picked at random" : s.tie ? "Tie! Picked at random" : "Next round"}</div><div class="big-msg" style="color:var(${s.col})">${esc(s.title)}</div>`;
+  else if(s.ph === "intro" && s.secret) main = `<div class="secret-title" style="font-size:clamp(26px,8vw,40px)">🚨 BUZZER ROUND</div><div class="big-msg" style="color:var(--bad)">${esc(s.cat)}</div>
+      <p style="margin:0">Your phone becomes a buzzer. Buzz first, then shout your answer. Right <b>+${BUZZ_RIGHT}</b>, wrong <b>−${BUZZ_WRONG}</b>.${s.chooser === P.name ? ` You picked this, so you get <b>+${SECRET_BONUS} extra</b> for each right answer!` : ""}</p>`;
   else if(s.ph === "intro") main = `<div class="label">Round ${s.rn} of ${s.nr}</div><div class="big-msg" style="color:var(${s.col})">${esc(s.title)}</div><p style="margin:0">${esc(s.rules)}</p>`;
   else if(s.ph === "spin") main = `<div class="label" style="color:var(${s.col})">${esc(s.title)}</div><div class="big-msg">The wheel is spinning…</div><p class="reveal-sub" style="margin:0">Watch the big screen. Your list appears here when it stops.</p>`;
   else if(s.ph === "check") main = `<div class="label" style="color:var(${s.col})">${esc(s.title)}</div><div class="big-msg">The gamemaster is checking answers…</div><p class="reveal-sub" style="margin:0">Watch the big screen.</p>`;
+  else if(s.ph === "q" && s.rt === "buzz"){ const q = s.q || {}, out = (q.out || []).includes(P.name), inQ = (q.queue || []).includes(P.name);
+    main = q.now === P.name ? `<div class="bz-big you">🔔</div><div class="big-msg">You’re first!</div><p style="margin:0;font-size:20px">Say your answer out loud.</p>`
+      : out ? `<div class="big-msg">Wrong answer</div><p class="reveal-sub" style="margin:0">You’re out for this question. −${BUZZ_WRONG} point.</p>`
+      : q.now ? `<div class="big-msg">${esc(q.now)} buzzed first</div><p class="reveal-sub" style="margin:0">${inQ ? "You’re in the queue if they get it wrong." : "If they’re wrong, buzz again!"}</p>`
+      : P.sent === s.k || inQ ? `<div class="bz-big">⏳</div><div class="big-msg">Buzzed!</div>`
+      : `<div class="pclue" style="font-size:18px">${esc(q.q || "")}</div><button type="button" class="bz-btn" id="bz">BUZZ</button>`; }
   else if(s.ph === "q" && P.sent === s.k) main = `<div class="big-msg">Locked in</div><p class="reveal-sub" style="margin:0">Eyes on the big screen.</p>`;
   else if(s.ph === "q"){
     const q = s.q || {};
@@ -2157,7 +2454,7 @@ function renderPlayer(force){
   else if(s.ph === "reveal"){
     const d = s.rv && s.rv.res ? (s.rv.res[P.name] || 0) : 0;
     main = `<div class="label">The answer</div><div class="big-msg" style="color:var(${s.col})">${esc(s.rv ? s.rv.main : "")}</div>
-      <div class="delta ${d ? "good" : "none"}">+${d}</div>${s.rv && s.rv.km && P.name in s.rv.km ? `<div class="pclue">Your pin was ${s.rv.km[P.name].toLocaleString("en-GB")} km away</div>` : ""}${s.rv && s.rv.out && s.rv.out[P.name] ? `<div class="pclue">Not accepted: ${esc(s.rv.out[P.name].join(", "))}</div>` : ""}<p class="reveal-sub" style="margin:0">${d ? "Nice one." : P.sent === s.k ? "Not this time." : "No answer sent."}</p>`;
+      <div class="delta ${d > 0 ? "good" : d < 0 ? "bad" : "none"}">${d < 0 ? "−" + -d : "+" + d}</div>${s.rv && s.rv.km && P.name in s.rv.km ? `<div class="pclue">Your pin was ${s.rv.km[P.name].toLocaleString("en-GB")} km away</div>` : ""}${s.rv && s.rv.out && s.rv.out[P.name] ? `<div class="pclue">Not accepted: ${esc(s.rv.out[P.name].join(", "))}</div>` : ""}<p class="reveal-sub" style="margin:0">${d > 0 ? "Nice one." : d < 0 ? "Ouch." : s.rt === "buzz" ? "Not this time." : P.sent === s.k ? "Not this time." : "No answer sent."}</p>`;
   }
   else if(s.ph === "board"){
     const pos = (s.sc || []).findIndex(x => x[0] === P.name);
@@ -2184,6 +2481,8 @@ function renderPlayer(force){
   if($("#pmap")) drawPMap();
   document.querySelectorAll(".pvote button").forEach(b => b.onclick = () => submit(+b.dataset.v));
   document.querySelectorAll(".podd button").forEach(b => b.onclick = () => submit(+b.dataset.v));
+  if($("#bz")) $("#bz").onpointerdown = e => { e.preventDefault(); if(navigator.vibrate) navigator.vibrate(60); submit(true); };
+  document.querySelectorAll(".psec").forEach(b => b.onclick = () => { const x = (s.opts || [])[+b.dataset.c]; if(!x) return; P.sent = s.k; P.net.set({ role:"p", name:P.name, a:{ k:s.k, v:x, done:true } }); renderPlayer(true); });
   document.querySelectorAll(".phl button").forEach(b => b.onclick = () => submit(b.dataset.v));
   playerTick();
 }
