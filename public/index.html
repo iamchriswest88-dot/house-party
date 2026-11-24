@@ -13,7 +13,7 @@
 :root{
   --studio:#15112e; --panel:#221c4a; --panel-2:#2c2560; --line:#40378a;
   --text:#f7f4ff; --muted:#b4acdf;
-  --t1:#ff7a2f; --t2:#14c4b0; --t3:#ff4f9a; --t4:#ffd23f; --t5:#8e9bff; --t6:#b5e655; --t7:#5ec8ff; --t8:#f7a8ff; --t9:#ffb347; --t10:#ff8f70;
+  --t1:#ff7a2f; --t2:#14c4b0; --t3:#ff4f9a; --t4:#ffd23f; --t5:#8e9bff; --t6:#b5e655; --t7:#5ec8ff; --t8:#f7a8ff; --t9:#ffb347; --t10:#ff8f70; --t11:#ff6fb1;
   --sea:#1d3a63; --land:#3f8f6b; --land-edge:#5fb88f;
   --good:#40e08a; --bad:#ff6363; --on-tile:#15112e;
   --display:"Bowlby One","Arial Black",Impact,sans-serif;
@@ -169,6 +169,14 @@ div.ans{cursor:default}
 .hlc.hidden .hv{font-family:var(--body);font-weight:700;font-size:clamp(18px,2vw,26px);color:var(--muted)}
 .hlvs{align-self:center;font-family:var(--display);font-size:clamp(28px,4vw,56px);color:var(--muted)}
 .chip.out{text-decoration:line-through}
+.kind-chip.lt-chip{background:var(--t11)}
+.lt-title{display:flex;flex-wrap:wrap;gap:14px 22px}
+.lt-word{display:flex;gap:5px}
+.lt-tile{width:clamp(24px,3.4vw,44px);height:clamp(34px,4.8vw,58px);border-radius:9px;display:grid;place-items:center;font-family:var(--display);font-size:clamp(18px,2.8vw,32px);background:var(--panel-2);color:var(--muted)}
+.lt-tile.first{background:var(--t11);color:var(--on-tile)}
+.lt-tile.shown{background:var(--good);color:var(--on-tile)}
+.lt-tile.punct{background:transparent;width:auto;padding-inline:1px;color:var(--text)}
+.lt-mask{font-family:var(--mono);font-size:20px;letter-spacing:.12em;line-height:1.5;overflow-wrap:anywhere}
 .kind-chip.tf-chip{background:var(--t10)}
 .tf-verdict{align-self:flex-start;font-family:var(--display);font-size:clamp(32px,5vw,64px);padding:6px 22px;border-radius:16px;color:var(--on-tile)}
 .tf-verdict.yes{background:var(--good)}.tf-verdict.no{background:var(--bad)}
@@ -1175,6 +1183,93 @@ const ROUNDS = [
       {"statement": "Walt Disney was the original voice of Mickey Mouse.", "answer": true, "why": "Walt voiced Mickey from 1928 until 1947."},
       {"statement": "A duck’s quack doesn’t echo.", "answer": false, "why": "It does echo – it’s just hard to hear over the quack itself."}
      ]},
+  { id:"titles", type:"titles", title:"Long Song Titles", secs:45, color:"--t11", perGame:5,
+    blurb:"Name the song from its first letters",
+    rules:"Famous songs with ridiculously long titles. You only see the first letter of each word. The artist appears after 15 seconds, then more letters fill in. Type the full title.",
+    scoring:"3 points in the first 15 seconds, 2 in the next 15, then 1. Small slips are fine.",
+    teenPool:[ 
+      {"title": "We Are Never Ever Getting Back Together", "artist": "Taylor Swift"},
+      {"title": "Look What You Made Me Do", "artist": "Taylor Swift"},
+      {"title": "Do You Want to Build a Snowman?", "artist": "From Frozen", "alt": ["Do You Want to Build a Snowman"]},
+      {"title": "We Don’t Talk About Bruno", "artist": "From Encanto"},
+      {"title": "I Just Can’t Wait to Be King", "artist": "From The Lion King"},
+      {"title": "Can You Feel the Love Tonight", "artist": "From The Lion King"},
+      {"title": "When Will My Life Begin", "artist": "From Tangled"},
+      {"title": "You’ve Got a Friend in Me", "artist": "From Toy Story"},
+      {"title": "I’ll Make a Man Out of You", "artist": "From Mulan"},
+      {"title": "You’ll Be in My Heart", "artist": "From Tarzan (Phil Collins)"},
+      {"title": "I Wan’na Be Like You (The Monkey Song)", "artist": "From The Jungle Book", "alt": ["I Wanna Be Like You", "I Wan’na Be Like You"]},
+      {"title": "We’re All in This Together", "artist": "From High School Musical"},
+      {"title": "Somebody That I Used to Know", "artist": "Gotye ft. Kimbra"},
+      {"title": "Love Me Like You Do", "artist": "Ellie Goulding"},
+      {"title": "What Was I Made For?", "artist": "Billie Eilish", "alt": ["What Was I Made For"]},
+      {"title": "I Want It That Way", "artist": "Backstreet Boys"},
+      {"title": "Can’t Help Falling in Love", "artist": "Elvis Presley"},
+      {"title": "Just the Way You Are", "artist": "Bruno Mars"},
+      {"title": "When I Was Your Man", "artist": "Bruno Mars"},
+      {"title": "Never Gonna Give You Up", "artist": "Rick Astley"}
+     ],
+    xmasPool:[ 
+      {"title": "Rockin’ Around the Christmas Tree", "artist": "Brenda Lee", "alt": ["Rocking Around the Christmas Tree"]},
+      {"title": "It’s Beginning to Look a Lot Like Christmas", "artist": "Michael Bublé"},
+      {"title": "All I Want for Christmas Is You", "artist": "Mariah Carey"},
+      {"title": "I Wish It Could Be Christmas Everyday", "artist": "Wizzard", "alt": ["I Wish It Could Be Christmas Every Day"]},
+      {"title": "Do They Know It’s Christmas?", "artist": "Band Aid", "alt": ["Do They Know It’s Christmas"]},
+      {"title": "Rudolph the Red-Nosed Reindeer", "artist": "Gene Autry", "alt": ["Rudolph the Red Nosed Reindeer"]},
+      {"title": "Santa Claus Is Comin’ to Town", "artist": "Bruce Springsteen", "alt": ["Santa Claus Is Coming to Town"]},
+      {"title": "Have Yourself a Merry Little Christmas", "artist": "Judy Garland"},
+      {"title": "I Saw Mommy Kissing Santa Claus", "artist": "Jimmy Boyd", "alt": ["I Saw Mummy Kissing Santa Claus"]},
+      {"title": "Let It Snow! Let It Snow! Let It Snow!", "artist": "Dean Martin", "alt": ["Let It Snow Let It Snow Let It Snow"]},
+      {"title": "It’s the Most Wonderful Time of the Year", "artist": "Andy Williams"},
+      {"title": "Do You Hear What I Hear?", "artist": "Bing Crosby", "alt": ["Do You Hear What I Hear"]},
+      {"title": "Christmas (Baby Please Come Home)", "artist": "Darlene Love", "alt": ["Christmas Baby Please Come Home"]},
+      {"title": "I Believe in Father Christmas", "artist": "Greg Lake"},
+      {"title": "Hark! The Herald Angels Sing", "artist": "Traditional carol", "alt": ["Hark the Herald Angels Sing"]},
+      {"title": "O Little Town of Bethlehem", "artist": "Traditional carol", "alt": ["Oh Little Town of Bethlehem"]},
+      {"title": "While Shepherds Watched Their Flocks by Night", "artist": "Traditional carol", "alt": ["While Shepherds Watched Their Flocks"]},
+      {"title": "We Wish You a Merry Christmas", "artist": "Traditional carol"},
+      {"title": "The Twelve Days of Christmas", "artist": "Traditional carol", "alt": ["12 Days of Christmas"]},
+      {"title": "Ding Dong Merrily on High", "artist": "Traditional carol"},
+      {"title": "It Came Upon the Midnight Clear", "artist": "Traditional carol"}
+     ],
+    pool:[ 
+      {"title": "I’d Do Anything for Love (But I Won’t Do That)", "artist": "Meat Loaf", "alt": ["I’d Do Anything for Love"]},
+      {"title": "I Still Haven’t Found What I’m Looking For", "artist": "U2"},
+      {"title": "Everybody Wants to Rule the World", "artist": "Tears for Fears"},
+      {"title": "Wake Me Up Before You Go-Go", "artist": "Wham!", "alt": ["Wake Me Up Before You Go Go"]},
+      {"title": "(Everything I Do) I Do It for You", "artist": "Bryan Adams", "alt": ["Everything I Do I Do It for You", "Everything I Do"]},
+      {"title": "I Wanna Dance with Somebody (Who Loves Me)", "artist": "Whitney Houston", "alt": ["I Wanna Dance with Somebody", "I Want to Dance with Somebody"]},
+      {"title": "You’ve Lost That Lovin’ Feelin’", "artist": "The Righteous Brothers", "alt": ["You’ve Lost That Loving Feeling"]},
+      {"title": "Ain’t No Mountain High Enough", "artist": "Marvin Gaye & Tammi Terrell"},
+      {"title": "Can’t Get You Out of My Head", "artist": "Kylie Minogue"},
+      {"title": "(Is This the Way to) Amarillo", "artist": "Tony Christie", "alt": ["Is This the Way to Amarillo"]},
+      {"title": "I Bet You Look Good on the Dancefloor", "artist": "Arctic Monkeys", "alt": ["I Bet You Look Good on the Dance Floor"]},
+      {"title": "Don’t Go Breaking My Heart", "artist": "Elton John & Kiki Dee"},
+      {"title": "Total Eclipse of the Heart", "artist": "Bonnie Tyler"},
+      {"title": "(I Can’t Get No) Satisfaction", "artist": "The Rolling Stones", "alt": ["I Can’t Get No Satisfaction"]},
+      {"title": "Sgt. Pepper’s Lonely Hearts Club Band", "artist": "The Beatles", "alt": ["Sergeant Pepper’s Lonely Hearts Club Band", "Sgt Peppers Lonely Hearts Club Band"]},
+      {"title": "Lucy in the Sky with Diamonds", "artist": "The Beatles"},
+      {"title": "The Ballad of John and Yoko", "artist": "The Beatles"},
+      {"title": "Thank You for the Music", "artist": "ABBA"},
+      {"title": "Never Gonna Give You Up", "artist": "Rick Astley"},
+      {"title": "Don’t Look Back in Anger", "artist": "Oasis"},
+      {"title": "Who Wants to Live Forever", "artist": "Queen"},
+      {"title": "I Want to Break Free", "artist": "Queen", "alt": ["I Want To Break Free"]},
+      {"title": "Another One Bites the Dust", "artist": "Queen"},
+      {"title": "I Don’t Want to Miss a Thing", "artist": "Aerosmith"},
+      {"title": "I’m Gonna Be (500 Miles)", "artist": "The Proclaimers", "alt": ["I’m Gonna Be", "500 Miles"]},
+      {"title": "Can You Feel the Love Tonight", "artist": "Elton John"},
+      {"title": "Somebody That I Used to Know", "artist": "Gotye ft. Kimbra"},
+      {"title": "If I Could Turn Back Time", "artist": "Cher"},
+      {"title": "Every Little Thing She Does Is Magic", "artist": "The Police"},
+      {"title": "Shine On You Crazy Diamond", "artist": "Pink Floyd"},
+      {"title": "You’re the One That I Want", "artist": "John Travolta & Olivia Newton-John"},
+      {"title": "What’s Love Got to Do with It", "artist": "Tina Turner"},
+      {"title": "The Winner Takes It All", "artist": "ABBA"},
+      {"title": "Can’t Take My Eyes Off You", "artist": "Frankie Valli"},
+      {"title": "Don’t Leave Me This Way", "artist": "Thelma Houston"},
+      {"title": "Things Can Only Get Better", "artist": "D:Ream"}
+     ]},
   { id:"hilo", type:"hilo", title:"Higher or Lower", secs:12, color:"--t9", perGame:2,
     blurb:"Ride the chain without slipping",
     rules:"You see one thing and its number. Is the next one higher or lower? Get it wrong and you’re out until the next chain.",
@@ -1446,6 +1541,22 @@ const NO_THE = new Set(["Machu Picchu","Christ the Redeemer","Big Ben","Stonehen
   "Neuschwanstein Castle","Edinburgh Castle","Giant’s Causeway","Easter Island’s moai","Hagia Sophia","Tower Bridge","Blackpool Tower",
   "Loch Ness","Snowdon (Yr Wyddfa)","Mont-Saint-Michel","Charles Bridge","Marina Bay Sands","Ha Long Bay","Iguazu Falls","Angel Falls",
   "Lake Titicaca","Timbuktu","Stone Town","Milford Sound","Bora Bora","Pearl Harbor","Old Faithful geyser"]);
+/* Long Song Titles: hint level 0 = first letters only; each level shows one more letter of every word. */
+const LT_ARTIST = 15, LT_FIRST = 20, LT_EVERY = 7;
+const ltHint = () => { const el = (H.dur - Math.max(0, H.endsAt - Date.now())) / 1000; return { a:el >= LT_ARTIST, l:el < LT_FIRST ? 0 : 1 + Math.floor((el - LT_FIRST) / LT_EVERY) }; };
+const ltMask = (title, lvl) => title.split(" ").map(w => { let k = 0; return [...w].map(ch => /[A-Za-z0-9]/.test(ch) ? (k++ <= lvl ? ch.toUpperCase() : "_") : ch).join(""); }).join(" ");
+function ltTiles(title, lvl, all){
+  return `<div class="lt-title">${title.split(" ").map(w => { let k = 0; return `<span class="lt-word">${[...w].map(ch => {
+    if(!/[A-Za-z0-9]/.test(ch)) return `<span class="lt-tile punct">${esc(ch)}</span>`;
+    const i = k++; return all || i <= lvl ? `<span class="lt-tile ${i === 0 ? "first" : "shown"}">${esc(ch.toUpperCase())}</span>` : `<span class="lt-tile"></span>`;
+  }).join("")}</span>`; }).join("")}</div>`;
+}
+const ltNorm = v => norm(String(v || "").replace(/^\s*(the|a|an)\s+/i, ""));
+function ltMatch(guess, q){
+  const g = ltNorm(guess); if(g.length < 3) return false;
+  const opts = [q.title, q.title.replace(/\s*\([^)]*\)\s*/g, " ").trim()].concat(q.alt || []);
+  return opts.some(o => { const a = ltNorm(o); return a && lev(g, a) <= Math.max(1, Math.floor(a.length * .12)); });
+}
 const whereIs = (n, the, are) => { const v = are ? "are" : "is";
   return /^The /.test(n) ? `Where ${v} the ${n.slice(4)}?` : (the === false || (the === undefined && NO_THE.has(n))) ? `Where ${v} ${n}?` : `Where ${v} the ${n}?`; };
 
@@ -1696,6 +1807,8 @@ function score(){
     if(norm(v[0]) === norm(v[1])) return false;
     return (close(v[0], x) && close(v[1], y)) || (close(v[0], y) && close(v[1], x)); });
   if(r.type === "odd") speedRank(n => H.shown[A[n].v] === q.items[q.odd]);
+  if(r.type === "titles"){ const start = H.endsAt - H.dur;
+    names.filter(n => ltMatch(A[n].v, q)).forEach(n => { const t = A[n].t - start; res[n] = t <= H.dur / 3 ? 3 : t <= H.dur * 2 / 3 ? 2 : 1; }); }
   if(r.type === "tf") speedRank(n => A[n].v === (q.answer ? "t" : "f"));
   if(r.type === "hilo"){ const up = q.b.value > q.a.value;
     [...new Set(H.players.concat(names))].forEach(n => { if(H.out.has(n)) return; const a = A[n];
@@ -1722,6 +1835,7 @@ function answerText(){
   if(r.type === "map") return { main:q.place, sub:q.name };
   if(r.type === "letters") return { main:"Letter " + q.letter, sub:"" };
   if(r.type === "odd") return { main:q.items[q.odd], sub:q.why };
+  if(r.type === "titles") return { main:q.title, sub:q.artist };
   if(r.type === "tf") return { main:q.answer ? "True" : "False", sub:q.why };
   if(r.type === "hilo") return { main:`${q.b.name}: ${hlFmt(q.b.value, q)}`, sub:`${q.b.value > q.a.value ? "Higher" : "Lower"} than ${q.a.name} (${hlFmt(q.a.value, q)})` };
   if(r.type === "emoji") return { main:q.answer, sub:q.kind === "song" ? `Song by ${q.by}` : `Film, ${q.year}` };
@@ -1754,6 +1868,7 @@ function publicState(){
     if(r.type === "order") s.q = { prompt:q.prompt, items:H.shown };
     if(r.type === "odd") s.q = { items:H.shown };
     if(r.type === "tf") s.q = { statement:q.statement };
+    if(r.type === "titles"){ const hn = H.ph === "q" ? ltHint() : { a:true, l:99 }; s.q = { mask:ltMask(q.title, hn.l), artist:hn.a ? q.artist : "" }; }
     if(r.type === "hilo") s.q = { topic:q.topic, a:{ n:q.a.name, v:hlFmt(q.a.value, q) }, b:{ n:q.b.name }, step:q.step, steps:q.steps, out:[...H.out] };
     if(r.type === "number") s.q = { prompt:q.prompt, unit:q.unit || "" };
     if(r.type === "map") s.q = { name:q.name, emoji:q.emoji, the:q.the, are:q.are };
@@ -1770,6 +1885,7 @@ function publicState(){
 function push(){ if(H.net) H.net.set({ role:"h", s:publicState() }); }
 
 function hostTick(){
+  if(H.ph === "q" && curR().type === "titles"){ const hn = ltHint(), key = hn.a + "|" + hn.l; if(key !== H.ltKey){ H.ltKey = key; push(); renderHost(); } }
   if(H.ph === "spin" && Date.now() - H.spinStart > SPIN_MS + 3000) beginLetters();
   if(H.ph !== "q" && H.ph !== "vote") return;
   const left = Math.max(0, H.endsAt - Date.now());
@@ -1843,6 +1959,8 @@ function renderHost(){
     let qhtml = "";
     if(r.type === "text") qhtml = `<div class="smash"><div class="emoji" aria-label="picture clue">${q.emoji}</div><div class="plus">+</div><div class="qtext" style="flex:1;min-width:200px">${esc(q.clue)}</div></div>`;
     if(r.type === "pair") qhtml = `<div class="pair"><div class="clue">${esc(q.c1)}</div><div class="plus">+</div><div class="clue">${esc(q.c2)}</div></div>`;
+    if(r.type === "titles"){ const hn = H.ph === "q" ? ltHint() : { a:true, l:99 };
+      qhtml = `<div class="kind-chip lt-chip">🎵 Name the song</div>${ltTiles(q.title, hn.l, H.ph === "reveal")}<div class="reveal-sub">${hn.a ? `Artist: <b style="color:var(--text)">${esc(q.artist)}</b>` : `Artist appears at ${LT_ARTIST}s`}</div>`; }
     if(r.type === "tf") qhtml = `<div class="kind-chip tf-chip">True or false?</div><div class="qtext">${esc(q.statement)}</div>${H.ph === "reveal" ? `<div class="tf-verdict ${q.answer ? "yes" : "no"}">${q.answer ? "✓ True" : "✗ False"}</div>` : ""}`;
     if(r.type === "odd") qhtml = `<div class="qtext">Which is the odd one out?</div><div class="order-items odd-items">${H.shown.map(it => `<div class="oi ${H.ph === "reveal" ? (it === q.items[q.odd] ? "hit" : "dim") : ""}">${esc(it)}</div>`).join("")}</div>`;
     if(r.type === "hilo"){ const up = q.b.value > q.a.value;
@@ -1873,7 +1991,7 @@ function renderHost(){
         return `<div class="res"><div style="min-width:0"><div class="who">${esc(n)}</div><div class="what">${esc(said)}</div></div><div class="pts ${p ? "" : "zero"}">+${p}</div></div>`;
       }).join("");
       const mapReveal = r.type === "map" ? `<div class="host-map">${mapSvg(FULL, Object.entries(H.answers).filter(([, a]) => Array.isArray(a.v)).map(([n, a]) => `<line x1="${toXY(a.v[0], a.v[1])[0]}" y1="${toXY(a.v[0], a.v[1])[1]}" x2="${toXY(q.lat, q.lon)[0]}" y2="${toXY(q.lat, q.lon)[1]}" stroke="${colorFor(n)}" stroke-width=".5" stroke-dasharray="1.5 1.5"/>`).join("") + Object.entries(H.answers).filter(([, a]) => Array.isArray(a.v)).map(([n, a]) => pin(a.v[0], a.v[1], colorFor(n), 360, n)).join("") + star(q.lat, q.lon, 360))}</div>` : "";
-      const cardReveal = r.type === "odd" || r.type === "hilo" || r.type === "tf" ? `<div class="qcard" style="--c:${c}">${qhtml}</div>` : "";
+      const cardReveal = r.type === "odd" || r.type === "hilo" || r.type === "tf" || r.type === "titles" ? `<div class="qcard" style="--c:${c}">${qhtml}</div>` : "";
       body = `${head}${mapReveal}${cardReveal}<div class="stack" style="gap:8px"><div class="label">The answer</div><div class="reveal-ans" style="--c:${c}">${esc(H.reveal.main)}</div>${H.reveal.sub ? `<div class="reveal-sub">${esc(H.reveal.sub)}</div>` : ""}</div>
         <div class="results">${rows}</div>`;
       if(r.type === "letters"){
@@ -1982,7 +2100,10 @@ function myScore(){ const s = P.s; if(!s) return 0; const e = (s.sc || []).find(
 function renderPlayer(force){
   const s = P.s;
   const view = !s ? "wait" : `${s.ph}|${s.k}|${P.sent === s.k}|${s.rv && s.rv.res ? (s.rv.res[P.name] || 0) : ""}`;
-  if(!force && view === P.view){ const ps = $("#pscore"); if(ps) ps.textContent = myScore() + " pts"; return; }
+  if(!force && view === P.view){ const ps = $("#pscore"); if(ps) ps.textContent = myScore() + " pts";
+    if(s && s.rt === "titles" && s.ph === "q" && s.q){ const mk = $(".lt-mask"); if(mk && mk.textContent !== s.q.mask){ mk.textContent = s.q.mask; }
+      if(s.q.artist && mk && !mk.nextElementSibling){ const d = document.createElement("div"); d.innerHTML = "Artist: <b></b>"; d.querySelector("b").textContent = s.q.artist; mk.after(d); } }
+    return; }
   P.view = view;
   let main = "";
   if(!s) main = `<div class="big-msg">You’re in!</div><p class="reveal-sub" style="margin:0">Waiting for the host to start. Watch the big screen.</p>`;
@@ -2005,6 +2126,8 @@ function renderPlayer(force){
       <label class="stack" style="gap:6px"><span class="pclue">${esc(q.c1)}</span><input id="pa" autocomplete="off" placeholder="First word"></label>
       <label class="stack" style="gap:6px"><span class="pclue">${esc(q.c2)}</span><input id="pb" autocomplete="off" placeholder="Rhyming word"></label>
       <button class="full" type="submit">Lock in</button></form>`;
+    if(s.rt === "titles") main = `${top}<div class="pclue stack" style="gap:8px"><span class="label">Name the song</span><div class="lt-mask">${esc(q.mask || "")}</div>${q.artist ? `<div>Artist: <b>${esc(q.artist)}</b></div>` : ""}</div>
+      <form id="pf" class="stack"><input id="pa" autocomplete="off" autocapitalize="words" placeholder="Type the song title"><button class="full" type="submit">Lock in</button></form>`;
     if(s.rt === "tf") main = `${top}<div class="pclue" style="font-size:20px;font-weight:700">${esc(q.statement || "")}</div>
       <div class="phl ptf"><button type="button" data-v="t">✓ True</button><button type="button" data-v="f">✗ False</button></div>`;
     if(s.rt === "odd") main = `${top}<div class="big-msg" style="font-size:clamp(24px,6vw,32px)">Which is the odd one out?</div>
