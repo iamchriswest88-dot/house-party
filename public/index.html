@@ -2162,7 +2162,7 @@ function shuffled(items){
 }
 
 function next(){
-  if(H.ph === "lobby" || H.ph === "final"){ if(H.ph === "final"){ Object.keys(H.scores).forEach(k => H.scores[k] = 0); H.gid = Math.random().toString(36).slice(2,7); } H.played = []; H.secretDone = false; H.lmsDone = false; H.secretAt = 1 + Math.floor(Math.random() * (NG() - 1)); startVote(); return; }
+  if(H.ph === "lobby" || H.ph === "final"){ if(H.ph === "final"){ Object.keys(H.scores).forEach(k => H.scores[k] = 0); H.gid = Math.random().toString(36).slice(2,7); } H.played = []; H.secretDone = false; H.lmsDone = Math.random() >= LMS_CHANCE; /* bonus round turns up in about half of games */ H.secretAt = 1 + Math.floor(Math.random() * (NG() - 1)); startVote(); return; }
   else if(H.ph === "vote"){ resolveVote(); return; }
   else if(H.ph === "voted") H.ph = "intro";
   else if(H.ph === "intro"){ if(H.picLoading) return; if(!H.qs.length){ H.ph = "board"; push(); renderHost(); return; } startQ(); }
@@ -2235,7 +2235,7 @@ function buzzSound(alarm){
 /* ---- Last One Standing: bonus round before the final results.
    The wheel picks a letter and a prompt for each turn. Turns go from the bottom of the table upwards;
    a wrong answer or running out of time knocks you out, and the last player left wins the prize. ---- */
-const LMS_SECS = 12, LMS_SPIN = 3200, LMS_PRIZE = 10;
+const LMS_SECS = 12, LMS_SPIN = 3200, LMS_PRIZE = 10, LMS_CHANCE = 0.5;
 const LMS_PROMPTS = {
   adult:[["Country","country","start"],["Country","country","contain"],["City","city","start"],["City","city","contain"],["Animal","animal","start"],["Animal","animal","contain"],
     ["Food","food","start"],["Football team","football team","start"],["Boy’s name","boy’s name","start"],["Girl’s name","girl’s name","start"],["Job","job","start"],
@@ -2753,7 +2753,7 @@ function renderHost(){
     const sc = sortedScores(), top = Math.max(1, ...sc.map(s => s[1]));
     body = `<div class="round-no">After round ${H.played.length} of ${NG()}</div><h2 style="font-size:clamp(36px,5vw,60px)">Scores</h2>
       <div class="board">${sc.map(([n, p], i) => `<div class="bar" style="--c:${colorFor(n)}"><span class="pos">${i + 1}</span><span class="nm">${esc(n)}</span><div class="track"><div class="fill" style="width:${(Math.max(0, p) / top * 100).toFixed(1)}%"></div></div><span class="sc">${p}</span></div>`).join("") || `<p class="reveal-sub">No players yet.</p>`}</div>`;
-    ctrl = H.played.length < NG() - 1 ? "Vote for the next round" : H.played.length < NG() ? "Final round" : !H.lmsDone && H.players.length >= 2 ? "Bonus round" : "Final results";
+    ctrl = H.played.length < NG() - 1 ? "Vote for the next round" : H.played.length < NG() ? "Final round" : "Final results"; /* the bonus round, if it comes, is a surprise */
   }
   if(H.ph === "final"){
     const sc = sortedScores(); const [a, b, d] = sc;
