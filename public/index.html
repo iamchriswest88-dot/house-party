@@ -223,6 +223,9 @@ body.xmas #app{position:relative;z-index:1}
 .pic-wrap{display:flex;justify-content:center;overflow:hidden;border-radius:18px;background:#000}
 .pic{display:block;max-width:100%;max-height:min(46vh,520px);object-fit:contain;filter:invert(1)}
 .pic-wrap.small .pic{max-height:32vh}
+.pic.real{filter:none;animation:unflip .9s ease-out;max-height:min(30vh,340px)}
+.pic-wrap.small .pic.real{max-height:26vh}
+@keyframes unflip{from{filter:invert(1)}to{filter:invert(0)}}
 .kind-chip.pic-chip{background:var(--t12);align-self:flex-start}
 .stepper{display:flex;align-items:center;gap:6px;background:var(--panel);border-radius:16px;padding:6px}
 .stepper button{width:44px;height:44px;padding:0;font-size:24px;line-height:1}
@@ -2388,7 +2391,7 @@ function renderHost(){
     if(r.type === "pair") qhtml = `<div class="pair"><div class="clue">${esc(q.c1)}</div><div class="plus">+</div><div class="clue">${esc(q.c2)}</div></div>`;
     if(r.type === "titles"){ const hn = H.ph === "q" ? ltHint() : { a:true, l:99 };
       qhtml = `<div class="kind-chip lt-chip">🎵 Name the song</div>${ltTiles(q.title, hn.l, H.ph === "reveal")}${hn.a ? `<div class="reveal-sub">Artist: <b style="color:var(--text)">${esc(q.artist)}</b></div>` : ""}`; }
-    if(r.type === "pic") qhtml = `<div class="kind-chip pic-chip">${q.kind === "p" ? "👤 Who is this?" : "🖼️ What is this?"}</div><div class="pic-wrap"><img class="pic" src="${esc(q.img || "")}" alt="Mystery picture with colours inverted"></div>`;
+    if(r.type === "pic") qhtml = `<div class="kind-chip pic-chip">${q.kind === "p" ? "👤 Who is this?" : "🖼️ What is this?"}</div><div class="pic-wrap"><img class="pic ${H.ph === "reveal" ? "real" : ""}" src="${esc(q.img || "")}" alt="${H.ph === "reveal" ? esc(q.answer) : "Mystery picture with colours inverted"}"></div>`;
     if(r.type === "buzz") qhtml = `<div class="row" style="justify-content:space-between"><div class="kind-chip secret-chip">🚨 ${esc(H.secretCat)}</div><div class="label">${esc(H.chooser)} gets +${SECRET_BONUS} extra</div></div><div class="qtext">${esc(q.q)}</div>`;
     if(r.type === "tf") qhtml = `<div class="kind-chip tf-chip">True or false?</div><div class="qtext">${esc(q.statement)}</div>${H.ph === "reveal" ? `<div class="tf-verdict ${q.answer ? "yes" : "no"}">${q.answer ? "✓ True" : "✗ False"}</div>` : ""}`;
     if(r.type === "odd") qhtml = `<div class="qtext">Which is the odd one out?</div><div class="order-items odd-items">${H.shown.map(it => `<div class="oi ${H.ph === "reveal" ? (it === q.items[q.odd] ? "hit" : "dim") : ""}">${esc(it)}</div>`).join("")}</div>`;
@@ -2611,7 +2614,7 @@ function renderPlayer(force){
   }
   else if(s.ph === "reveal"){
     const d = s.rv && s.rv.res ? (s.rv.res[P.name] || 0) : 0;
-    main = `<div class="label">The answer</div><div class="big-msg" style="color:var(${s.col})">${esc(s.rv ? s.rv.main : "")}</div>
+    main = `${s.rt === "pic" && s.q && s.q.img ? `<div class="pic-wrap small"><img class="pic real" src="${esc(s.q.img)}" alt="${esc(s.rv ? s.rv.main : "")}"></div>` : ""}<div class="label">The answer</div><div class="big-msg" style="color:var(${s.col})">${esc(s.rv ? s.rv.main : "")}</div>
       <div class="delta ${d > 0 ? "good" : d < 0 ? "bad" : "none"}">${d < 0 ? "−" + -d : "+" + d}</div>${s.rv && s.rv.km && P.name in s.rv.km ? `<div class="pclue">Your pin was ${s.rv.km[P.name].toLocaleString("en-GB")} km away</div>` : ""}${s.rv && s.rv.out && s.rv.out[P.name] ? `<div class="pclue">Not accepted: ${esc(s.rv.out[P.name].join(", "))}</div>` : ""}<p class="reveal-sub" style="margin:0">${d > 0 ? "Nice one." : d < 0 ? "Ouch." : s.rt === "buzz" ? "Not this time." : P.sent === s.k ? "Not this time." : "No answer sent."}</p>`;
   }
   else if(s.ph === "board"){
