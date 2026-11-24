@@ -195,13 +195,11 @@ div.ans{cursor:default}
 .seg{display:inline-flex;gap:6px;background:var(--panel);border:2px solid var(--line);border-radius:16px;padding:5px;align-self:flex-start;flex-wrap:wrap}
 .seg button{background:transparent;color:var(--muted);box-shadow:none;padding:10px 18px;border-radius:11px}
 .seg button.on{background:var(--t2);color:var(--on-tile)}
+.xmas-signoff{font-family:var(--display);color:#ff5a5f;font-size:clamp(28px,4.5vw,56px);line-height:1.1;text-align:center;text-shadow:0 0 24px rgba(255,90,95,.45)}
+#snow{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:50}
 .xmas-badge{background:#e8434b !important;color:#fff !important}
 .seg button.xmas-on{background:#e8434b;color:#fff}
-body.xmas::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.55;
-  background-image:radial-gradient(2px 2px at 20px 30px,#fff,transparent),radial-gradient(2px 2px at 140px 80px,#fff,transparent),radial-gradient(1.5px 1.5px at 260px 150px,#fff,transparent),radial-gradient(2.5px 2.5px at 80px 210px,#fff,transparent),radial-gradient(1.5px 1.5px at 330px 260px,#fff,transparent);
-  background-size:360px 300px;animation:snow 18s linear infinite}
-body.xmas #app{position:relative;z-index:1}
-@keyframes snow{from{background-position:0 -300px}to{background-position:60px 300px}}
+
 .teen-badge{background:var(--t6);color:var(--on-tile);font-weight:700;font-size:13px;padding:5px 10px;border-radius:999px}
 /* phone */
 .phone{flex:1;display:flex;flex-direction:column;gap:18px;padding-block:18px max(18px,env(safe-area-inset-bottom,0px));max-width:520px;width:100%;margin:0 auto}
@@ -2074,6 +2072,25 @@ const perFor = r => r.type === "pic" ? H.nQ + 4 : r.type === "letters" || r.type
 const SECRET_PICK_SECS = 20, SECRET_BONUS = 2, BUZZ_RIGHT = 2, BUZZ_WRONG = 2;
 /* Question set: "adult" (default) or "teen" (ages 11–14). Rounds without a teenPool share one set. */
 const poolFor = r => H.mode === "teen" && r.teenPool ? r.teenPool : H.mode === "xmas" && r.xmasPool && r.xmasPool.length ? r.xmasPool : r.pool;
+/* Falling snow for the Christmas quiz, on the TV and the phones. A see-through canvas over everything that ignores taps. */
+const Snow = { cv:null, ctx:null, flakes:[], raf:0 };
+function setSnow(on){
+  if(on && !Snow.cv){
+    const cv = Snow.cv = document.createElement("canvas"); cv.id = "snow"; cv.setAttribute("aria-hidden", "true"); document.body.appendChild(cv);
+    Snow.ctx = cv.getContext("2d");
+    const calm = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const size = () => { const d = Math.min(2, window.devicePixelRatio || 1); cv.width = innerWidth * d; cv.height = innerHeight * d; Snow.ctx.setTransform(d, 0, 0, d, 0, 0); };
+    size(); window.addEventListener("resize", size); Snow.resize = size;
+    const n = Math.round(Math.min(110, innerWidth * innerHeight / 14000));
+    Snow.flakes = Array.from({ length:n }, () => ({ x:Math.random() * innerWidth, y:Math.random() * innerHeight, r:1 + Math.random() * 2.6, v:(calm ? .15 : .35) + Math.random() * (calm ? .2 : .9), a:Math.random() * 6.3, o:.45 + Math.random() * .45 }));
+    const step = () => { const c = Snow.ctx; if(!c) return; c.clearRect(0, 0, innerWidth, innerHeight);
+      for(const f of Snow.flakes){ f.y += f.v; f.a += .01; f.x += Math.sin(f.a) * .35;
+        if(f.y > innerHeight + 5){ f.y = -5; f.x = Math.random() * innerWidth; } if(f.x > innerWidth + 5) f.x = -5; if(f.x < -5) f.x = innerWidth + 5;
+        c.globalAlpha = f.o; c.beginPath(); c.arc(f.x, f.y, f.r, 0, 6.283); c.fillStyle = "#fff"; c.fill(); }
+      Snow.raf = requestAnimationFrame(step); };
+    step();
+  } else if(!on && Snow.cv){ cancelAnimationFrame(Snow.raf); window.removeEventListener("resize", Snow.resize); Snow.cv.remove(); Snow.cv = Snow.ctx = null; Snow.flakes = []; }
+}
 const MODES = { adult:"Grown-ups", teen:"Young teens", xmas:"Christmas" };
 const H = { net:null, connected:false, gid:"", code:"", ph:"lobby", ri:0, qi:0, endsAt:0, dur:1, scores:{}, answers:{}, players:[], shown:[], reveal:null,
             mode:(MODES[store.get("hpq-mode")] ? store.get("hpq-mode") : "adult"), played:[], qs:[], nRounds:+store.get("hpq-rounds") || 0, nQ:Math.max(QMIN, Math.min(QMAX, +store.get("hpq-nq") || 5)), cats:[], strikes:{}, spinStart:0, spinTo:0, opts:[], votes:{}, tally:{}, tie:false };
@@ -2436,7 +2453,7 @@ function sortedScores(){ return Object.entries(H.scores).sort((a, b) => b[1] - a
 function publicState(){
   const r = curR(), q = curQ();
   const s = { gid:H.gid, ph:H.ph, ri:H.ri, qi:H.qi, nr:NG(), secret:!!r.secret, chooser:H.chooser || "", cat:H.secretCat || "", nq:H.qs.length, rt:r.type, title:r.title, col:r.color,
-              k:qKey(), endsAt:H.endsAt, now:Date.now(), rn:H.played.length };
+              k:qKey(), mode:H.mode, endsAt:H.endsAt, now:Date.now(), rn:H.played.length };
   if(H.ph === "vote"){ s.k = vKey(); s.opts = H.opts.map(i => ({ i, t:ROUNDS[i].title, b:ROUNDS[i].blurb, c:ROUNDS[i].color })); }
   if(H.ph === "secret"){ s.k = H.gid + ".secret"; s.opts = H.secretOpts; }
   if(H.ph === "voted"){ s.tie = H.tie; s.noVotes = !Object.keys(H.votes).length; }
@@ -2627,7 +2644,8 @@ function renderHost(){
     const pod = (e, cls) => e ? `<div class="pod ${cls}"><b>${esc(e[0])}</b><span>${e[1]} pts</span></div>` : `<div></div>`;
     body = `<h1 class="intro-title" style="--c:var(--t4)">${a ? esc(a[0]) + " wins!" : "Game over"}</h1>
       <div class="podium">${pod(b, "p2")}${pod(a, "p1")}${pod(d, "p3")}</div>
-      ${sc.length > 3 ? `<div class="reveal-sub">${sc.slice(3).map(([n, p], i) => `${i + 4}. ${esc(n)} ${p}`).join(" · ")}</div>` : ""}`;
+      ${sc.length > 3 ? `<div class="reveal-sub">${sc.slice(3).map(([n, p], i) => `${i + 4}. ${esc(n)} ${p}`).join(" · ")}</div>` : ""}
+      ${H.mode === "xmas" ? `<div class="xmas-signoff">🎄 Merry Christmas, ya filthy animals! 🎄</div>` : ""}`;
     ctrl = "Play again";
   }
 
@@ -2639,11 +2657,11 @@ function renderHost(){
     <div class="controls"><span class="label">Space bar = next</span>
       <div class="row">${H.ph !== "lobby" && H.ph !== "final" ? `<button class="ghost" id="h-end">End game</button>` : ""}<button id="h-next" ${H.ph === "lobby" && !H.players.length && H.net ? "disabled" : ""}>${esc(ctrl)}</button></div></div>`;
   $("#h-next").onclick = next;
-  const setMode = m => { H.mode = m; store.set("hpq-mode", m); renderHost(); };
+  const setMode = m => { H.mode = m; store.set("hpq-mode", m); push(); renderHost(); };
   const setLen = (r, q) => { H.nRounds = Math.max(2, Math.min(NR(), r)); H.nQ = Math.max(QMIN, Math.min(QMAX, q)); store.set("hpq-rounds", String(H.nRounds)); store.set("hpq-nq", String(H.nQ)); renderHost(); };
   if($("#r-dn")){ $("#r-dn").onclick = () => setLen(NG() - 1, H.nQ); $("#r-up").onclick = () => setLen(NG() + 1, H.nQ); $("#q-dn").onclick = () => setLen(NG(), H.nQ - 1); $("#q-up").onclick = () => setLen(NG(), H.nQ + 1); }
   if($("#m-adult")){ $("#m-adult").onclick = () => setMode("adult"); $("#m-teen").onclick = () => setMode("teen"); $("#m-xmas").onclick = () => setMode("xmas"); }
-  document.body.classList.toggle("xmas", H.mode === "xmas");
+  document.body.classList.toggle("xmas", H.mode === "xmas"); setSnow(H.mode === "xmas");
   document.querySelectorAll(".ans[data-k]").forEach(b => b.onclick = () => toggleStrike(b.dataset.k));
   document.querySelectorAll(".gm-yes, .gm-no").forEach(b => b.onclick = () => { const i = +b.dataset.i, v = b.classList.contains("gm-yes"); H.decide[i] = H.decide[i] === v ? undefined : v; renderHost(); });
   if($("#gm-all")) $("#gm-all").onclick = () => { H.chk.forEach(it => { if(H.decide[it.i] === undefined) H.decide[it.i] = true; }); renderHost(); };
@@ -2715,7 +2733,7 @@ function myScore(){ const s = P.s; if(!s) return 0; const e = (s.sc || []).find(
 function renderPlayer(force){
   const s = P.s;
   const view = !s ? "wait" : `${s.ph}|${s.k}|${P.sent === s.k}|${s.rv && s.rv.res ? (s.rv.res[P.name] || 0) : ""}|${s.rt === "buzz" && s.q ? s.q.now + "/" + (s.q.out || []).join(",") + "/" + (s.q.queue || []).indexOf(P.name) : ""}`;
-  if(!force && view === P.view){ const ps = $("#pscore"); if(ps) ps.textContent = myScore() + " pts";
+  if(!force && view === P.view){ setSnow(!!s && s.mode === "xmas"); const ps = $("#pscore"); if(ps) ps.textContent = myScore() + " pts";
     if(s && s.rt === "titles" && s.ph === "q" && s.q){ const mk = $(".lt-mask"); if(mk && mk.textContent !== s.q.mask){ mk.textContent = s.q.mask; }
       if(s.q.artist && mk && !mk.nextElementSibling){ const d = document.createElement("div"); d.innerHTML = "Artist: <b></b>"; d.querySelector("b").textContent = s.q.artist; mk.after(d); } }
     return; }
@@ -2792,9 +2810,10 @@ function renderPlayer(force){
   }
   else if(s.ph === "final"){
     const pos = (s.sc || []).findIndex(x => x[0] === P.name);
-    main = `<div class="big-msg">${pos === 0 ? "You won!" : pos >= 0 ? "You came " + ordinal(pos + 1) : "Game over"}</div><p class="reveal-sub" style="margin:0">${myScore()} points. Thanks for playing.</p>`;
+    main = `<div class="big-msg">${pos === 0 ? "You won!" : pos >= 0 ? "You came " + ordinal(pos + 1) : "Game over"}</div><p class="reveal-sub" style="margin:0">${myScore()} points. Thanks for playing.</p>${s.mode === "xmas" ? `<div class="xmas-signoff" style="font-size:clamp(22px,7vw,30px)">🎄 Merry Christmas, ya filthy animals! 🎄</div>` : ""}`;
   }
   app.innerHTML = `<div class="phone"><div class="ptop"><span class="me" style="--c:${colorFor(P.name)}">${esc(P.name)}</span><span class="pscore" id="pscore">${myScore()} pts</span></div><div class="pmain">${main}</div></div>`;
+  setSnow(!!s && s.mode === "xmas");
   const pf = $("#pf");
   if(pf && s.rt === "letters"){
     const vals = () => s.q.cats.map((_, i) => ($("#pl" + i).value || "").trim().slice(0, 30));
