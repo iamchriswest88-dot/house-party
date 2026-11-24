@@ -13,7 +13,7 @@
 :root{
   --studio:#15112e; --panel:#221c4a; --panel-2:#2c2560; --line:#40378a;
   --text:#f7f4ff; --muted:#b4acdf;
-  --t1:#ff7a2f; --t2:#14c4b0; --t3:#ff4f9a; --t4:#ffd23f; --t5:#8e9bff; --t6:#b5e655; --t7:#5ec8ff; --t8:#f7a8ff; --t9:#ffb347;
+  --t1:#ff7a2f; --t2:#14c4b0; --t3:#ff4f9a; --t4:#ffd23f; --t5:#8e9bff; --t6:#b5e655; --t7:#5ec8ff; --t8:#f7a8ff; --t9:#ffb347; --t10:#ff8f70;
   --sea:#1d3a63; --land:#3f8f6b; --land-edge:#5fb88f;
   --good:#40e08a; --bad:#ff6363; --on-tile:#15112e;
   --display:"Bowlby One","Arial Black",Impact,sans-serif;
@@ -169,6 +169,10 @@ div.ans{cursor:default}
 .hlc.hidden .hv{font-family:var(--body);font-weight:700;font-size:clamp(18px,2vw,26px);color:var(--muted)}
 .hlvs{align-self:center;font-family:var(--display);font-size:clamp(28px,4vw,56px);color:var(--muted)}
 .chip.out{text-decoration:line-through}
+.kind-chip.tf-chip{background:var(--t10)}
+.tf-verdict{align-self:flex-start;font-family:var(--display);font-size:clamp(32px,5vw,64px);padding:6px 22px;border-radius:16px;color:var(--on-tile)}
+.tf-verdict.yes{background:var(--good)}.tf-verdict.no{background:var(--bad)}
+.phl.ptf button:last-child{background:var(--bad)}
 .podd{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .podd button{min-height:96px;font-size:18px;overflow-wrap:anywhere}
 .podd button:nth-child(1){background:var(--t1)}.podd button:nth-child(2){background:var(--t2)}.podd button:nth-child(3){background:var(--t3)}.podd button:nth-child(4){background:var(--t4)}
@@ -1028,6 +1032,149 @@ const ROUNDS = [
       {"items": ["Hamster", "Rabbit", "Guinea pig", "Badger"], "odd": 3, "why": "The others are common pets – a badger isn’t."},
       {"items": ["Pencil", "Knife", "Fork", "Spoon"], "odd": 0, "why": "The others are cutlery – a pencil isn’t."}
     ]},
+  { id:"tf", type:"tf", title:"True or False", secs:15, color:"--t10", perGame:6,
+    blurb:"Fact or fib? Tap to decide",
+    rules:"A statement appears. Is it true or false? Tap your answer before the time runs out.",
+    scoring:"2 points for a right answer, plus 1 for the fastest.",
+    teenPool:[ 
+      {"statement": "An octopus has three hearts.", "answer": true, "why": "Two pump blood to the gills and one to the rest of the body."},
+      {"statement": "Goldfish can only remember things for about three seconds.", "answer": false, "why": "Experiments show goldfish can remember things for months."},
+      {"statement": "Bananas are berries.", "answer": true, "why": "Botanically, a banana is a berry because it grows from a single flower’s ovary."},
+      {"statement": "The Great Wall of China is visible from the Moon with the naked eye.", "answer": false, "why": "It’s far too narrow – astronauts say you can’t see it from the Moon."},
+      {"statement": "Venus takes longer to spin round once than to travel all the way round the Sun.", "answer": true, "why": "One spin takes about 243 Earth days; one orbit takes about 225."},
+      {"statement": "Humans only use 10% of their brains.", "answer": false, "why": "Brain scans show we use virtually all of our brain."},
+      {"statement": "Mario was originally called Jumpman.", "answer": true, "why": "He was named Jumpman in the 1981 arcade game Donkey Kong."},
+      {"statement": "Bats are blind.", "answer": false, "why": "All bats can see, and many have good eyesight."},
+      {"statement": "Sharks have been around for longer than trees.", "answer": true, "why": "Sharks appeared about 450 million years ago; trees about 385 million."},
+      {"statement": "Pikachu is number 1 in the National Pokédex.", "answer": false, "why": "Bulbasaur is number 1 – Pikachu is number 25."},
+      {"statement": "Babies are born with more bones than adults have.", "answer": true, "why": "Babies have about 300 bones; many fuse together, leaving adults with 206."},
+      {"statement": "Lightning never strikes the same place twice.", "answer": false, "why": "It often does – the Empire State Building is hit around 20 times a year."},
+      {"statement": "Polar bears have black skin under their fur.", "answer": true, "why": "Their black skin soaks up heat, and their fur isn’t really white either."},
+      {"statement": "Penguins live in the wild at the North Pole.", "answer": false, "why": "Wild penguins live almost entirely in the Southern Hemisphere."},
+      {"statement": "The Creeper in Minecraft came from a coding mistake while making a pig.", "answer": true, "why": "Notch mixed up the height and length, creating a tall, thin mob."},
+      {"statement": "Iron Man’s real name is Bruce Wayne.", "answer": false, "why": "Iron Man is Tony Stark – Bruce Wayne is Batman."},
+      {"statement": "Light from the Sun takes about eight minutes to reach Earth.", "answer": true, "why": "Sunlight travels 150 million km, taking about 8 minutes 20 seconds."},
+      {"statement": "The capital city of Australia is Sydney.", "answer": false, "why": "The capital is Canberra."},
+      {"statement": "Toy Story was the first ever fully computer-animated feature film.", "answer": true, "why": "Pixar’s Toy Story, released in 1995, was the first."},
+      {"statement": "Eating lots of carrots lets you see in the dark.", "answer": false, "why": "It’s a myth spread in World War Two to hide the use of radar."},
+      {"statement": "Australia is wider than the Moon.", "answer": true, "why": "Australia is about 4,000 km across; the Moon is about 3,475 km wide."},
+      {"statement": "Swallowed chewing gum stays in your stomach for seven years.", "answer": false, "why": "It passes through your body within a few days."},
+      {"statement": "Honey can stay edible for thousands of years.", "answer": true, "why": "Edible honey has been found in ancient Egyptian tombs."},
+      {"statement": "In football, a goalkeeper can pick up the ball anywhere on the pitch.", "answer": false, "why": "Keepers can only handle the ball inside their own penalty area."},
+      {"statement": "A group of flamingos is called a flamboyance.", "answer": true, "why": "Fittingly for such colourful birds, it really is a flamboyance."},
+      {"statement": "Sound travels faster in space than on Earth.", "answer": false, "why": "Sound can’t travel in space at all – there’s no air to carry it."},
+      {"statement": "England won the men’s football World Cup in 1966.", "answer": true, "why": "England beat West Germany 4–2 in the final at Wembley."},
+      {"statement": "Thomas Edison invented the telephone.", "answer": false, "why": "Alexander Graham Bell is credited with inventing the telephone."},
+      {"statement": "Your heart beats about 100,000 times a day.", "answer": true, "why": "At around 70 beats a minute, that adds up to about 100,000 a day."},
+      {"statement": "The first humans lived at the same time as T. rex.", "answer": false, "why": "T. rex died out about 66 million years before humans appeared."},
+      {"statement": "The Eiffel Tower can grow taller in summer.", "answer": true, "why": "Heat makes the iron expand, adding up to about 15 cm."},
+      {"statement": "Koalas are a type of bear.", "answer": false, "why": "Koalas are marsupials – they carry their babies in a pouch."},
+      {"statement": "The World Wide Web was invented by a British scientist.", "answer": true, "why": "Sir Tim Berners-Lee invented it in 1989."},
+      {"statement": "Ostriches bury their heads in the sand when scared.", "answer": false, "why": "They don’t – they lower their heads to turn their eggs or hide."},
+      {"statement": "Venus is the hottest planet in the Solar System, even though Mercury is closer to the Sun.", "answer": true, "why": "Venus’s thick atmosphere traps heat, reaching about 465°C."},
+      {"statement": "Different parts of your tongue taste different flavours.", "answer": false, "why": "The ‘tongue map’ is a myth – all areas can taste all flavours."},
+      {"statement": "Butterflies can taste with their feet.", "answer": true, "why": "Sensors on their feet tell them if a leaf is good to lay eggs on."},
+      {"statement": "The River Thames is the longest river in the UK.", "answer": false, "why": "The River Severn is longer, at about 354 km."},
+      {"statement": "Scotland’s national animal is the unicorn.", "answer": true, "why": "The unicorn has been a Scottish symbol for hundreds of years."},
+      {"statement": "In Minecraft, the Ender Dragon lives in the Nether.", "answer": false, "why": "The Ender Dragon is found in the End, not the Nether."},
+      {"statement": "Harry Potter’s middle name is James.", "answer": true, "why": "He’s Harry James Potter, named after his dad, James."},
+      {"statement": "Sonic the Hedgehog wears blue shoes.", "answer": false, "why": "Sonic is blue, but his famous shoes are red."},
+      {"statement": "In Harry Potter, Platform 9¾ is at Paddington station.", "answer": false, "why": "Platform 9¾ is at King’s Cross station."},
+      {"statement": "Zero is an even number.", "answer": true, "why": "Zero divides by 2 with no remainder, so it’s even."}
+     ],
+    xmasPool:[ 
+      {"statement": "Female reindeer keep their antlers through the winter.", "answer": true, "why": "Males shed theirs in early winter, but females keep theirs until spring."},
+      {"statement": "Rudolph appears in the poem ’Twas the Night Before Christmas.", "answer": false, "why": "Rudolph was created in 1939, over a century after the 1823 poem."},
+      {"statement": "The film Home Alone is set in New York.", "answer": false, "why": "The first film is set in a Chicago suburb; only the sequel goes to New York."},
+      {"statement": "The first commercial Christmas card was commissioned by Henry Cole in 1843.", "answer": true, "why": "Sir Henry Cole had artist John Callcott Horsley design it in 1843."},
+      {"statement": "The Twelve Days of Christmas begin on 1 December.", "answer": false, "why": "They begin on Christmas Day and run into early January."},
+      {"statement": "Christmas crackers were invented by a London sweet maker called Tom Smith.", "answer": true, "why": "Tom Smith developed them in the 1840s from his wrapped sweets."},
+      {"statement": "Shakin’ Stevens’ Merry Christmas Everyone was the UK Christmas number one in 1984.", "answer": false, "why": "It was number one in 1985; Band Aid had 1984."},
+      {"statement": "Mince pies originally contained real meat.", "answer": true, "why": "Early mince pies were filled with minced meat, fruit and spices."},
+      {"statement": "In the song, the gift on the fourth day is four French hens.", "answer": false, "why": "Day four is calling birds; the French hens come on day three."},
+      {"statement": "Added up, the gifts in The Twelve Days of Christmas song total 364.", "answer": true, "why": "Counting every repeated gift across all twelve verses gives 364."},
+      {"statement": "Reindeer are unable to swim.", "answer": false, "why": "Reindeer are strong swimmers and often cross rivers and lakes."},
+      {"statement": "Band Aid’s Do They Know It’s Christmas? was the UK Christmas number one in 1984.", "answer": true, "why": "Band Aid’s charity single topped the chart at Christmas 1984."},
+      {"statement": "The film Elf was released in 1993.", "answer": false, "why": "Elf, starring Will Ferrell, came out in 2003."},
+      {"statement": "Home Alone was released in 1990.", "answer": true, "why": "Home Alone hit cinemas in November 1990."},
+      {"statement": "The Grinch was created by Roald Dahl.", "answer": false, "why": "The Grinch was created by Dr. Seuss in 1957."},
+      {"statement": "The first royal Christmas broadcast was made by King George V in 1932.", "answer": true, "why": "George V gave the first royal Christmas message on the radio in 1932."},
+      {"statement": "Charles Dickens’ A Christmas Carol was first published in 1900.", "answer": false, "why": "A Christmas Carol was first published in 1843."},
+      {"statement": "Mistletoe is a parasitic plant that grows on trees.", "answer": true, "why": "Mistletoe draws water and nutrients from the tree it grows on."},
+      {"statement": "In A Christmas Carol, Scrooge’s first name is Edward.", "answer": false, "why": "His full name is Ebenezer Scrooge."},
+      {"statement": "Norway gives London a Christmas tree for Trafalgar Square every year.", "answer": true, "why": "Oslo has sent a tree every year since 1947."},
+      {"statement": "In A Christmas Carol, Tiny Tim is Scrooge’s nephew.", "answer": false, "why": "Tiny Tim is Bob Cratchit’s son; Scrooge’s nephew is Fred."},
+      {"statement": "Eating KFC is a popular Christmas tradition in Japan.", "answer": true, "why": "A 1970s advert campaign made KFC a festive favourite in Japan."},
+      {"statement": "Norway’s Trafalgar Square tree is a thank-you for Britain’s help in World War One.", "answer": false, "why": "It thanks Britain for its support during World War Two."},
+      {"statement": "Reindeer and caribou are the same species.", "answer": true, "why": "Caribou is simply the North American name for reindeer."},
+      {"statement": "The Queen’s Christmas message was first shown on television in 1932.", "answer": false, "why": "1932 was a radio broadcast; the first televised message was in 1957."},
+      {"statement": "Love Actually was released in 2003.", "answer": true, "why": "Richard Curtis’s Love Actually came out in November 2003."},
+      {"statement": "The shepherds visiting baby Jesus are described in the Gospel of Matthew.", "answer": false, "why": "The shepherds appear in Luke’s Gospel; Matthew tells of the wise men."},
+      {"statement": "Raymond Briggs’ book The Snowman tells its story without any words.", "answer": true, "why": "The 1978 picture book is told entirely through illustrations."},
+      {"statement": "Christmas Island is in the Caribbean.", "answer": false, "why": "Christmas Island is an Australian territory in the Indian Ocean."},
+      {"statement": "Brussels sprouts are the same plant species as cabbage.", "answer": true, "why": "Both are varieties of the species Brassica oleracea."},
+      {"statement": "Christmas Day is a national public holiday in Japan.", "answer": false, "why": "In Japan 25 December is a normal working day."},
+      {"statement": "Mariah Carey’s All I Want for Christmas Is You was first released in 1994.", "answer": true, "why": "It appeared on her 1994 album Merry Christmas."},
+      {"statement": "Saint Nicholas, who inspired Santa Claus, was a bishop in Norway.", "answer": false, "why": "He was Bishop of Myra, in what is now Turkey."},
+      {"statement": "Comet is one of the reindeer named in the 1823 poem ’Twas the Night Before Christmas.", "answer": true, "why": "Comet is named in the poem alongside Dasher, Dancer and others."},
+      {"statement": "Tom Hanks stars in the animated film The Polar Express.", "answer": true, "why": "Tom Hanks voiced several characters, including the Conductor."},
+      {"statement": "Wizzard’s I Wish It Could Be Christmas Everyday was a UK Christmas number one.", "answer": false, "why": "It peaked at number 4 in 1973, behind Slade."},
+      {"statement": "Slade’s Merry Xmas Everybody was the UK Christmas number one in 1973.", "answer": true, "why": "Slade topped the chart at Christmas 1973."},
+      {"statement": "The film It’s a Wonderful Life is set in London.", "answer": false, "why": "It is set in the fictional American town of Bedford Falls."},
+      {"statement": "Michael Caine plays Scrooge in The Muppet Christmas Carol.", "answer": true, "why": "Michael Caine starred as Scrooge in the 1992 Muppet film."},
+      {"statement": "In the song, the gift on the fifth day of Christmas is five gold rings.", "answer": true, "why": "Day five brings five gold rings."}
+     ],
+    pool:[ 
+      {"statement": "Bananas are berries.", "answer": true, "why": "Botanically, bananas count as berries – strawberries don’t."},
+      {"statement": "Goldfish have a memory span of about three seconds.", "answer": false, "why": "Goldfish can remember things for months and can be trained."},
+      {"statement": "Octopuses have three hearts.", "answer": true, "why": "Two pump blood to the gills and one pumps it round the body."},
+      {"statement": "The Great Wall of China is visible from the Moon with the naked eye.", "answer": false, "why": "It’s far too narrow – no astronaut has seen it from the Moon."},
+      {"statement": "Scotland’s national animal is the unicorn.", "answer": true, "why": "The unicorn has been Scotland’s national animal for centuries."},
+      {"statement": "Bulls are enraged by the colour red.", "answer": false, "why": "Bulls can’t see red well – it’s the cape’s movement that provokes them."},
+      {"statement": "Cleopatra lived closer in time to the Moon landing than to the building of the Great Pyramid.", "answer": true, "why": "The Great Pyramid was about 2,500 years old by Cleopatra’s time."},
+      {"statement": "Lightning never strikes the same place twice.", "answer": false, "why": "It often does – the Empire State Building is hit around 20 times a year."},
+      {"statement": "Wombats produce cube-shaped poo.", "answer": true, "why": "Their intestines shape it into cubes, which stop it rolling away."},
+      {"statement": "Humans only use 10% of their brains.", "answer": false, "why": "Brain scans show we use virtually all of our brain."},
+      {"statement": "Sharks have been around longer than trees.", "answer": true, "why": "Sharks appeared about 450 million years ago, trees about 385 million."},
+      {"statement": "Strawberries are berries.", "answer": false, "why": "Botanically they aren’t – their ‘seeds’ are on the outside."},
+      {"statement": "Oxford University is older than the Aztec Empire.", "answer": true, "why": "Teaching at Oxford began by 1096; the Aztecs founded their capital in 1325."},
+      {"statement": "Vikings wore horned helmets into battle.", "answer": false, "why": "No horned Viking battle helmet has ever been found – it’s a 19th-century idea."},
+      {"statement": "The Eiffel Tower gets taller in summer.", "answer": true, "why": "Heat makes the iron expand, adding up to about 15cm."},
+      {"statement": "Bats are blind.", "answer": false, "why": "All bats can see – many also use echolocation."},
+      {"statement": "The dot over a lowercase ‘i’ is called a tittle.", "answer": true, "why": "It really is – the dot on an ‘i’ or ‘j’ is a tittle."},
+      {"statement": "Sydney is the capital of Australia.", "answer": false, "why": "The capital is Canberra."},
+      {"statement": "Tomato ketchup was once sold as a medicine.", "answer": true, "why": "In the 1830s it was sold in the US as pills for indigestion."},
+      {"statement": "Albert Einstein failed maths at school.", "answer": false, "why": "He excelled at maths and had mastered calculus by about 15."},
+      {"statement": "The shortest war in history lasted less than an hour.", "answer": true, "why": "The 1896 Anglo-Zanzibar War lasted around 40 minutes."},
+      {"statement": "Shaving makes hair grow back thicker.", "answer": false, "why": "Shaved hair just has a blunt tip, so it feels coarser – it isn’t thicker."},
+      {"statement": "Australia is wider than the Moon.", "answer": true, "why": "Australia is about 4,000km across; the Moon is about 3,475km."},
+      {"statement": "A penny dropped from a skyscraper could kill someone on the ground.", "answer": false, "why": "Air resistance slows it right down – it would only sting."},
+      {"statement": "Ringo Starr narrated the first series of Thomas the Tank Engine on TV.", "answer": true, "why": "Ringo narrated the first two series, from 1984."},
+      {"statement": "Sherlock Holmes says ‘Elementary, my dear Watson’ in Conan Doyle’s stories.", "answer": false, "why": "That exact line never appears in any of Conan Doyle’s stories."},
+      {"statement": "ABBA won Eurovision with ‘Waterloo’ at a contest held in Brighton.", "answer": true, "why": "The 1974 contest was held at the Brighton Dome."},
+      {"statement": "In The Empire Strikes Back, Darth Vader says ‘Luke, I am your father.’", "answer": false, "why": "The actual line is ‘No, I am your father.’"},
+      {"statement": "Mel Gibson was born in the USA.", "answer": true, "why": "He was born in New York State and moved to Australia aged 12."},
+      {"statement": "In Mary Shelley’s novel, Frankenstein is the name of the monster.", "answer": false, "why": "Victor Frankenstein is the scientist; the creature has no name."},
+      {"statement": "Polar bears have black skin.", "answer": true, "why": "Under their see-through fur, their skin is black to soak up heat."},
+      {"statement": "Camels store water in their humps.", "answer": false, "why": "The humps store fat, not water."},
+      {"statement": "Venus is the hottest planet in the Solar System.", "answer": true, "why": "Its thick atmosphere traps heat, making it hotter than Mercury."},
+      {"statement": "Fortune cookies originated in China.", "answer": false, "why": "They’re thought to come from Japan and were popularised in California."},
+      {"statement": "Big Ben is the nickname of the bell, not the clock tower.", "answer": true, "why": "Big Ben is the Great Bell; the tower is the Elizabeth Tower."},
+      {"statement": "The Thames is the longest river in the UK.", "answer": false, "why": "The River Severn is longer, at about 220 miles."},
+      {"statement": "Nintendo was founded in the 1800s.", "answer": true, "why": "It started in 1889 making playing cards."},
+      {"statement": "A marathon is exactly 26 miles long.", "answer": false, "why": "It’s 26.2 miles – 26 miles and 385 yards."},
+      {"statement": "Pluto hasn’t completed one orbit of the Sun since it was discovered.", "answer": true, "why": "It was found in 1930 and takes about 248 years to orbit."},
+      {"statement": "Olympic gold medals are made mostly of gold.", "answer": false, "why": "They’re mostly silver with a gold plating."},
+      {"statement": "The FA Cup is the oldest national football competition in the world.", "answer": true, "why": "It was first played in 1871–72."},
+      {"statement": "Swallowed chewing gum stays in your stomach for seven years.", "answer": false, "why": "It passes through your system in a few days like other food."},
+      {"statement": "Edinburgh is further west than Bristol.", "answer": true, "why": "Edinburgh sits about 3.2° west; Bristol about 2.6° west."},
+      {"statement": "Sunsets on Mars look blue.", "answer": true, "why": "Martian dust scatters light so the sky near the Sun glows blue."},
+      {"statement": "Freddie Mercury was born in London.", "answer": false, "why": "He was born in Zanzibar, now part of Tanzania."},
+      {"statement": "A group of crows is called a murder.", "answer": true, "why": "It really is – a ‘murder of crows’."},
+      {"statement": "Most diamonds are formed from compressed coal.", "answer": false, "why": "Most diamonds formed deep in the mantle, from carbon that was never coal."},
+      {"statement": "Walt Disney was the original voice of Mickey Mouse.", "answer": true, "why": "Walt voiced Mickey from 1928 until 1947."},
+      {"statement": "A duck’s quack doesn’t echo.", "answer": false, "why": "It does echo – it’s just hard to hear over the quack itself."}
+     ]},
   { id:"hilo", type:"hilo", title:"Higher or Lower", secs:12, color:"--t9", perGame:2,
     blurb:"Ride the chain without slipping",
     rules:"You see one thing and its number. Is the next one higher or lower? Get it wrong and you’re out until the next chain.",
@@ -1549,6 +1696,7 @@ function score(){
     if(norm(v[0]) === norm(v[1])) return false;
     return (close(v[0], x) && close(v[1], y)) || (close(v[0], y) && close(v[1], x)); });
   if(r.type === "odd") speedRank(n => H.shown[A[n].v] === q.items[q.odd]);
+  if(r.type === "tf") speedRank(n => A[n].v === (q.answer ? "t" : "f"));
   if(r.type === "hilo"){ const up = q.b.value > q.a.value;
     [...new Set(H.players.concat(names))].forEach(n => { if(H.out.has(n)) return; const a = A[n];
       if(a && (a.v === "h") === up) res[n] = 2 + (q.last ? 3 : 0); else H.out.add(n); }); }
@@ -1574,6 +1722,7 @@ function answerText(){
   if(r.type === "map") return { main:q.place, sub:q.name };
   if(r.type === "letters") return { main:"Letter " + q.letter, sub:"" };
   if(r.type === "odd") return { main:q.items[q.odd], sub:q.why };
+  if(r.type === "tf") return { main:q.answer ? "True" : "False", sub:q.why };
   if(r.type === "hilo") return { main:`${q.b.name}: ${hlFmt(q.b.value, q)}`, sub:`${q.b.value > q.a.value ? "Higher" : "Lower"} than ${q.a.name} (${hlFmt(q.a.value, q)})` };
   if(r.type === "emoji") return { main:q.answer, sub:q.kind === "song" ? `Song by ${q.by}` : `Film, ${q.year}` };
   return { main:fmtNum(q.answer, q.plain) + (q.unit ? " " + q.unit : ""), sub:"" };
@@ -1604,6 +1753,7 @@ function publicState(){
     if(r.type === "pair") s.q = { c1:q.c1, c2:q.c2 };
     if(r.type === "order") s.q = { prompt:q.prompt, items:H.shown };
     if(r.type === "odd") s.q = { items:H.shown };
+    if(r.type === "tf") s.q = { statement:q.statement };
     if(r.type === "hilo") s.q = { topic:q.topic, a:{ n:q.a.name, v:hlFmt(q.a.value, q) }, b:{ n:q.b.name }, step:q.step, steps:q.steps, out:[...H.out] };
     if(r.type === "number") s.q = { prompt:q.prompt, unit:q.unit || "" };
     if(r.type === "map") s.q = { name:q.name, emoji:q.emoji, the:q.the, are:q.are };
@@ -1693,6 +1843,7 @@ function renderHost(){
     let qhtml = "";
     if(r.type === "text") qhtml = `<div class="smash"><div class="emoji" aria-label="picture clue">${q.emoji}</div><div class="plus">+</div><div class="qtext" style="flex:1;min-width:200px">${esc(q.clue)}</div></div>`;
     if(r.type === "pair") qhtml = `<div class="pair"><div class="clue">${esc(q.c1)}</div><div class="plus">+</div><div class="clue">${esc(q.c2)}</div></div>`;
+    if(r.type === "tf") qhtml = `<div class="kind-chip tf-chip">True or false?</div><div class="qtext">${esc(q.statement)}</div>${H.ph === "reveal" ? `<div class="tf-verdict ${q.answer ? "yes" : "no"}">${q.answer ? "✓ True" : "✗ False"}</div>` : ""}`;
     if(r.type === "odd") qhtml = `<div class="qtext">Which is the odd one out?</div><div class="order-items odd-items">${H.shown.map(it => `<div class="oi ${H.ph === "reveal" ? (it === q.items[q.odd] ? "hit" : "dim") : ""}">${esc(it)}</div>`).join("")}</div>`;
     if(r.type === "hilo"){ const up = q.b.value > q.a.value;
       qhtml = `<div class="row" style="justify-content:space-between"><div class="label">${esc(q.topic)}</div><div class="label">Step ${q.step + 1} of ${q.steps}</div></div>
@@ -1718,11 +1869,11 @@ function renderHost(){
     } else {
       const rows = H.players.concat(Object.keys(H.answers).filter(n => !H.players.includes(n))).map(n => {
         const a = H.answers[n]; const p = H.reveal.res[n] || 0;
-        const said = !a ? (r.type === "hilo" && H.out.has(n) && !a ? "Out" : "No answer") : r.type === "odd" ? String(H.shown[a.v] ?? "") : r.type === "hilo" ? (a.v === "h" ? "⬆ Higher" : "⬇ Lower") : r.type === "map" ? (Array.isArray(a.v) ? Math.round(km(a.v, [q.lat, q.lon])).toLocaleString("en-GB") + " km away" : "No pin") : Array.isArray(a.v) ? a.v.join(r.type === "order" ? ", " : " ") : a.v;
+        const said = !a ? (r.type === "hilo" && H.out.has(n) && !a ? "Out" : "No answer") : r.type === "tf" ? (a.v === "t" ? "True" : "False") : r.type === "odd" ? String(H.shown[a.v] ?? "") : r.type === "hilo" ? (a.v === "h" ? "⬆ Higher" : "⬇ Lower") : r.type === "map" ? (Array.isArray(a.v) ? Math.round(km(a.v, [q.lat, q.lon])).toLocaleString("en-GB") + " km away" : "No pin") : Array.isArray(a.v) ? a.v.join(r.type === "order" ? ", " : " ") : a.v;
         return `<div class="res"><div style="min-width:0"><div class="who">${esc(n)}</div><div class="what">${esc(said)}</div></div><div class="pts ${p ? "" : "zero"}">+${p}</div></div>`;
       }).join("");
       const mapReveal = r.type === "map" ? `<div class="host-map">${mapSvg(FULL, Object.entries(H.answers).filter(([, a]) => Array.isArray(a.v)).map(([n, a]) => `<line x1="${toXY(a.v[0], a.v[1])[0]}" y1="${toXY(a.v[0], a.v[1])[1]}" x2="${toXY(q.lat, q.lon)[0]}" y2="${toXY(q.lat, q.lon)[1]}" stroke="${colorFor(n)}" stroke-width=".5" stroke-dasharray="1.5 1.5"/>`).join("") + Object.entries(H.answers).filter(([, a]) => Array.isArray(a.v)).map(([n, a]) => pin(a.v[0], a.v[1], colorFor(n), 360, n)).join("") + star(q.lat, q.lon, 360))}</div>` : "";
-      const cardReveal = r.type === "odd" || r.type === "hilo" ? `<div class="qcard" style="--c:${c}">${qhtml}</div>` : "";
+      const cardReveal = r.type === "odd" || r.type === "hilo" || r.type === "tf" ? `<div class="qcard" style="--c:${c}">${qhtml}</div>` : "";
       body = `${head}${mapReveal}${cardReveal}<div class="stack" style="gap:8px"><div class="label">The answer</div><div class="reveal-ans" style="--c:${c}">${esc(H.reveal.main)}</div>${H.reveal.sub ? `<div class="reveal-sub">${esc(H.reveal.sub)}</div>` : ""}</div>
         <div class="results">${rows}</div>`;
       if(r.type === "letters"){
@@ -1854,6 +2005,8 @@ function renderPlayer(force){
       <label class="stack" style="gap:6px"><span class="pclue">${esc(q.c1)}</span><input id="pa" autocomplete="off" placeholder="First word"></label>
       <label class="stack" style="gap:6px"><span class="pclue">${esc(q.c2)}</span><input id="pb" autocomplete="off" placeholder="Rhyming word"></label>
       <button class="full" type="submit">Lock in</button></form>`;
+    if(s.rt === "tf") main = `${top}<div class="pclue" style="font-size:20px;font-weight:700">${esc(q.statement || "")}</div>
+      <div class="phl ptf"><button type="button" data-v="t">✓ True</button><button type="button" data-v="f">✗ False</button></div>`;
     if(s.rt === "odd") main = `${top}<div class="big-msg" style="font-size:clamp(24px,6vw,32px)">Which is the odd one out?</div>
       <div class="podd">${(q.items || []).map((it, i) => `<button type="button" data-v="${i}">${esc(it)}</button>`).join("")}</div>`;
     if(s.rt === "hilo") main = (q.out || []).includes(P.name)
