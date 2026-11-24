@@ -225,6 +225,17 @@ div.ans{cursor:default}
 .pic-wrap.small .pic.real{max-height:26vh}
 @keyframes unflip{from{filter:invert(1)}to{filter:invert(0)}}
 .kind-chip.pic-chip{background:var(--t12);align-self:flex-start}
+.lms-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(200px,280px);gap:24px;align-items:start}
+@media (max-width:820px){.lms-grid{grid-template-columns:1fr}}
+.lms-grid .wheel{width:min(50vh,430px,100%)}
+.lms-ladder{display:flex;flex-direction:column;gap:8px;background:var(--panel);border-radius:20px;padding:16px}
+.lms-p{display:flex;justify-content:space-between;align-items:center;gap:8px;border-left:6px solid var(--c);background:var(--studio);border-radius:12px;padding:10px 12px;font-weight:700}
+.lms-p small{color:var(--muted);font-weight:500}.lms-p.now{outline:3px solid var(--c);background:var(--panel-2)}.lms-p.out{opacity:.4;text-decoration:line-through}
+.lms-who{font-family:var(--display);font-size:clamp(28px,4vw,48px);color:var(--c);line-height:1}
+.lms-q{font-size:clamp(26px,3.6vw,46px);font-weight:700;line-height:1.15;flex:1;min-width:0}
+.lms-hint{border-radius:99px;padding:5px 12px;font-size:15px;font-weight:700;background:var(--studio)}
+.lms-hint.ok{color:var(--good)}.lms-hint.bad{color:var(--bad)}.lms-hint.meh{color:var(--t4)}
+.lms-result{font-family:var(--display);font-size:clamp(28px,4vw,50px);line-height:1.1}.lms-result.ok{color:var(--good)}.lms-result.bad{color:var(--bad)}
 .stepper{display:flex;align-items:center;gap:6px;background:var(--panel);border-radius:16px;padding:6px}
 .stepper button{width:44px;height:44px;padding:0;font-size:24px;line-height:1}
 .stepper button:disabled{opacity:.35;cursor:default}
@@ -2115,7 +2126,8 @@ async function startHost(){
   renderHost();
   setInterval(hostTick, 250);
   document.addEventListener("keydown", e => { if(e.code === "Space" && e.target === document.body){ e.preventDefault(); next(); }
-    if(H.ph === "q" && curR().type === "buzz" && e.target === document.body && (e.key === "r" || e.key === "w")) bzMark(e.key === "r"); });
+    if(H.ph === "q" && curR().type === "buzz" && e.target === document.body && (e.key === "r" || e.key === "w")) bzMark(e.key === "r");
+    if(H.ph === "lms" && H.lms.step === "judge" && e.target === document.body && (e.key === "r" || e.key === "w")) lmsMark(e.key === "r"); });
 }
 
 function hostPeers(list){
@@ -2134,6 +2146,8 @@ function hostPeers(list){
     if(H.ph === "vote" && d.a && d.a.k === vKey() && !(name in H.votes) && H.opts.includes(d.a.v)) H.votes[name] = d.a.v;
     if(H.ph === "secret" && name === H.chooser && d.a && d.a.k === H.gid + ".secret" && H.secretOpts.includes(d.a.v)) H.secretPick = d.a.v;
   }
+  if(H.ph === "lms" && H.lms.step === "answer"){ const me = list.find(p => p.data.role === "p" && String(p.data.name || "").slice(0, 16) === H.lms.active);
+    if(me && me.data.a && me.data.a.k === lmsKey() && String(me.data.a.v || "").trim()){ lmsGot(String(me.data.a.v).trim()); return; } }
   if(H.ph === "secret" && H.secretPick){ const c = H.secretPick; H.secretPick = null; pickSecretCat(c); return; }
   if(H.ph === "q" && curR().type === "buzz"){ const was = H.bwas; bzSync(); if(H.bwas !== was) push(); renderHost(); return; }
   if(H.ph === "q" && (curR().type === "hilo" ? hlActive() : H.players).length && (curR().type === "hilo" ? hlActive() : H.players).every(n => H.answers[n] && H.answers[n].done)) doReveal();
@@ -2148,7 +2162,7 @@ function shuffled(items){
 }
 
 function next(){
-  if(H.ph === "lobby" || H.ph === "final"){ if(H.ph === "final"){ Object.keys(H.scores).forEach(k => H.scores[k] = 0); H.gid = Math.random().toString(36).slice(2,7); } H.played = []; H.secretDone = false; H.secretAt = 1 + Math.floor(Math.random() * (NG() - 1)); startVote(); return; }
+  if(H.ph === "lobby" || H.ph === "final"){ if(H.ph === "final"){ Object.keys(H.scores).forEach(k => H.scores[k] = 0); H.gid = Math.random().toString(36).slice(2,7); } H.played = []; H.secretDone = false; H.lmsDone = false; H.secretAt = 1 + Math.floor(Math.random() * (NG() - 1)); startVote(); return; }
   else if(H.ph === "vote"){ resolveVote(); return; }
   else if(H.ph === "voted") H.ph = "intro";
   else if(H.ph === "intro"){ if(H.picLoading) return; if(!H.qs.length){ H.ph = "board"; push(); renderHost(); return; } startQ(); }
@@ -2158,7 +2172,14 @@ function next(){
   else if(H.ph === "reveal"){ let j = H.qi + 1;
     if(curR().type === "hilo" && H.players.length && !hlActive().length){ const c = curQ().chain; while(j < H.qs.length && H.qs[j].chain === c) j++; }
     if(j < H.qs.length){ H.qi = j; startQ(); return; } H.ph = "board"; }
-  else if(H.ph === "board"){ if(H.played.length < NG()){ if(maybeSecret()) return; startVote(); return; } H.ph = "final"; }
+  else if(H.ph === "board"){ if(H.played.length < NG()){ if(maybeSecret()) return; startVote(); return; } if(!H.lmsDone && H.players.length >= 2){ startLMS(); return; } H.ph = "final"; }
+  else if(H.ph === "lms"){ const L = H.lms;
+    if(L.step === "intro" || L.step === "result") lmsNextTurn();
+    else if(L.step === "spin") lmsAsk();
+    else if(L.step === "answer") lmsMark(false, `Out of time. ${L.active} is out`);
+    else if(L.step === "judge") return;
+    else if(L.step === "win"){ H.ph = "final"; push(); renderHost(); }
+    return; }
   else if(H.ph === "secret"){ pickSecretCat(null); return; }
   push(); renderHost();
 }
@@ -2209,6 +2230,78 @@ function buzzSound(alarm){
       o.type = "sawtooth"; o.frequency.value = alarm ? (i % 2 ? 330 : 440) : 180;
       g.gain.setValueAtTime(.0001, at); g.gain.exponentialRampToValueAtTime(.25, at + .02); g.gain.exponentialRampToValueAtTime(.0001, at + (alarm ? .26 : .45));
       o.connect(g).connect(ac.destination); o.start(at); o.stop(at + .5); }); } catch(e){}
+}
+
+/* ---- Last One Standing: bonus round before the final results.
+   The wheel picks a letter and a prompt for each turn. Turns go from the bottom of the table upwards;
+   a wrong answer or running out of time knocks you out, and the last player left wins the prize. ---- */
+const LMS_SECS = 12, LMS_SPIN = 3200, LMS_PRIZE = 5;
+const LMS_PROMPTS = {
+  adult:[["Country","country","start"],["Country","country","contain"],["City","city","start"],["City","city","contain"],["Animal","animal","start"],["Animal","animal","contain"],
+    ["Food","food","start"],["Football team","football team","start"],["Boy’s name","boy’s name","start"],["Girl’s name","girl’s name","start"],["Job","job","start"],
+    ["Sport","sport","start"],["Drink","drink","start"],["Musical instrument","musical instrument","start"]],
+  teen:[["Country","country","start"],["Country","country","contain"],["City","city","start"],["Animal","animal","start"],["Animal","animal","contain"],["Food","food","start"],
+    ["Football team","football team","start"],["Pokémon","Pokémon","start"],["Sport","sport","start"],["Boy’s name","boy’s name","start"],["Girl’s name","girl’s name","start"],
+    ["Superhero","superhero","start"],["Snack or sweet","snack or sweet","start"]],
+  xmas:[["Christmas food","Christmas food","start"],["Christmas drink","Christmas drink","start"],["Christmas sweet or chocolate","Christmas sweet or chocolate","start"],
+    ["Country","country","start"],["Country","country","contain"],["City","city","start"],["Animal","animal","start"],["Boy’s name","boy’s name","start"],["Girl’s name","girl’s name","start"],
+    ["Food","food","contain"]]
+};
+const lmsFits = (w, kind, l) => kind === "start" ? w[0] === l : w.includes(l);
+function lmsCount(cat, kind, l){ let n = 0; (CATLISTS[cat] || []).forEach(key => listIndex(key).set.forEach(w => { if(lmsFits(w, kind, l)) n++; })); return n; }
+function lmsPrompt(){
+  const ps = LMS_PROMPTS[H.mode] || LMS_PROMPTS.adult, L = H.lms;
+  for(let t = 0; t < 80; t++){
+    const [cat, label, kind] = ps[Math.floor(Math.random() * ps.length)], letter = WHEEL[Math.floor(Math.random() * WHEEL.length)];
+    const id = cat + kind + letter; if(L.seen.includes(id) || lmsCount(cat, kind, letter.toLowerCase()) < 5) continue;
+    L.seen.push(id);
+    const an = /^[aeiou]/i.test(label) ? "an" : "a";
+    return { cat, kind, letter, text:kind === "start" ? `Name ${an} ${label} starting with ${letter}` : `Name ${an} ${label} with the letter ${letter} in it` };
+  }
+  return { cat:"Country", kind:"contain", letter:"A", text:"Name a country with the letter A in it" };
+}
+function startLMS(){
+  H.lmsDone = true;
+  const order = H.players.map(n => [n, H.scores[n] || 0, Math.random()]).sort((a, b) => a[1] - b[1] || a[2] - b[2]).map(x => x[0]);
+  H.lms = { order, out:[], turn:-1, at:-1, used:[], seen:[], step:"intro", answer:"", hint:[], msg:"", winner:"" };
+  H.ph = "lms"; buzzSound(true); push(); renderHost();
+}
+const lmsAlive = () => H.lms.order.filter(n => !H.lms.out.includes(n));
+const lmsKey = () => `${H.gid}.lms.${H.lms.turn}`;
+function lmsNextTurn(){
+  const L = H.lms; if(H.ph !== "lms") return;
+  // anyone who has left the game is out
+  L.order.forEach(n => { if(!H.players.includes(n) && !L.out.includes(n)) L.out.push(n); });
+  const alive = lmsAlive();
+  if(alive.length <= 1){ L.winner = alive[0] || ""; if(L.winner) H.scores[L.winner] = (H.scores[L.winner] || 0) + LMS_PRIZE; L.step = "win"; buzzSound(true); push(); renderHost(); return; }
+  // next player still in, going up the table from the bottom
+  for(let k = 1; k <= L.order.length; k++){ const i = (L.at + k) % L.order.length; if(!L.out.includes(L.order[i])){ L.at = i; break; } }
+  L.turn++; L.active = L.order[L.at]; L.answer = ""; L.hint = []; L.msg = ""; L.p = lmsPrompt();
+  L.step = "spin"; H.spinTo = 360 * 4 - WHEEL.indexOf(L.p.letter) * (360 / WHEEL.length); H.spinStart = Date.now();
+  push(); renderHost(); requestAnimationFrame(lmsSpinLoop);
+}
+function lmsSpinLoop(){
+  if(H.ph !== "lms" || H.lms.step !== "spin") return;
+  const t = Math.min(1, (Date.now() - H.spinStart) / LMS_SPIN);
+  const g = $("#wheel-g"); if(g) g.setAttribute("transform", `rotate(${(H.spinTo * (1 - Math.pow(1 - t, 3))).toFixed(2)} 200 200)`);
+  if(t < 1) requestAnimationFrame(lmsSpinLoop);
+  else { const w = $("#wheel-wrap"); if(w) w.classList.add("landed"); const turn = H.lms.turn; setTimeout(() => { if(H.ph === "lms" && H.lms.turn === turn && H.lms.step === "spin") lmsAsk(); }, 800); }
+}
+function lmsAsk(){ const L = H.lms; L.step = "answer"; H.dur = LMS_SECS * 1000; H.endsAt = Date.now() + H.dur; push(); renderHost(); }
+function lmsGot(ans){
+  const L = H.lms, w = cleanWord(ans), l = L.p.letter.toLowerCase();
+  L.answer = String(ans).slice(0, 40); L.step = "judge";
+  L.hint = [lmsFits(w, L.p.kind, l) ? ["ok", L.p.kind === "start" ? `Starts with ${L.p.letter}` : `Has a ${L.p.letter}`] : ["bad", L.p.kind === "start" ? `Doesn’t start with ${L.p.letter}` : `No ${L.p.letter} in it`],
+            onList(L.p.cat, ans) ? ["ok", "On our list"] : ["meh", "Not on our list, your call"]];
+  if(L.used.includes(w)) L.hint.push(["bad", "Already said this round"]);
+  push(); renderHost();
+}
+function lmsMark(right, why){
+  const L = H.lms; if(H.ph !== "lms" || (L.step !== "judge" && L.step !== "answer")) return;
+  if(right){ L.used.push(cleanWord(L.answer)); L.msg = `${L.active} stays in`; L.ok = true; }
+  else { L.out.push(L.active); L.msg = why || `${L.active} is out`; L.ok = false; buzzSound(false); }
+  L.step = "result"; push(); renderHost();
+  const turn = L.turn; setTimeout(() => { if(H.ph === "lms" && H.lms.turn === turn && H.lms.step === "result") lmsNextTurn(); }, 2600);
 }
 
 function startVote(){
@@ -2456,6 +2549,8 @@ function publicState(){
               k:qKey(), mode:H.mode, endsAt:H.endsAt, now:Date.now(), rn:H.played.length };
   if(H.ph === "vote"){ s.k = vKey(); s.opts = H.opts.map(i => ({ i, t:ROUNDS[i].title, b:ROUNDS[i].blurb, c:ROUNDS[i].color })); }
   if(H.ph === "secret"){ s.k = H.gid + ".secret"; s.opts = H.secretOpts; }
+  if(H.ph === "lms"){ const L = H.lms; s.k = lmsKey(); s.lms = { step:L.step, turn:L.turn, active:L.active || "", prompt:L.step === "spin" ? "" : (L.p ? L.p.text : ""), letter:L.step === "spin" ? "" : (L.p ? L.p.letter : ""),
+    order:L.order, out:L.out, answer:L.answer, msg:L.msg, ok:!!L.ok, winner:L.winner, prize:LMS_PRIZE }; }
   if(H.ph === "voted"){ s.tie = H.tie; s.noVotes = !Object.keys(H.votes).length; }
   if(H.ph === "intro"){ s.rules = r.rules; s.scoring = r.scoring; }
   if(H.ph === "check") s.k = cKey();
@@ -2486,12 +2581,14 @@ function push(){ if(H.net) H.net.set({ role:"h", s:publicState() }); }
 function hostTick(){
   if(H.ph === "q" && curR().type === "titles"){ const hn = ltHint(), key = hn.a + "|" + hn.l; if(key !== H.ltKey){ H.ltKey = key; push(); renderHost(); } }
   if(H.ph === "spin" && Date.now() - H.spinStart > SPIN_MS + 3000) beginLetters();
-  if(H.ph !== "q" && H.ph !== "vote" && H.ph !== "secret") return;
+  if(H.ph === "lms" && H.lms.step !== "answer") return;
+  if(H.ph !== "q" && H.ph !== "vote" && H.ph !== "secret" && H.ph !== "lms") return;
   if(H.ph === "q" && curR().type === "buzz" && H.bwas) return;   // clock paused while someone answers
   const left = Math.max(0, H.endsAt - Date.now());
   const el = $("#tleft"), ring = $("#tring");
   if(el) el.textContent = Math.ceil(left / 1000);
   if(ring){ const f = left / H.dur; ring.style.strokeDashoffset = String(440 * (1 - f)); }
+  if(left <= 0 && H.ph === "lms"){ lmsMark(false, `Out of time. ${H.lms.active} is out`); return; }
   if(left <= 0){ if(H.ph === "q") doReveal(); else if(H.ph === "secret") pickSecretCat(null); else resolveVote(); }
 }
 
@@ -2529,6 +2626,25 @@ function renderHost(){
       <div class="vote-opts">${H.opts.map(i => `<div class="vopt" style="--c:var(${ROUNDS[i].color})"><b>${esc(ROUNDS[i].title)}</b><small>${esc(ROUNDS[i].blurb)}</small><div class="vcount">${t[i]} vote${t[i] === 1 ? "" : "s"}</div><div class="track"><div class="fill" style="width:${n ? (t[i] / n * 100).toFixed(0) : 0}%"></div></div></div>`).join("")}</div>
       <div class="chips">${H.players.map(p => `<span class="chip ${p in H.votes ? "done" : "wait"}" style="--c:${colorFor(p)}">${esc(p)}</span>`).join("")}</div>`;
     ctrl = "Close voting";
+  }
+  if(H.ph === "lms"){
+    const L = H.lms, alive = lmsAlive();
+    const ladder = `<div class="lms-ladder"><div class="label">Bottom of the table goes first</div>${L.order.map(n => `<div class="lms-p ${L.out.includes(n) ? "out" : n === L.active && L.step !== "intro" && L.step !== "win" ? "now" : ""}" style="--c:${colorFor(n)}"><span>${esc(n)}</span><small>${L.out.includes(n) ? "Out" : n === L.winner ? "🏆" : n === L.active && L.step !== "intro" ? "Their turn" : ""}</small></div>`).join("")}</div>`;
+    let main = "";
+    if(L.step === "intro") main = `<div class="secret-title" style="color:var(--t4)">🏆 LAST ONE STANDING</div>
+      <p class="rules" style="margin:0">Bonus round! The wheel picks a letter and a challenge, like “Name a country starting with M”. Players take turns from the bottom of the table up. You have ${LMS_SECS} seconds to type an answer on your phone. A wrong answer or running out of time and you’re out. No repeats!</p>
+      <p class="reveal-sub" style="margin:0">The last player standing wins <b>+${LMS_PRIZE} points</b>.</p>`;
+    if(L.step === "spin") main = `<div class="lms-who" style="--c:${colorFor(L.active)}">${esc(L.active)}, this one’s yours</div><div class="wheel-wrap" id="wheel-wrap">${wheelSvg()}</div>`;
+    if(L.step !== "intro" && L.step !== "spin" && L.step !== "win") main = `<div class="lms-who" style="--c:${colorFor(L.active)}">${esc(L.active)}</div>
+      <div class="row" style="gap:20px;align-items:center;flex-wrap:nowrap"><div class="letter-tile small">${esc(L.p.letter)}</div><div class="lms-q">${esc(L.p.text)}</div>${L.step === "answer" ? timerHtml("var(--t4)") : ""}</div>
+      ${L.step === "answer" ? `<div class="big-msg">Type it on your phone…</div>` : ""}
+      ${L.step === "judge" ? `<div class="bz-who" style="--c:${colorFor(L.active)}"><div class="stack" style="gap:8px"><div class="label">${esc(L.active)} said</div><b>${esc(L.answer)}</b>
+          <div class="row" style="gap:8px">${L.hint.map(([k, t]) => `<span class="lms-hint ${k}">${k === "ok" ? "✓" : k === "bad" ? "✗" : "?"} ${esc(t)}</span>`).join("")}</div></div>
+        <div class="row"><button type="button" class="bz-yes" id="lms-yes">✓ Accept <small>(R)</small></button><button type="button" class="bz-no" id="lms-no">✗ Out <small>(W)</small></button></div></div>` : ""}
+      ${L.step === "result" ? `<div class="lms-result ${L.ok ? "ok" : "bad"}">${L.answer ? `“${esc(L.answer)}”: ` : ""}${esc(L.msg)}</div>` : ""}`;
+    if(L.step === "win") main = `<div class="label">Last one standing</div><h1 class="intro-title" style="--c:${colorFor(L.winner || "x")}">${L.winner ? esc(L.winner) + " wins!" : "Nobody left!"}</h1>${L.winner ? `<div class="lms-result ok">+${LMS_PRIZE} bonus points</div>` : ""}`;
+    body = `<div class="round-no" style="color:var(--t4)">🏆 Bonus round · ${alive.length} still in</div><div class="lms-grid"><div class="stack" style="gap:18px;min-width:0">${main}</div>${ladder}</div>`;
+    ctrl = L.step === "intro" ? "Spin the wheel" : L.step === "spin" ? "Skip spin" : L.step === "answer" ? "Time’s up: out" : L.step === "judge" ? "Accept or knock out" : L.step === "result" ? "Next turn" : "Final results";
   }
   if(H.ph === "secret"){
     body = `<div class="secret-alarm"><div class="secret-title">🚨 SECRET BUZZER ROUND 🚨</div>
@@ -2637,7 +2753,7 @@ function renderHost(){
     const sc = sortedScores(), top = Math.max(1, ...sc.map(s => s[1]));
     body = `<div class="round-no">After round ${H.played.length} of ${NG()}</div><h2 style="font-size:clamp(36px,5vw,60px)">Scores</h2>
       <div class="board">${sc.map(([n, p], i) => `<div class="bar" style="--c:${colorFor(n)}"><span class="pos">${i + 1}</span><span class="nm">${esc(n)}</span><div class="track"><div class="fill" style="width:${(Math.max(0, p) / top * 100).toFixed(1)}%"></div></div><span class="sc">${p}</span></div>`).join("") || `<p class="reveal-sub">No players yet.</p>`}</div>`;
-    ctrl = H.played.length < NG() - 1 ? "Vote for the next round" : H.played.length < NG() ? "Final round" : "Final results";
+    ctrl = H.played.length < NG() - 1 ? "Vote for the next round" : H.played.length < NG() ? "Final round" : !H.lmsDone && H.players.length >= 2 ? "Bonus round" : "Final results";
   }
   if(H.ph === "final"){
     const sc = sortedScores(); const [a, b, d] = sc;
@@ -2666,6 +2782,9 @@ function renderHost(){
   document.querySelectorAll(".gm-yes, .gm-no").forEach(b => b.onclick = () => { const i = +b.dataset.i, v = b.classList.contains("gm-yes"); H.decide[i] = H.decide[i] === v ? undefined : v; renderHost(); });
   if($("#gm-all")) $("#gm-all").onclick = () => { H.chk.forEach(it => { if(H.decide[it.i] === undefined) H.decide[it.i] = true; }); renderHost(); };
   if(H.ph === "spin") requestAnimationFrame(spinLoop);
+  if(H.ph === "lms" && H.lms.step === "spin") requestAnimationFrame(lmsSpinLoop);
+  if($("#lms-yes")){ $("#lms-yes").onclick = () => lmsMark(true); $("#lms-no").onclick = () => lmsMark(false); }
+  if(H.ph === "lms" && H.lms.step === "judge" && $("#h-next")) $("#h-next").disabled = true;
   if($("#bz-show")) $("#bz-show").onclick = bzShow;
   if($("#bz-yes")){ $("#bz-yes").onclick = () => bzMark(true); $("#bz-no").onclick = () => bzMark(false); }
   const end = $("#h-end"); if(end) end.onclick = () => { H.ph = "final"; push(); renderHost(); };
@@ -2712,7 +2831,7 @@ function playerPeers(list){
   const j = JSON.stringify(s);
   if(j === P.sJSON) return;
   P.sJSON = j; P.s = s;
-  if(s && (s.ph === "q" || s.ph === "vote" || s.ph === "secret")) P.localEnd = Date.now() + (s.endsAt - s.now);
+  if(s && (s.ph === "q" || s.ph === "vote" || s.ph === "secret" || s.ph === "lms")) P.localEnd = Date.now() + (s.endsAt - s.now);
   renderPlayer();
 }
 
@@ -2722,7 +2841,7 @@ function playerTick(){
 }
 
 function submit(v){
-  if(!P.s || (P.s.ph !== "q" && P.s.ph !== "vote")) return;
+  if(!P.s || (P.s.ph !== "q" && P.s.ph !== "vote" && P.s.ph !== "lms")) return;
   P.sent = P.s.k;
   P.net.set({ role:"p", name:P.name, a:{ k:P.s.k, v, done:true } });
   renderPlayer(true);
@@ -2732,7 +2851,7 @@ function myScore(){ const s = P.s; if(!s) return 0; const e = (s.sc || []).find(
 
 function renderPlayer(force){
   const s = P.s;
-  const view = !s ? "wait" : `${s.ph}|${s.k}|${P.sent === s.k}|${s.rv && s.rv.res ? (s.rv.res[P.name] || 0) : ""}|${s.rt === "buzz" && s.q ? s.q.now + "/" + (s.q.out || []).join(",") + "/" + (s.q.queue || []).indexOf(P.name) : ""}`;
+  const view = !s ? "wait" : `${s.lms ? s.lms.step + s.lms.turn : ""}|${s.ph}|${s.k}|${P.sent === s.k}|${s.rv && s.rv.res ? (s.rv.res[P.name] || 0) : ""}|${s.rt === "buzz" && s.q ? s.q.now + "/" + (s.q.out || []).join(",") + "/" + (s.q.queue || []).indexOf(P.name) : ""}`;
   if(!force && view === P.view){ setSnow(!!s && s.mode === "xmas"); const ps = $("#pscore"); if(ps) ps.textContent = myScore() + " pts";
     if(s && s.rt === "titles" && s.ph === "q" && s.q){ const mk = $(".lt-mask"); if(mk && mk.textContent !== s.q.mask){ mk.textContent = s.q.mask; }
       if(s.q.artist && mk && !mk.nextElementSibling){ const d = document.createElement("div"); d.innerHTML = "Artist: <b></b>"; d.querySelector("b").textContent = s.q.artist; mk.after(d); } }
@@ -2741,6 +2860,18 @@ function renderPlayer(force){
   let main = "";
   if(!s) main = `<div class="big-msg">You’re in!</div><p class="reveal-sub" style="margin:0">Waiting for the host to start. Watch the big screen.</p>`;
   else if(s.ph === "lobby") main = `<div class="big-msg">You’re in!</div><p class="reveal-sub" style="margin:0">Look for your name on the big screen.</p>`;
+  else if(s.ph === "lms"){ const L = s.lms || {}, me = L.active === P.name, out = (L.out || []).includes(P.name);
+    const place = (L.order || []).filter(n => !(L.out || []).includes(n)).length;
+    main = L.step === "intro" ? `<div class="secret-title" style="font-size:clamp(26px,8vw,40px);color:var(--t4)">🏆 LAST ONE STANDING</div><p style="margin:0">Bonus round. When it’s your turn, answer the challenge on your phone within ${LMS_SECS} seconds. Wrong or too slow and you’re out. Last one left wins <b>+${L.prize}</b>.</p>`
+      : L.step === "win" ? `<div class="big-msg">${L.winner === P.name ? "🏆 You’re the last one standing! +" + L.prize : esc(L.winner) + " is the last one standing"}</div>`
+      : out && !(L.step === "result" && me) ? `<div class="big-msg">You’re out</div><p class="reveal-sub" style="margin:0">${place} still in. Watch the big screen.</p>`
+      : L.step === "spin" ? `<div class="big-msg">${me ? "Your turn! The wheel is spinning…" : esc(L.active) + "’s turn"}</div><p class="reveal-sub" style="margin:0">Watch the big screen.</p>`
+      : L.step === "answer" && me && P.sent !== s.k ? `<div class="row" style="justify-content:space-between"><span class="label" style="color:var(--t4)">Your turn</span><span class="ptimer" id="ptl"></span></div>
+          <div class="row" style="gap:14px"><div class="plet">${esc(L.letter)}</div><div class="pclue" style="flex:1;font-size:20px;font-weight:700">${esc(L.prompt)}</div></div>
+          <form id="pf" class="stack"><input id="pa" autocomplete="off" autocapitalize="words" placeholder="Your answer"><button class="full" type="submit">Lock in</button></form>`
+      : L.step === "answer" ? `<div class="big-msg">${me ? "Sent!" : esc(L.active) + " is thinking…"}</div><p class="pclue" style="margin:0">${esc(L.prompt)}</p>`
+      : L.step === "judge" ? `<div class="big-msg">${me ? "The quizmaster is checking your answer…" : "Checking " + esc(L.active) + "’s answer…"}</div><p class="pclue" style="margin:0">“${esc(L.answer)}”</p>`
+      : `<div class="big-msg" style="color:${L.ok ? "var(--good)" : "var(--bad)"}">${me ? (L.ok ? "You’re still in!" : "You’re out!") : esc(L.msg)}</div>`; }
   else if(s.ph === "secret" && s.chooser === P.name && P.sent !== s.k) main = `<div class="secret-title" style="font-size:clamp(26px,8vw,40px)">🚨 SECRET ROUND</div><div class="big-msg">You pick the category!</div>
       <p style="margin:0">It’s a buzzer round. Get questions right for <b>+${SECRET_BONUS} extra</b> each.</p><span class="ptimer" id="ptl"></span>
       <div class="pvote">${(s.opts || []).map((x, i) => `<button type="button" class="psec" data-c="${i}" style="--c:var(--bad)"><b>${esc(x)}</b></button>`).join("")}</div>`;
@@ -2815,7 +2946,7 @@ function renderPlayer(force){
   app.innerHTML = `<div class="phone"><div class="ptop"><span class="me" style="--c:${colorFor(P.name)}">${esc(P.name)}</span><span class="pscore" id="pscore">${myScore()} pts</span></div><div class="pmain">${main}</div></div>`;
   setSnow(!!s && s.mode === "xmas");
   const pf = $("#pf");
-  if(pf && s.rt === "letters"){
+  if(pf && s.rt === "letters" && s.ph === "q"){
     const vals = () => s.q.cats.map((_, i) => ($("#pl" + i).value || "").trim().slice(0, 30));
     let tmr = null;
     pf.oninput = () => { clearTimeout(tmr); tmr = setTimeout(() => { if(P.s && P.s.ph === "q" && P.sent !== s.k) P.net.set({ role:"p", name:P.name, a:{ k:s.k, v:vals(), done:false } }); }, 400); };
@@ -2823,7 +2954,7 @@ function renderPlayer(force){
     $("#pl0").focus();
   }
   else if(pf){ pf.onsubmit = e => { e.preventDefault(); const a = $("#pa").value.trim(); const b = $("#pb");
-      if(s.rt === "pair"){ if(!a || !b.value.trim()) return; submit([a.slice(0, 40), b.value.trim().slice(0, 40)]); }
+      if(s.rt === "pair" && s.ph === "q"){ if(!a || !b.value.trim()) return; submit([a.slice(0, 40), b.value.trim().slice(0, 40)]); }
       else { if(!a) return; submit(a.slice(0, 60)); } };
     $("#pa").focus(); }
   if($("#pick")) drawPick();
