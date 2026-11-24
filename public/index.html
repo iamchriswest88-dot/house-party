@@ -231,7 +231,8 @@ body.xmas #app{position:relative;z-index:1}
 .bz-who b{font-family:var(--display);font-size:clamp(34px,5vw,60px);line-height:1;color:var(--c)}
 .bz-who button{font-size:24px;padding:14px 26px}.bz-who button small{opacity:.6;font-size:15px}
 .bz-yes{background:var(--good);color:var(--on-tile)}.bz-no{background:var(--bad);color:#fff}
-.bz-peek{align-self:flex-start;font-size:15px}
+.bz-show{font-size:24px;padding:14px 26px}.bz-show small{opacity:.6;font-size:15px}
+.bz-ans{font-family:var(--display);font-size:clamp(30px,4.5vw,54px);line-height:1;color:var(--t4);text-align:right}
 .bz-paused{font-size:72px;line-height:1;opacity:.6}.delta.none{color:var(--muted)}
 .full{width:100%;font-size:20px;padding:18px}
 @media (max-width:720px){
@@ -1285,8 +1286,8 @@ const ROUNDS = [
       {"title": "Things Can Only Get Better", "artist": "D:Ream"}
      ]},
   { id:"secret", type:"buzz", secret:true, title:"Secret Buzzer Round", secs:20, color:"--bad", perGame:5,
-    blurb:"Surprise!", rules:"Everyone’s phone is a buzzer. Buzz first, then say your answer out loud. The quizmaster marks it.",
-    scoring:"Right answer 2 points. Wrong answer loses 1 point. The player who picked the category gets 2 extra for each one they get right.",
+    blurb:"Surprise!", rules:"Everyone’s phone is a buzzer. Only the first to buzz gets to answer, so say it out loud. One guess, then the answer is shown.",
+    scoring:"Right answer 2 points. Wrong answer loses 2 points. The player who picked the category gets 2 extra for each one they get right.",
     cats:{ adult:{
       "Science & Nature":[
         {"q": "What is the chemical symbol for gold?", "a": "Au"},
@@ -1782,7 +1783,7 @@ function renderStart(){
 /* ============================================================ HOST */
 const VOTE_SECS = 15;
 const NR = () => ROUNDS.filter(r => !r.secret).length;
-const SECRET_PICK_SECS = 20, SECRET_BONUS = 2, BUZZ_RIGHT = 2, BUZZ_WRONG = 1;
+const SECRET_PICK_SECS = 20, SECRET_BONUS = 2, BUZZ_RIGHT = 2, BUZZ_WRONG = 2;
 /* Question set: "adult" (default) or "teen" (ages 11–14). Rounds without a teenPool share one set. */
 const poolFor = r => H.mode === "teen" && r.teenPool ? r.teenPool : H.mode === "xmas" && r.xmasPool && r.xmasPool.length ? r.xmasPool : r.pool;
 const MODES = { adult:"Grown-ups", teen:"Young teens", xmas:"Christmas" };
@@ -1846,7 +1847,7 @@ function next(){
   else if(H.ph === "voted") H.ph = "intro";
   else if(H.ph === "intro") startQ();
   else if(H.ph === "spin"){ beginLetters(); return; }
-  else if(H.ph === "q") doReveal();
+  else if(H.ph === "q"){ if(curR().type === "buzz" && bzNow() && !H.bshow){ bzShow(); return; } doReveal(); }
   else if(H.ph === "check"){ finishCheck(); return; }
   else if(H.ph === "reveal"){ let j = H.qi + 1;
     if(curR().type === "hilo" && H.players.length && !hlActive().length){ const c = curQ().chain; while(j < H.qs.length && H.qs[j].chain === c) j++; }
@@ -1890,13 +1891,11 @@ function bzSync(){
   H.bwas = now;
 }
 function bzMark(right){
-  const n = bzNow(); if(H.ph !== "q" || !n) return;
+  const n = bzNow(); if(H.ph !== "q" || !n || !H.bshow) return;
   if(right){ H.bres[n] = (H.bres[n] || 0) + BUZZ_RIGHT + (n === H.chooser ? SECRET_BONUS : 0); H.bmark[n] = "right"; H.bwas = null; doReveal(); return; }
-  H.bres[n] = (H.bres[n] || 0) - BUZZ_WRONG; H.bmark[n] = "wrong"; H.bout.push(n);
-  bzSync();
-  if(H.players.length && H.players.every(p => H.bout.includes(p))){ doReveal(); return; }
-  push(); renderHost();
+  H.bres[n] = (H.bres[n] || 0) - BUZZ_WRONG; H.bmark[n] = "wrong"; H.bout.push(n); H.bwas = null; doReveal();
 }
+function bzShow(){ if(H.ph !== "q" || !bzNow() || H.bshow) return; H.bshow = true; push(); renderHost(); }
 /* Buzzer sound made in the browser (the host has already clicked, so sound is allowed). */
 function buzzSound(alarm){
   try { const C = window.AudioContext || window.webkitAudioContext; if(!C) return; const ac = H.ac || (H.ac = new C());
@@ -1944,7 +1943,7 @@ function resolveVote(){
 
 const SPIN_MS = 4500;
 function startQ(){
-  H.ph = "q"; H.answers = {}; H.reveal = null; H.bout = []; H.bres = {}; H.bmark = {}; H.bwas = null; H.strikes = {}; H.voted = {}; H.chk = []; H.decide = {}; H.checked = false;
+  H.ph = "q"; H.answers = {}; H.reveal = null; H.bout = []; H.bres = {}; H.bmark = {}; H.bwas = null; H.bshow = false; H.strikes = {}; H.voted = {}; H.chk = []; H.decide = {}; H.checked = false;
   H.shown = curR().type === "order" || curR().type === "odd" ? shuffled(curQ().items) : [];
   if(curR().type === "hilo" && (curQ().step === 0 || !H.out)) H.out = new Set();
   if(curR().type === "letters"){
@@ -2254,12 +2253,12 @@ function renderHost(){
       const now = bzNow(), wait = bzQueue().filter(n => n !== now && !H.bout.includes(n));
       body = `${head}<div class="qwrap"><div class="qcard" style="--c:${c}">${qhtml}</div>
         <div class="stack" style="align-items:center">${now ? `<div class="bz-paused">⏸</div>` : timerHtml(c)}</div></div>
-        ${now ? `<div class="bz-who" style="--c:${colorFor(now)}"><div class="stack" style="gap:4px"><div class="label">Buzzed first</div><b>🔔 ${esc(now)}</b>${wait.length ? `<small>Next in line: ${wait.map(esc).join(", ")}</small>` : ""}</div>
-          <div class="row"><button type="button" class="bz-yes" id="bz-yes">✓ Right <small>(R)</small></button><button type="button" class="bz-no" id="bz-no">✗ Wrong <small>(W)</small></button></div></div>
-          <button type="button" class="ghost bz-peek" id="bz-peek">Hold to peek at the answer</button>`
+        ${now ? `<div class="bz-who" style="--c:${colorFor(now)}"><div class="stack" style="gap:4px"><div class="label">Buzzed first</div><b>🔔 ${esc(now)}</b><small>${H.bshow ? "Did they get it?" : "Let them answer out loud, then show the answer."}</small></div>
+          ${H.bshow ? `<div class="stack" style="gap:6px;align-items:flex-end"><div class="label">The answer</div><div class="bz-ans">${esc(q.a)}</div></div>` : `<button type="button" id="bz-show" class="bz-show">Show answer <small>(Space)</small></button>`}</div>
+          ${H.bshow ? `<div class="row" style="justify-content:center"><button type="button" class="bz-yes" id="bz-yes">✓ ${esc(now)} was right <small>(R)</small></button><button type="button" class="bz-no" id="bz-no">✗ Wrong, −${BUZZ_WRONG} <small>(W)</small></button></div>` : ""}`
           : `<div class="big-msg" style="text-align:center">Read it out. Buzz on your phone!</div>`}
         <div class="chips">${H.players.map(n => `<span class="chip ${H.bout.includes(n) ? "wait out" : n === now ? "done" : "wait"}" style="--c:${colorFor(n)}">${esc(n)}${H.bout.includes(n) ? " · out" : ""}</span>`).join("")}</div>`;
-      ctrl = "Nobody got it: reveal";
+      ctrl = now ? (H.bshow ? "Skip (no points)" : "Show answer") : "Nobody buzzed: reveal";
     } else if(H.ph === "q"){
       const done = Object.values(H.answers).filter(a => a.done).length;
       const need = r.type === "hilo" ? hlActive() : H.players;
@@ -2319,9 +2318,8 @@ function renderHost(){
   document.querySelectorAll(".gm-yes, .gm-no").forEach(b => b.onclick = () => { const i = +b.dataset.i, v = b.classList.contains("gm-yes"); H.decide[i] = H.decide[i] === v ? undefined : v; renderHost(); });
   if($("#gm-all")) $("#gm-all").onclick = () => { H.chk.forEach(it => { if(H.decide[it.i] === undefined) H.decide[it.i] = true; }); renderHost(); };
   if(H.ph === "spin") requestAnimationFrame(spinLoop);
-  if($("#bz-yes")){ $("#bz-yes").onclick = () => bzMark(true); $("#bz-no").onclick = () => bzMark(false);
-    const pk = $("#bz-peek"), show = () => pk.textContent = "Answer: " + curQ().a, hide = () => pk.textContent = "Hold to peek at the answer";
-    pk.onpointerdown = show; pk.onpointerup = pk.onpointerleave = pk.onpointercancel = hide; }
+  if($("#bz-show")) $("#bz-show").onclick = bzShow;
+  if($("#bz-yes")){ $("#bz-yes").onclick = () => bzMark(true); $("#bz-no").onclick = () => bzMark(false); }
   const end = $("#h-end"); if(end) end.onclick = () => { H.ph = "final"; push(); renderHost(); };
 }
 
@@ -2405,14 +2403,14 @@ function renderPlayer(force){
       <div class="pvote">${(s.opts || []).map(o => `<button type="button" data-v="${o.i}" style="--c:var(${o.c})"><b>${esc(o.t)}</b><span>${esc(o.b)}</span></button>`).join("")}</div>`;
   else if(s.ph === "voted") main = `<div class="label">${s.noVotes ? "Picked at random" : s.tie ? "Tie! Picked at random" : "Next round"}</div><div class="big-msg" style="color:var(${s.col})">${esc(s.title)}</div>`;
   else if(s.ph === "intro" && s.secret) main = `<div class="secret-title" style="font-size:clamp(26px,8vw,40px)">🚨 BUZZER ROUND</div><div class="big-msg" style="color:var(--bad)">${esc(s.cat)}</div>
-      <p style="margin:0">Your phone becomes a buzzer. Buzz first, then shout your answer. Right <b>+${BUZZ_RIGHT}</b>, wrong <b>−${BUZZ_WRONG}</b>.${s.chooser === P.name ? ` You picked this, so you get <b>+${SECRET_BONUS} extra</b> for each right answer!` : ""}</p>`;
+      <p style="margin:0">Your phone becomes a buzzer. Only the first to buzz answers, and they get one guess. Right <b>+${BUZZ_RIGHT}</b>, wrong <b>−${BUZZ_WRONG}</b>.${s.chooser === P.name ? ` You picked this, so you get <b>+${SECRET_BONUS} extra</b> for each right answer!` : ""}</p>`;
   else if(s.ph === "intro") main = `<div class="label">Round ${s.rn} of ${s.nr}</div><div class="big-msg" style="color:var(${s.col})">${esc(s.title)}</div><p style="margin:0">${esc(s.rules)}</p>`;
   else if(s.ph === "spin") main = `<div class="label" style="color:var(${s.col})">${esc(s.title)}</div><div class="big-msg">The wheel is spinning…</div><p class="reveal-sub" style="margin:0">Watch the big screen. Your list appears here when it stops.</p>`;
   else if(s.ph === "check") main = `<div class="label" style="color:var(${s.col})">${esc(s.title)}</div><div class="big-msg">The gamemaster is checking answers…</div><p class="reveal-sub" style="margin:0">Watch the big screen.</p>`;
   else if(s.ph === "q" && s.rt === "buzz"){ const q = s.q || {}, out = (q.out || []).includes(P.name), inQ = (q.queue || []).includes(P.name);
-    main = q.now === P.name ? `<div class="bz-big you">🔔</div><div class="big-msg">You’re first!</div><p style="margin:0;font-size:20px">Say your answer out loud.</p>`
+    main = q.now === P.name ? `<div class="bz-big you">🔔</div><div class="big-msg">You’re first!</div><p style="margin:0;font-size:20px">Say your answer out loud. One guess only!</p>`
       : out ? `<div class="big-msg">Wrong answer</div><p class="reveal-sub" style="margin:0">You’re out for this question. −${BUZZ_WRONG} point.</p>`
-      : q.now ? `<div class="big-msg">${esc(q.now)} buzzed first</div><p class="reveal-sub" style="margin:0">${inQ ? "You’re in the queue if they get it wrong." : "If they’re wrong, buzz again!"}</p>`
+      : q.now ? `<div class="big-msg">${esc(q.now)} buzzed first</div><p class="reveal-sub" style="margin:0">${inQ ? "Just too slow!" : "They get one guess. Watch the big screen."}</p>`
       : P.sent === s.k || inQ ? `<div class="bz-big">⏳</div><div class="big-msg">Buzzed!</div>`
       : `<div class="pclue" style="font-size:18px">${esc(q.q || "")}</div><button type="button" class="bz-btn" id="bz">BUZZ</button>`; }
   else if(s.ph === "q" && P.sent === s.k) main = `<div class="big-msg">Locked in</div><p class="reveal-sub" style="margin:0">Eyes on the big screen.</p>`;
