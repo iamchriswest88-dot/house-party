@@ -221,8 +221,8 @@ body.xmas #app{position:relative;z-index:1}
 .delta.good{color:var(--good)}.delta.bad{color:var(--bad)}
 .res .pts.neg{color:var(--bad)}
 .pic-wrap{display:flex;justify-content:center;overflow:hidden;border-radius:18px;background:#000}
-.pic{display:block;max-width:100%;max-height:min(46vh,520px);object-fit:contain;filter:invert(1) blur(4px);transform:scale(1.04)}
-.pic-wrap.small .pic{max-height:32vh;filter:invert(1) blur(2.5px)}
+.pic{display:block;max-width:100%;max-height:min(46vh,520px);object-fit:contain;filter:invert(1)}
+.pic-wrap.small .pic{max-height:32vh}
 .kind-chip.pic-chip{background:var(--t12);align-self:flex-start}
 .stepper{display:flex;align-items:center;gap:6px;background:var(--panel);border-radius:16px;padding:6px}
 .stepper button{width:44px;height:44px;padding:0;font-size:24px;line-height:1}
@@ -786,7 +786,7 @@ const ROUNDS = [
     ]},
   { id:"pic", type:"pic", title:"Photo Negative", secs:30, color:"--t12", perGame:5,
     blurb:"Famous faces and things, inside out",
-    rules:"A famous person or thing appears slightly blurred, with its colours flipped like an old photo negative. Type who or what it is on your phone.",
+    rules:"A famous person or thing appears with its colours flipped, like an old photo negative. Type who or what it is on your phone.",
     scoring:"2 points for a right answer, plus 1 for the fastest.",
     pool:[
       {"w": "Elton John", "answer": "Elton John", "alt": ["Elton"], "kind": "p"},
@@ -2388,7 +2388,7 @@ function renderHost(){
     if(r.type === "pair") qhtml = `<div class="pair"><div class="clue">${esc(q.c1)}</div><div class="plus">+</div><div class="clue">${esc(q.c2)}</div></div>`;
     if(r.type === "titles"){ const hn = H.ph === "q" ? ltHint() : { a:true, l:99 };
       qhtml = `<div class="kind-chip lt-chip">🎵 Name the song</div>${ltTiles(q.title, hn.l, H.ph === "reveal")}${hn.a ? `<div class="reveal-sub">Artist: <b style="color:var(--text)">${esc(q.artist)}</b></div>` : ""}`; }
-    if(r.type === "pic") qhtml = `<div class="kind-chip pic-chip">${q.kind === "p" ? "👤 Who is this?" : "🖼️ What is this?"}</div><div class="pic-wrap"><img class="pic" src="${esc(q.img || "")}" alt="Mystery picture, blurred with colours inverted"></div>`;
+    if(r.type === "pic") qhtml = `<div class="kind-chip pic-chip">${q.kind === "p" ? "👤 Who is this?" : "🖼️ What is this?"}</div><div class="pic-wrap"><img class="pic" src="${esc(q.img || "")}" alt="Mystery picture with colours inverted"></div>`;
     if(r.type === "buzz") qhtml = `<div class="row" style="justify-content:space-between"><div class="kind-chip secret-chip">🚨 ${esc(H.secretCat)}</div><div class="label">${esc(H.chooser)} gets +${SECRET_BONUS} extra</div></div><div class="qtext">${esc(q.q)}</div>`;
     if(r.type === "tf") qhtml = `<div class="kind-chip tf-chip">True or false?</div><div class="qtext">${esc(q.statement)}</div>${H.ph === "reveal" ? `<div class="tf-verdict ${q.answer ? "yes" : "no"}">${q.answer ? "✓ True" : "✗ False"}</div>` : ""}`;
     if(r.type === "odd") qhtml = `<div class="qtext">Which is the odd one out?</div><div class="order-items odd-items">${H.shown.map(it => `<div class="oi ${H.ph === "reveal" ? (it === q.items[q.odd] ? "hit" : "dim") : ""}">${esc(it)}</div>`).join("")}</div>`;
@@ -2581,7 +2581,7 @@ function renderPlayer(force){
       <label class="stack" style="gap:6px"><span class="pclue">${esc(q.c1)}</span><input id="pa" autocomplete="off" placeholder="First word"></label>
       <label class="stack" style="gap:6px"><span class="pclue">${esc(q.c2)}</span><input id="pb" autocomplete="off" placeholder="Rhyming word"></label>
       <button class="full" type="submit">Lock in</button></form>`;
-    if(s.rt === "pic") main = `${top}<div class="pic-wrap small"><img class="pic" src="${esc(q.img || "")}" alt="Mystery picture, blurred with colours inverted"></div>
+    if(s.rt === "pic") main = `${top}<div class="pic-wrap small"><img class="pic" src="${esc(q.img || "")}" alt="Mystery picture with colours inverted"></div>
       <form id="pf" class="stack"><input id="pa" autocomplete="off" autocapitalize="words" placeholder="${q.kind === "p" ? "Who is it?" : "What is it?"}"><button class="full" type="submit">Lock in</button></form>`;
     if(s.rt === "titles") main = `${top}<div class="pclue stack" style="gap:8px"><span class="label">Name the song</span><div class="lt-mask">${esc(q.mask || "")}</div>${q.artist ? `<div>Artist: <b>${esc(q.artist)}</b></div>` : ""}</div>
       <form id="pf" class="stack"><input id="pa" autocomplete="off" autocapitalize="words" placeholder="Type the song title"><button class="full" type="submit">Lock in</button></form>`;
