@@ -183,6 +183,13 @@ div.ans{cursor:default}
 .seg{display:inline-flex;gap:6px;background:var(--panel);border:2px solid var(--line);border-radius:16px;padding:5px;align-self:flex-start;flex-wrap:wrap}
 .seg button{background:transparent;color:var(--muted);box-shadow:none;padding:10px 18px;border-radius:11px}
 .seg button.on{background:var(--t2);color:var(--on-tile)}
+.xmas-badge{background:#e8434b !important;color:#fff !important}
+.seg button.xmas-on{background:#e8434b;color:#fff}
+body.xmas::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.55;
+  background-image:radial-gradient(2px 2px at 20px 30px,#fff,transparent),radial-gradient(2px 2px at 140px 80px,#fff,transparent),radial-gradient(1.5px 1.5px at 260px 150px,#fff,transparent),radial-gradient(2.5px 2.5px at 80px 210px,#fff,transparent),radial-gradient(1.5px 1.5px at 330px 260px,#fff,transparent);
+  background-size:360px 300px;animation:snow 18s linear infinite}
+body.xmas #app{position:relative;z-index:1}
+@keyframes snow{from{background-position:0 -300px}to{background-position:60px 300px}}
 .teen-badge{background:var(--t6);color:var(--on-tile);font-weight:700;font-size:13px;padding:5px 10px;border-radius:999px}
 /* phone */
 .phone{flex:1;display:flex;flex-direction:column;gap:18px;padding-block:18px max(18px,env(safe-area-inset-bottom,0px));max-width:520px;width:100%;margin:0 auto}
@@ -227,6 +234,12 @@ const ROUNDS = [
     scoring:"2 points for an answer nobody else gave, 1 if someone matched you. The gamemaster confirms any answer that isn’t on our word lists.",
     fixed:["Fruit or vegetable","Car make or model","Song title"],
     teenFixed:["Fruit or vegetable","Video game","Song or singer"],
+    xmasFixed:["Christmas food","Christmas song or carol","Present idea"],
+    xmasExtras:["Something on a Christmas tree","Christmas film","Winter clothing","Something in a stocking","Christmas TV show","Toy",
+      "Something cold","Something at a Christmas market","Christmas sweet or chocolate","Board game","Something you’d see in the snow",
+      "Panto character","Christmas character","Winter sport","Christmas drink","Something in Santa’s sack","Christmas decoration",
+      "Something you’d find in a kitchen","Animal","Country","Something sparkly","Something you’d wrap","Christmas dinner trimming",
+      "Something red","Something you’d do on Boxing Day","Party game","Smell of Christmas","Famous Santa or Father Christmas film"],
     teenExtras:["Animal","Country","City","Football team","Film","TV show","Cartoon character","YouTuber or streamer","Superhero",
       "Something in a school","School subject","Sport","Food","Snack or sweet","Pokémon","Video game character","Something in your bedroom",
       "Something at the beach","Something you wear","Body part","Something in space","Pizza topping","Dog breed","Toy","Board game",
@@ -285,6 +298,40 @@ const ROUNDS = [
       {"emoji": "🪣", "clue": "East African country, capital Addis Ababa", "answer": "Buckethiopia", "parts": "Bucket + Ethiopia"},
       {"emoji": "👃", "clue": "Balkan country whose capital is Belgrade", "answer": "Noserbia", "parts": "Nose + Serbia"}
     ],
+    xmasPool:[ 
+      {"emoji": "🥥", "clue": "Tchaikovsky’s Christmas ballet, The ___", "answer": "Coconutcracker", "parts": "Coconut + Nutcracker"},
+      {"emoji": "🍝", "clue": "Shiny, glittery strands draped on the Christmas tree", "answer": "Spaghettinsel", "parts": "Spaghetti + Tinsel"},
+      {"emoji": "👻", "clue": "German fruit loaf with marzipan, eaten at Christmas", "answer": "Ghostollen", "parts": "Ghost + Stollen"},
+      {"emoji": "🐪", "clue": "Will Ferrell film about Buddy, raised at the North Pole", "answer": "Camelf", "parts": "Camel + Elf"},
+      {"emoji": "🐃", "clue": "Richard Curtis Christmas film with Hugh Grant as PM", "answer": "Buffalove Actually", "parts": "Buffalo + Love Actually"},
+      {"emoji": "🗾", "clue": "Christmas stage show with a dame, for short", "answer": "Japanto", "parts": "Japan + Panto"},
+      {"emoji": "🐨", "clue": "Finnish region said to be home to Father Christmas", "answer": "Koalapland", "parts": "Koala + Lapland"},
+      {"emoji": "🍌", "clue": "School play telling the story of Jesus’ birth", "answer": "Bananativity", "parts": "Banana + Nativity"},
+      {"emoji": "🔥", "clue": "Animals that pull Santa’s sleigh", "answer": "Fireindeer", "parts": "Fire + Reindeer"},
+      {"emoji": "🧄", "clue": "Hanging spike of ice found on wintry roofs", "answer": "Garlicicle", "parts": "Garlic + Icicle"},
+      {"emoji": "🐼", "clue": "First reindeer named in ’Twas the Night Before Christmas", "answer": "Pandasher", "parts": "Panda + Dasher"},
+      {"emoji": "🌮", "clue": "Santa’s reindeer that shares its name with an icy space object", "answer": "Tacomet", "parts": "Taco + Comet"},
+      {"emoji": "🥑", "clue": "Santa’s reindeer whose name is German for ‘thunder’", "answer": "Avocadonner", "parts": "Avocado + Donner"},
+      {"emoji": "🦩", "clue": "Wise Men’s gift, alongside frankincense and myrrh", "answer": "Flamingold", "parts": "Flamingo + Gold"},
+      {"emoji": "🦢", "clue": "Gabriel was one; one often sits on top of the tree", "answer": "Swangel", "parts": "Swan + Angel"},
+      {"emoji": "🌋", "clue": "Where Santa’s workshop is said to be", "answer": "Volcanorth Pole", "parts": "Volcano + North Pole"},
+      {"emoji": "🐟", "clue": "Nativity visitors who were watching their flocks by night", "answer": "Fishepherds", "parts": "Fish + Shepherds"},
+      {"emoji": "⛄", "clue": "Where baby Jesus was laid, as there was no room at the inn", "answer": "Snowmanger", "parts": "Snowman + Manger"},
+      {"emoji": "🐧", "clue": "Nativity role: the one with no room for Mary and Joseph", "answer": "Penguinnkeeper", "parts": "Penguin + Innkeeper"},
+      {"emoji": "🦙", "clue": "Mother of Jesus in the nativity story", "answer": "Llamary", "parts": "Llama + Mary"},
+      {"emoji": "⭐", "clue": "Aardman film about Santa’s youngest son", "answer": "Starthur Christmas", "parts": "Star + Arthur Christmas"},
+      {"emoji": "🦏", "clue": "‘The First ___’, a traditional Christmas carol", "answer": "Rhinoel", "parts": "Rhino + Noel"},
+      {"emoji": "🦭", "clue": "Panto about a boy, a magic lamp and a genie", "answer": "Sealaddin", "parts": "Seal + Aladdin"},
+      {"emoji": "🦃", "clue": "Typing device with QWERTY keys", "answer": "Turkeyboard", "parts": "Turkey + Keyboard"},
+      {"emoji": "🕯️", "clue": "East Midlands city whose football club are the Foxes", "answer": "Candleicester", "parts": "Candle + Leicester"},
+      {"emoji": "🔔", "clue": "Woolly South American animal related to the alpaca", "answer": "Bellama", "parts": "Bell + Llama"},
+      {"emoji": "🧦", "clue": "Small, bright blue bird that dives for fish", "answer": "Stockingfisher", "parts": "Stocking + Kingfisher"},
+      {"emoji": "🦌", "clue": "Sherlock Holmes’s famous hat", "answer": "Reindeerstalker", "parts": "Reindeer + Deerstalker"},
+      {"emoji": "🎅", "clue": "Icy continent surrounding the South Pole", "answer": "Santarctica", "parts": "Santa + Antarctica"},
+      {"emoji": "🍩", "clue": "Spice grated on top of eggnog", "answer": "Doughnutmeg", "parts": "Doughnut + Nutmeg"},
+      {"emoji": "🥝", "clue": "Gift-bearing visitors to baby Jesus, also called the Magi", "answer": "Kiwise Men", "parts": "Kiwi + Wise Men"},
+      {"emoji": "🍅", "clue": "Sledge for sliding down snowy hills", "answer": "Tomatoboggan", "parts": "Tomato + Toboggan"}
+     ],
     pool:[
       {"emoji": "🥝", "clue": "London home of the world’s oldest tennis tournament", "answer": "Kiwimbledon", "parts": "Kiwi + Wimbledon"},
       {"emoji": "🦒", "clue": "Italian car maker with a prancing horse badge", "answer": "Girafferrari", "parts": "Giraffe + Ferrari"},
@@ -335,6 +382,48 @@ const ROUNDS = [
     blurb:"Two clues, two rhyming answers",
     rules:"Two clues. Both answers rhyme. Type one word in each box, in any order.",
     scoring:"2 points for both words, plus 1 for the fastest.",
+    xmasPool:[ 
+      {"c1": "Santa’s little helper", "c2": "You put books on one", "answer": ["elf", "shelf"]},
+      {"c1": "Cold white flakes falling from the sky", "c2": "One of five on your foot", "answer": ["snow", "toe"]},
+      {"c1": "Santa’s ride, pulled by reindeer", "c2": "Dried grass fed to horses", "answer": ["sleigh", "hay"]},
+      {"c1": "The wise men followed it", "c2": "You drive it to the shops", "answer": ["star", "car"]},
+      {"c1": "Jingle ___, jingle ___", "c2": "A snail carries one on its back", "answer": ["bell", "shell"]},
+      {"c1": "Another word for a present", "c2": "British word for an elevator", "answer": ["gift", "lift"]},
+      {"c1": "You hang baubles on it", "c2": "Buzzing insect that makes honey", "answer": ["tree", "bee"]},
+      {"c1": "Prickly plant with red berries", "c2": "Ice ___, frozen treat on a stick", "answer": ["holly", "lolly"]},
+      {"c1": "Festive song sung door to door", "c2": "Big wooden container for beer", "answer": ["carol", "barrel"]},
+      {"c1": "Icy white coating on a winter morning", "c2": "Can’t find your way", "answer": ["frost", "lost"]},
+      {"c1": "Circle of holly hung on a front door", "c2": "You brush them twice a day", "answer": ["wreath", "teeth"]},
+      {"c1": "Santa carries the toys in it", "c2": "Opposite of front", "answer": ["sack", "back"]},
+      {"c1": "A doll or teddy, for example", "c2": "A young lad", "answer": ["toy", "boy"]},
+      {"c1": "Frozen water", "c2": "More than one mouse", "answer": ["ice", "mice"]},
+      {"c1": "Chilly, not warm", "c2": "Shiny yellow metal, a wise man’s gift", "answer": ["cold", "gold"]},
+      {"c1": "Rudolph’s shiny red one", "c2": "Red flower with thorns", "answer": ["nose", "rose"]},
+      {"c1": "Animal with antlers, like Bambi", "c2": "You hear with it", "answer": ["deer", "ear"]},
+      {"c1": "Christmas ___, 24 December", "c2": "Arm part of a shirt", "answer": ["eve", "sleeve"]},
+      {"c1": "Orange veg used for a snowman’s face", "c2": "Colourful bird that can talk", "answer": ["carrot", "parrot"]},
+      {"c1": "Santa lives at the North ___", "c2": "Something you dig in the ground", "answer": ["pole", "hole"]},
+      {"c1": "___ Bells, festive song", "c2": "Not married", "answer": ["jingle", "single"]},
+      {"c1": "We wish you a ___ Christmas", "c2": "Small red fruit with a stone", "answer": ["merry", "cherry"]},
+      {"c1": "A huge Christmas dinner", "c2": "Beauty and the ___", "answer": ["feast", "beast"]},
+      {"c1": "You send one with festive greetings", "c2": "Opposite of soft", "answer": ["card", "hard"]},
+      {"c1": "Cover a present in paper", "c2": "A short sleep", "answer": ["wrap", "nap"]},
+      {"c1": "Woolly hand warmer with fingers", "c2": "White bird of peace", "answer": ["glove", "dove"]},
+      {"c1": "Little green veg at Christmas dinner", "c2": "Speak very loudly", "answer": ["sprout", "shout"]},
+      {"c1": "Yule ___, chocolate roll dessert", "c2": "Pet that barks", "answer": ["log", "dog"]},
+      {"c1": "Mince ___, festive pastry", "c2": "You see with it", "answer": ["pie", "eye"]},
+      {"c1": "You wear a paper one from a cracker", "c2": "Pet that purrs", "answer": ["hat", "cat"]},
+      {"c1": "Cheesy gag read out from a cracker", "c2": "Rises from a chimney", "answer": ["joke", "smoke"]},
+      {"c1": "Each bit of snow is a snow___", "c2": "Christmas ___, iced and fruity", "answer": ["flake", "cake"]},
+      {"c1": "Slide down a snowy hill on it", "c2": "Leafy garden boundary", "answer": ["sledge", "hedge"]},
+      {"c1": "Season Christmas falls in", "c2": "Tiny wood sliver stuck in your skin", "answer": ["winter", "splinter"]},
+      {"c1": "The twelfth month of the year", "c2": "Opposite of forget", "answer": ["december", "remember"]},
+      {"c1": "Advent ___, burned down a day at a time", "c2": "You turn it to open a door", "answer": ["candle", "handle"]},
+      {"c1": "Silent ___, a famous carol", "c2": "Opposite of dark", "answer": ["night", "light"]},
+      {"c1": "Baby Jesus slept in one", "c2": "Someone you don’t know", "answer": ["manger", "stranger"]},
+      {"c1": "Watched flocks by night in the Nativity", "c2": "Big spotted wild cat", "answer": ["shepherd", "leopard"]},
+      {"c1": "What carol singers do", "c2": "Wedding band worn on your finger", "answer": ["sing", "ring"]}
+     ],
     pool:[
       {"c1": "Fleshy side of your face", "c2": "A bird’s hard pointed mouth", "answer": ["cheek", "beak"]},
       {"c1": "You bite food with one", "c2": "Small cubicle for passport photos", "answer": ["tooth", "booth"]},
@@ -453,6 +542,37 @@ const ROUNDS = [
       {"prompt": "Fruit, smallest to biggest", "items": ["Blueberry", "Strawberry", "Apple", "Watermelon"], "detail": "About 1cm · 3cm · 8cm · 30cm across"},
       {"prompt": "Earliest in the school year first", "items": ["October half-term", "Christmas holidays", "Easter holidays", "Summer holidays"], "detail": "October · December · March/April · July–August"}
     ],
+    xmasPool:[ 
+      {"prompt": "Released earliest first", "items": ["White Christmas", "Jingle Bell Rock", "Merry Xmas Everybody", "Last Christmas"], "detail": "1942 · 1957 · 1973 · 1984"},
+      {"prompt": "Released earliest first", "items": ["Mary’s Boy Child", "Happy Xmas (War Is Over)", "Fairytale of New York", "Santa Tell Me"], "detail": "1956 · 1971 · 1987 · 2014"},
+      {"prompt": "Released earliest first", "items": ["Feliz Navidad", "Merry Christmas Everyone", "Mistletoe and Wine", "Underneath the Tree"], "detail": "1970 · 1985 · 1988 · 2013"},
+      {"prompt": "Films released earliest first", "items": ["It’s a Wonderful Life", "The Snowman", "Home Alone", "Elf"], "detail": "1946 · 1982 · 1990 · 2003"},
+      {"prompt": "Films released earliest first", "items": ["The Muppet Christmas Carol", "The Polar Express", "Arthur Christmas", "Klaus"], "detail": "1992 · 2004 · 2011 · 2019"},
+      {"prompt": "Films released earliest first", "items": ["Scrooged", "The Santa Clause", "Love Actually", "Nativity!"], "detail": "1988 · 1994 · 2003 · 2009"},
+      {"prompt": "Films released earliest first", "items": ["Miracle on 34th Street", "White Christmas (film)", "Gremlins", "Jingle All the Way"], "detail": "1947 · 1954 · 1984 · 1996"},
+      {"prompt": "UK Christmas number ones, earliest first", "items": ["Mull of Kintyre", "Another Brick in the Wall", "Don’t You Want Me", "Always on My Mind"], "detail": "1977 · 1979 · 1981 · 1987"},
+      {"prompt": "UK Christmas number ones, earliest first", "items": ["Merry Xmas Everybody", "Save Your Love", "Only You", "Mistletoe and Wine"], "detail": "1973 · 1982 · 1983 · 1988"},
+      {"prompt": "UK Christmas number ones, earliest first", "items": ["Mr Blobby", "East 17 – Stay Another Day", "Westlife – I Have a Dream", "Bob the Builder"], "detail": "1993 · 1994 · 1999 · 2000"},
+      {"prompt": "Christmas firsts, oldest first", "items": ["Night Before Christmas poem", "First Christmas card", "First royal Xmas broadcast", "Royal message first on TV"], "detail": "1823 · 1843 · 1932 · 1957"},
+      {"prompt": "Christmas firsts, oldest first", "items": ["Norway’s Trafalgar Sq tree", "Band Aid single", "Coca-Cola truck advert", "First John Lewis Xmas ad"], "detail": "1947 · 1984 · 1995 · 2007"},
+      {"prompt": "Twelve Days of Christmas: earliest day first", "items": ["Two turtle doves", "Five gold rings", "Eight maids a-milking", "Twelve drummers drumming"], "detail": "Day 2 · Day 5 · Day 8 · Day 12"},
+      {"prompt": "Twelve Days of Christmas: earliest day first", "items": ["French hens", "Geese a-laying", "Ladies dancing", "Pipers piping"], "detail": "Day 3 · Day 6 · Day 9 · Day 11"},
+      {"prompt": "Twelve Days of Christmas: earliest day first", "items": ["Partridge in a pear tree", "Calling birds", "Swans a-swimming", "Lords a-leaping"], "detail": "Day 1 · Day 4 · Day 7 · Day 10"},
+      {"prompt": "Santa’s reindeer in the order named in ‘The Night Before Christmas’", "items": ["Dasher", "Prancer", "Comet", "Blitzen"], "detail": "1st · 3rd · 5th · 8th"},
+      {"prompt": "Santa’s reindeer in the order named in ‘The Night Before Christmas’", "items": ["Dancer", "Vixen", "Cupid", "Donner"], "detail": "2nd · 4th · 6th · 7th"},
+      {"prompt": "Dates in the calendar, earliest first", "items": ["St Andrew’s Day", "St Nicholas’ Day", "St Lucia’s Day", "Christmas Eve"], "detail": "30 Nov · 6 Dec · 13 Dec · 24 Dec"},
+      {"prompt": "Dates in the calendar, earliest first (Christmas → new year)", "items": ["Christmas Day", "Hogmanay", "Epiphany", "Candlemas"], "detail": "25 Dec · 31 Dec · 6 Jan · 2 Feb"},
+      {"prompt": "Dates in the calendar, earliest first (Christmas → new year)", "items": ["St Nicholas’ Day", "Boxing Day", "New Year’s Day", "Epiphany"], "detail": "6 Dec · 26 Dec · 1 Jan · 6 Jan"},
+      {"prompt": "Typical weight, lightest first", "items": ["A Brussels sprout", "A mince pie", "A Christmas pudding", "A whole turkey"], "detail": "~15 g · ~60 g · ~900 g · ~5 kg"},
+      {"prompt": "Typical weight, lightest first", "items": ["A cranberry", "A pig in blanket", "A satsuma", "A whole goose"], "detail": "~1 g · ~20 g · ~80 g · ~5 kg"},
+      {"prompt": "UK Christmas TV specials, first shown earliest first", "items": ["The Snowman", "The Wrong Trousers", "The Christmas Invasion", "The Snowman and the Snowdog"], "detail": "1982 · 1993 · 2005 · 2012"},
+      {"prompt": "BBC Christmas Day animations, earliest first", "items": ["The Gruffalo", "Room on the Broom", "Stick Man", "Zog"], "detail": "2009 · 2012 · 2015 · 2018"},
+      {"prompt": "Elf: put these in story order, first to last", "items": ["Buddy learns he’s human", "Buddy arrives in New York", "Buddy works at Gimbels", "Santa’s sleigh breaks down"], "detail": "Start · Early · Middle · Climax"},
+      {"prompt": "Home Alone: story order, first to last", "items": ["Kevin wakes up alone", "Kevin chats to Marley", "Burglars hit by traps", "Mum arrives home"], "detail": "Morning after · Christmas Eve · Christmas Eve night · Christmas morning"},
+      {"prompt": "A Christmas Carol: who visits Scrooge first?", "items": ["Marley’s Ghost", "Ghost of Christmas Past", "Ghost of Christmas Present", "Ghost of Christmas Future"], "detail": "1st · 2nd · 3rd · 4th visitor"},
+      {"prompt": "A Christmas Carol: story order, first to last", "items": ["Scrooge turns away charity", "Fezziwig’s Christmas party", "The Cratchits’ dinner", "Scrooge buys prize turkey"], "detail": "Stave 1 · Stave 2 · Stave 3 · Stave 5"},
+      {"prompt": "The Nativity story: first to last", "items": ["Angel Gabriel visits Mary", "Journey to Bethlehem", "Shepherds visit the baby", "Wise men bring gifts"], "detail": "Annunciation · Census journey · Birth night · Later visit"}
+     ],
     pool:[
       {"prompt": "Earliest first", "items": ["Gunpowder Plot", "Battle of Trafalgar", "Charge of the Light Brigade", "Battle of the Somme begins"], "detail": "1605 · 1805 · 1854 · 1916"},
       {"prompt": "Opened earliest first", "items": ["Clifton Suspension Bridge", "Tower Bridge", "Humber Bridge", "Queensferry Crossing"], "detail": "1864 · 1894 · 1981 · 2017"},
@@ -546,6 +666,37 @@ const ROUNDS = [
       {"emoji": "🏏", "name": "Melbourne Cricket Ground", "the": true, "place": "Melbourne, Australia", "lat": -37.82, "lon": 144.983},
       {"emoji": "🏄", "name": "Bondi Beach", "the": false, "place": "Sydney, Australia", "lat": -33.891, "lon": 151.277}
     ],
+    xmasPool:[ 
+      {"emoji": "🎅", "name": "Santa Claus Village", "the": false, "place": "Rovaniemi, Finland", "lat": 66.543, "lon": 25.847},
+      {"emoji": "⭐", "name": "Church of the Nativity", "the": true, "place": "Bethlehem, West Bank", "lat": 31.704, "lon": 35.208},
+      {"emoji": "👼", "name": "Basilica of the Annunciation", "the": true, "place": "Nazareth, Israel", "lat": 32.702, "lon": 35.298},
+      {"emoji": "🥨", "name": "Nuremberg Christmas Market", "the": true, "place": "Nuremberg, Germany", "lat": 49.454, "lon": 11.078},
+      {"emoji": "🏰", "name": "Strasbourg Christmas Market", "the": true, "place": "Strasbourg, France", "lat": 48.582, "lon": 7.75},
+      {"emoji": "🎡", "name": "Vienna Christmas Market", "the": true, "place": "Vienna, Austria", "lat": 48.21, "lon": 16.358},
+      {"emoji": "🎄", "name": "Rockefeller Center Christmas Tree", "the": true, "place": "New York City, USA", "lat": 40.759, "lon": -73.979},
+      {"emoji": "🦁", "name": "Trafalgar Square Christmas Tree", "the": true, "place": "London, UK", "lat": 51.508, "lon": -0.128},
+      {"emoji": "🌲", "name": "Oslo", "the": false, "place": "Norway – it sends London its Trafalgar Square tree", "lat": 59.914, "lon": 10.752},
+      {"emoji": "⛪", "name": "St Nicholas Church, Myra", "the": false, "place": "Demre, Turkey", "lat": 36.218, "lon": 29.985},
+      {"emoji": "🕯️", "name": "Basilica of St Nicholas", "the": true, "place": "Bari, Italy", "lat": 41.131, "lon": 16.87},
+      {"emoji": "🦀", "name": "Christmas Island", "the": false, "place": "Indian Ocean (Australia)", "lat": -10.422, "lon": 105.679},
+      {"emoji": "🏝️", "name": "Kiritimati (Christmas Island)", "the": false, "place": "Kiribati, Pacific Ocean", "lat": 1.87, "lon": -157.43},
+      {"emoji": "🎁", "name": "Santa Claus, Indiana", "the": false, "place": "Indiana, USA", "lat": 38.12, "lon": -86.914},
+      {"emoji": "🦌", "name": "North Pole, Alaska", "the": false, "place": "Alaska, USA", "lat": 64.751, "lon": -147.349},
+      {"emoji": "🎶", "name": "Silent Night Chapel", "the": true, "place": "Oberndorf, Austria", "lat": 47.945, "lon": 12.939},
+      {"emoji": "❄️", "name": "Kemi SnowCastle", "the": true, "place": "Kemi, Finland", "lat": 65.734, "lon": 24.555},
+      {"emoji": "⛄", "name": "Quebec Winter Carnival", "the": true, "place": "Quebec City, Canada", "lat": 46.804, "lon": -71.217},
+      {"emoji": "🗻", "name": "Sapporo Snow Festival", "the": true, "place": "Sapporo, Japan", "lat": 43.06, "lon": 141.35},
+      {"emoji": "🧊", "name": "Harbin Ice Festival", "the": true, "place": "Harbin, China", "lat": 45.778, "lon": 126.562},
+      {"emoji": "🧸", "name": "Hamleys", "the": false, "place": "Regent Street, London, UK", "lat": 51.513, "lon": -0.14},
+      {"emoji": "🛍️", "name": "Macy’s Herald Square", "the": false, "place": "New York City, USA", "lat": 40.751, "lon": -73.989},
+      {"emoji": "🏠", "name": "Home Alone House", "the": true, "place": "Winnetka, Illinois, USA", "lat": 42.11, "lon": -87.734},
+      {"emoji": "🏄", "name": "Bondi Beach", "the": false, "place": "Sydney, Australia", "lat": -33.891, "lon": 151.274},
+      {"emoji": "🎆", "name": "Copacabana Beach", "the": false, "place": "Rio de Janeiro, Brazil", "lat": -22.971, "lon": -43.182},
+      {"emoji": "✝️", "name": "Lalibela Rock Churches", "the": true, "place": "Lalibela, Ethiopia", "lat": 12.032, "lon": 39.041, "are": true},
+      {"emoji": "🥕", "name": "Radish Night Festival", "the": true, "place": "Oaxaca, Mexico", "lat": 17.061, "lon": -96.725},
+      {"emoji": "🏮", "name": "Giant Lantern Festival", "the": true, "place": "San Fernando, Philippines", "lat": 15.029, "lon": 120.69},
+      {"emoji": "🐐", "name": "Gävle Christmas Goat", "the": true, "place": "Gävle, Sweden", "lat": 60.675, "lon": 17.141}
+     ],
     pool:[
       {"emoji": "👑", "name": "Buckingham Palace", "the": false, "place": "London, England", "lat": 51.501, "lon": -0.142},
       {"emoji": "🌊", "name": "Land's End", "the": false, "place": "Cornwall, England", "lat": 50.066, "lon": -5.715},
@@ -649,6 +800,49 @@ const ROUNDS = [
       {"kind": "song", "emoji": "👁️👀💡", "answer": "I See the Light", "by": "Mandy Moore & Zachary Levi"},
       {"kind": "song", "emoji": "⬇️🌊", "answer": "Under the Sea", "by": "Samuel E. Wright"}
     ],
+    xmasPool:[ 
+      {"kind": "film", "emoji": "🧝🗽", "answer": "Elf", "year": 2003},
+      {"kind": "film", "emoji": "🏠🧍😱", "answer": "Home Alone", "year": 1990},
+      {"kind": "film", "emoji": "🏠🧍2️⃣🗽", "answer": "Home Alone 2: Lost in New York", "year": 1992, "alt": ["Home Alone 2", "Home Alone 2 Lost in New York"]},
+      {"kind": "film", "emoji": "💚😈🎁", "answer": "The Grinch", "year": 2018, "alt": ["Grinch", "How the Grinch Stole Christmas"]},
+      {"kind": "film", "emoji": "🐻‍❄️🚂🎫", "answer": "The Polar Express", "year": 2004},
+      {"kind": "film", "emoji": "❤️☝️🤓", "answer": "Love Actually", "year": 2003},
+      {"kind": "film", "emoji": "❄️👨", "answer": "The Snowman", "year": 1982, "alt": ["Snow Man"]},
+      {"kind": "film", "emoji": "❄️👨➕❄️🐶", "answer": "The Snowman and the Snowdog", "year": 2012, "alt": ["Snowman and Snowdog", "The Snowman and The Snow Dog"]},
+      {"kind": "film", "emoji": "👑⚔️🎄", "answer": "Arthur Christmas", "year": 2011},
+      {"kind": "film", "emoji": "🐸🐷🎄🎶", "answer": "The Muppet Christmas Carol", "year": 1992, "alt": ["Muppets Christmas Carol"]},
+      {"kind": "film", "emoji": "🙏✨3️⃣4️⃣🛣️", "answer": "Miracle on 34th Street", "year": 1947, "alt": ["Miracle on Thirty-Fourth Street", "Miracle on 34th St"]},
+      {"kind": "film", "emoji": "👶⭐🐑🎭", "answer": "Nativity!", "year": 2009, "alt": ["Nativity"]},
+      {"kind": "film", "emoji": "📮🎅🧸", "answer": "Klaus", "year": 2019},
+      {"kind": "film", "emoji": "😇🔔🤩🌱", "answer": "It's a Wonderful Life", "year": 1946, "alt": ["Its a Wonderful Life", "It’s a Wonderful Life"]},
+      {"kind": "film", "emoji": "🔔🔔💯🛣️", "answer": "Jingle All the Way", "year": 1996},
+      {"kind": "film", "emoji": "🏡🔄✈️💕", "answer": "The Holiday", "year": 2006},
+      {"kind": "film", "emoji": "🎅📜✍️", "answer": "The Santa Clause", "year": 1994, "alt": ["Santa Clause"]},
+      {"kind": "film", "emoji": "😱💤⏪🎄", "answer": "The Nightmare Before Christmas", "year": 1993, "alt": ["Nightmare Before Christmas"]},
+      {"kind": "film", "emoji": "⬜🎄🎬", "answer": "White Christmas", "year": 1954},
+      {"kind": "song", "emoji": "🔚🎄", "answer": "Last Christmas", "by": "Wham!"},
+      {"kind": "song", "emoji": "🔔🛎️🪨", "answer": "Jingle Bell Rock", "by": "Bobby Helms"},
+      {"kind": "song", "emoji": "🧚📖🗽", "answer": "Fairytale of New York", "by": "The Pogues featuring Kirsty MacColl", "alt": ["Fairy Tale of New York"]},
+      {"kind": "song", "emoji": "🤔👥🧠🎄", "answer": "Do They Know It's Christmas?", "by": "Band Aid", "alt": ["Do They Know It's Christmas", "Do They Know Its Christmas", "Do They Know It’s Christmas?"]},
+      {"kind": "song", "emoji": "🥳❌🎄👨‍👩‍👧‍👦", "answer": "Merry Xmas Everybody", "by": "Slade", "alt": ["Merry Christmas Everybody"]},
+      {"kind": "song", "emoji": "👣➡️🎄", "answer": "Step into Christmas", "by": "Elton John", "alt": ["Step in to Christmas"]},
+      {"kind": "song", "emoji": "🎅🔜🏘️", "answer": "Santa Claus Is Comin' to Town", "by": "Various artists", "alt": ["Santa Claus Is Coming to Town", "Santa Claus Is Comin to Town", "Santa Claus Is Comin’ to Town"]},
+      {"kind": "song", "emoji": "🔴👃🦌", "answer": "Rudolph the Red-Nosed Reindeer", "by": "Gene Autry", "alt": ["Rudolph the Red Nosed Reindeer", "Rudolph"]},
+      {"kind": "song", "emoji": "💯👁️🙏🎄🫵", "answer": "All I Want for Christmas Is You", "by": "Mariah Carey", "alt": ["All I Want for Christmas"]},
+      {"kind": "song", "emoji": "🤫🌙", "answer": "Silent Night", "by": "Traditional carol"},
+      {"kind": "song", "emoji": "🃏🏛️", "answer": "Deck the Halls", "by": "Traditional carol", "alt": ["Deck the Hall"]},
+      {"kind": "song", "emoji": "👶🌾🐂⭐", "answer": "Away in a Manger", "by": "Traditional carol"},
+      {"kind": "song", "emoji": "🙋3️⃣👑", "answer": "We Three Kings", "by": "Traditional carol", "alt": ["We Three Kings of Orient Are"]},
+      {"kind": "song", "emoji": "⭕🤏🏘️⭐🐫", "answer": "O Little Town of Bethlehem", "by": "Traditional carol", "alt": ["Oh Little Town of Bethlehem"]},
+      {"kind": "song", "emoji": "🚗🏠🎄", "answer": "Driving Home for Christmas", "by": "Chris Rea"},
+      {"kind": "song", "emoji": "🪨🔄🎄", "answer": "Rockin' Around the Christmas Tree", "by": "Brenda Lee", "alt": ["Rocking Around the Christmas Tree", "Rockin Around the Christmas Tree", "Rockin’ Around the Christmas Tree"]},
+      {"kind": "song", "emoji": "🙆🌨️🌨️🌨️", "answer": "Let It Snow!", "by": "Dean Martin", "alt": ["Let It Snow", "Let It Snow! Let It Snow! Let It Snow!", "Let It Snow Let It Snow Let It Snow"]},
+      {"kind": "song", "emoji": "🌿💋➕🍷", "answer": "Mistletoe and Wine", "by": "Cliff Richard", "alt": ["Mistletoe & Wine"]},
+      {"kind": "song", "emoji": "🚶☁️⛄", "answer": "Walking in the Air", "by": "Aled Jones", "alt": ["Walkin in the Air"]},
+      {"kind": "song", "emoji": "🛑🐎⚔️", "answer": "Stop the Cavalry", "by": "Jona Lewie"},
+      {"kind": "song", "emoji": "🤩🎄⏰", "answer": "Wonderful Christmastime", "by": "Paul McCartney", "alt": ["Wonderful Christmas Time"]},
+      {"kind": "song", "emoji": "⬇️🌲🎁", "answer": "Underneath the Tree", "by": "Kelly Clarkson"}
+     ],
     pool:[
       {"kind": "film", "emoji": "🦈🦷", "answer": "Jaws", "year": 1975},
       {"kind": "film", "emoji": "🚢🧊💔", "answer": "Titanic", "year": 1997},
@@ -747,6 +941,46 @@ const ROUNDS = [
       {"items": ["Witch", "Ghost", "Vampire", "Snowman"], "odd": 3, "why": "The others are Halloween costumes – a snowman is for winter."},
       {"items": ["Lion", "Kangaroo", "Zebra", "Giraffe"], "odd": 1, "why": "The others live in Africa – kangaroos live in Australia."}
     ],
+    xmasPool:[ 
+      {"items": ["Easter egg", "Christmas pudding", "Yule log", "Selection box"], "odd": 0, "why": "The others are Christmas treats – Easter eggs are for Easter."},
+      {"items": ["Dancer", "Bambi", "Prancer", "Vixen"], "odd": 1, "why": "The others are Santa’s reindeer – Bambi isn’t."},
+      {"items": ["Roast turkey", "Brussels sprouts", "Ice lolly", "Pigs in blankets"], "odd": 2, "why": "The others go on a Christmas dinner plate – an ice lolly doesn’t."},
+      {"items": ["Elf", "Home Alone", "The Holiday", "Jaws"], "odd": 3, "why": "The others are Christmas films – Jaws isn’t."},
+      {"items": ["Happy Birthday", "Silent Night", "Away in a Manger", "O Come, All Ye Faithful"], "odd": 0, "why": "The others are Christmas carols – Happy Birthday isn’t."},
+      {"items": ["Tinsel", "Jack-o’-lantern", "Baubles", "Fairy lights"], "odd": 1, "why": "The others go on a Christmas tree – a jack-o’-lantern is for Halloween."},
+      {"items": ["Five gold rings", "Three French hens", "Two pet rabbits", "Six geese a-laying"], "odd": 2, "why": "The others are Twelve Days of Christmas gifts – pet rabbits aren’t."},
+      {"items": ["Mary", "Joseph", "Baby Jesus", "Cinderella"], "odd": 3, "why": "The others are in the nativity – Cinderella isn’t."},
+      {"items": ["Chocolate", "Gold", "Frankincense", "Myrrh"], "odd": 0, "why": "The others are the Three Kings’ gifts – chocolate isn’t."},
+      {"items": ["Last Christmas", "Summer Holiday", "Fairytale of New York", "Merry Xmas Everybody"], "odd": 1, "why": "The others are Christmas songs – Summer Holiday isn’t."},
+      {"items": ["Satsuma", "Chocolate coins", "Lawnmower", "Candy cane"], "odd": 2, "why": "The others fit in a Christmas stocking – a lawnmower doesn’t."},
+      {"items": ["Widow Twankey", "Buttons", "Prince Charming", "Darth Vader"], "odd": 3, "why": "The others are panto characters – Darth Vader isn’t."},
+      {"items": ["Hot cross bun", "Mince pie", "Carrot", "Glass of sherry"], "odd": 0, "why": "The others are left out for Santa – hot cross buns are for Easter."},
+      {"items": ["Red suit", "Flip-flops", "Black boots", "White beard"], "odd": 1, "why": "The others are part of Santa’s look – flip-flops aren’t."},
+      {"items": ["Rudolph", "Frosty the Snowman", "Easter Bunny", "Jack Frost"], "odd": 2, "why": "The others are wintry characters – the Easter Bunny is for Easter."},
+      {"items": ["Snowman", "Sledge", "Snowball", "Sandcastle"], "odd": 3, "why": "The others need snow – a sandcastle needs sand."},
+      {"items": ["Thriller", "Last Christmas", "Jingle Bell Rock", "Mistletoe and Wine"], "odd": 0, "why": "The others are Christmas songs – Thriller isn’t."},
+      {"items": ["Paper crown", "Garden gnome", "Corny joke", "Plastic toy"], "odd": 1, "why": "The others come out of a cracker – a garden gnome doesn’t."},
+      {"items": ["Holly", "Mistletoe", "Daffodil", "Poinsettia"], "odd": 2, "why": "The others are Christmas plants – daffodils are a spring flower."},
+      {"items": ["The Polar Express", "Miracle on 34th Street", "Nativity!", "Toy Story"], "odd": 3, "why": "The others are Christmas films – Toy Story isn’t."},
+      {"items": ["Kangaroo", "Donkey", "Sheep", "Ox"], "odd": 0, "why": "The others are in the nativity stable – a kangaroo isn’t."},
+      {"items": ["Sleigh", "Surfboard", "Sack", "Reindeer"], "odd": 1, "why": "The others are things Santa uses – a surfboard isn’t."},
+      {"items": ["Santa hat", "Christmas jumper", "Witch’s hat", "Reindeer antlers"], "odd": 2, "why": "The others are Christmas dress-up – a witch’s hat is for Halloween."},
+      {"items": ["Arthur Christmas", "The Snowman", "Klaus", "Finding Nemo"], "odd": 3, "why": "The others are Christmas cartoons – Finding Nemo isn’t."},
+      {"items": ["Egg hunt", "King’s Speech", "Pulling crackers", "Opening presents"], "odd": 0, "why": "The others are Christmas Day traditions – egg hunts are for Easter."},
+      {"items": ["Partridge", "Flamingo", "Turtle dove", "Swan"], "odd": 1, "why": "The others are birds from The Twelve Days of Christmas."},
+      {"items": ["Aladdin", "Cinderella", "Batman", "Mother Goose"], "odd": 2, "why": "The others are classic pantos – Batman isn’t."},
+      {"items": ["Mince pie", "Christmas cake", "Gingerbread man", "Pancake"], "odd": 3, "why": "The others are Christmas bakes – pancakes are for Pancake Day."},
+      {"items": ["Tooth Fairy", "Father Christmas", "Saint Nicholas", "Kris Kringle"], "odd": 0, "why": "The others are names for Santa – the Tooth Fairy isn’t."},
+      {"items": ["Christmas Eve", "Bonfire Night", "Christmas Day", "Boxing Day"], "odd": 1, "why": "The others are 24–26 December – Bonfire Night is in November."},
+      {"items": ["Jingle Bells", "Let It Snow", "Yellow Submarine", "Sleigh Ride"], "odd": 2, "why": "The others are Christmas songs – Yellow Submarine isn’t."},
+      {"items": ["Buddy the Elf", "Kevin McCallister", "Ebenezer Scrooge", "Willy Wonka"], "odd": 3, "why": "The others are from Christmas stories – Willy Wonka isn’t."},
+      {"items": ["Heatwave", "Snowfall", "Frost", "Icicles"], "odd": 0, "why": "The others are wintry weather – a heatwave isn’t."},
+      {"items": ["Stuffing", "Chips", "Cranberry sauce", "Bread sauce"], "odd": 1, "why": "The others are Christmas dinner trimmings – chips aren’t."},
+      {"items": ["Rudolph", "Donner", "Dumbo", "Blitzen"], "odd": 2, "why": "The others are Santa’s reindeer – Dumbo is an elephant."},
+      {"items": ["Wrapping paper", "Sticky tape", "Gift tag", "Suncream"], "odd": 3, "why": "The others are for wrapping presents – suncream isn’t."},
+      {"items": ["Spaceship", "Stable", "Manger", "Star"], "odd": 0, "why": "The others are in the nativity story – a spaceship isn’t."},
+      {"items": ["Carol singing", "Trick or treating", "Kissing under mistletoe", "Hanging stockings"], "odd": 1, "why": "The others are Christmas traditions – trick or treating is Halloween."}
+     ],
     pool:[
       {"items": ["Carrot", "Apple", "Pear", "Plum"], "odd": 0, "why": "The others are fruits – a carrot is a vegetable."},
       {"items": ["France", "Brazil", "Spain", "Italy"], "odd": 1, "why": "The others are in Europe – Brazil isn’t."},
@@ -816,6 +1050,21 @@ const ROUNDS = [
       {"topic": "Atomic number", "unit": "", "items": [{"name": "Copper", "value": 29}, {"name": "Calcium", "value": 20}, {"name": "Iron", "value": 26}, {"name": "Chlorine", "value": 17}, {"name": "Potassium", "value": 19}, {"name": "Sulfur", "value": 16}]},
       {"topic": "How many?", "unit": "", "items": [{"name": "Holes in a round of golf", "value": 18}, {"name": "Total dots on a dice", "value": 21}, {"name": "Monopoly board spaces", "value": 40}, {"name": "Chess pieces at the start", "value": 32}, {"name": "Rubik’s Cube stickers", "value": 54}, {"name": "Connect 4 grid spaces", "value": 42}]}
     ],
+    xmasPool:[ 
+      {"topic": "Year released", "unit": "", "items": [{"name": "Elf", "value": 2003}, {"name": "Home Alone", "value": 1990}, {"name": "The Polar Express", "value": 2004}, {"name": "It’s a Wonderful Life", "value": 1946}, {"name": "The Holiday", "value": 2006}, {"name": "Scrooged", "value": 1988}], "year": true},
+      {"topic": "Year released", "unit": "", "items": [{"name": "Muppet Christmas Carol", "value": 1992}, {"name": "Arthur Christmas", "value": 2011}, {"name": "White Christmas", "value": 1954}, {"name": "Klaus", "value": 2019}, {"name": "Jingle All the Way", "value": 1996}, {"name": "Nativity!", "value": 2009}], "year": true},
+      {"topic": "Song released", "unit": "", "items": [{"name": "Fairytale of New York", "value": 1987}, {"name": "Last Christmas", "value": 1984}, {"name": "All I Want for Christmas", "value": 1994}, {"name": "Merry Xmas Everybody", "value": 1973}, {"name": "Mistletoe and Wine", "value": 1988}, {"name": "White Christmas", "value": 1942}], "year": true},
+      {"topic": "Song released", "unit": "", "items": [{"name": "Wonderful Christmastime", "value": 1979}, {"name": "Santa Tell Me", "value": 2014}, {"name": "Lonely This Christmas", "value": 1974}, {"name": "Merry Christmas Everyone", "value": 1985}, {"name": "Jingle Bell Rock", "value": 1957}, {"name": "Underneath the Tree", "value": 2013}], "year": true},
+      {"topic": "Running time", "unit": "min", "items": [{"name": "Elf", "value": 97}, {"name": "Love Actually", "value": 135}, {"name": "The Snowman", "value": 26}, {"name": "Home Alone", "value": 103}, {"name": "Muppet Christmas Carol", "value": 85}, {"name": "White Christmas", "value": 120}]},
+      {"topic": "Running time", "unit": "min", "items": [{"name": "The Polar Express", "value": 100}, {"name": "It’s a Wonderful Life", "value": 130}, {"name": "Jingle All the Way", "value": 89}, {"name": "Home Alone 2", "value": 120}, {"name": "Arthur Christmas", "value": 97}, {"name": "Die Hard", "value": 132}]},
+      {"topic": "Year it began", "unit": "", "items": [{"name": "First Christmas card", "value": 1843}, {"name": "Royal Christmas speech", "value": 1932}, {"name": "Christmas crackers", "value": 1847}, {"name": "Trafalgar Square tree", "value": 1947}, {"name": "Electric tree lights", "value": 1882}, {"name": "NORAD tracks Santa", "value": 1955}], "year": true},
+      {"topic": "Year it began", "unit": "", "items": [{"name": "A Christmas Carol", "value": 1843}, {"name": "Christmas Jumper Day", "value": 2012}, {"name": "Royal speech on TV", "value": 1957}, {"name": "Coca-Cola truck advert", "value": 1995}, {"name": "UK Christmas stamps", "value": 1966}, {"name": "Band Aid single", "value": 1984}], "year": true},
+      {"topic": "How many in the song?", "unit": "", "items": [{"name": "Geese a-laying", "value": 6}, {"name": "Drummers drumming", "value": 12}, {"name": "French hens", "value": 3}, {"name": "Maids a-milking", "value": 8}, {"name": "Gold rings", "value": 5}, {"name": "Lords a-leaping", "value": 10}]},
+      {"topic": "How many in the song?", "unit": "", "items": [{"name": "Swans a-swimming", "value": 7}, {"name": "Partridge in a pear tree", "value": 1}, {"name": "Pipers piping", "value": 11}, {"name": "Calling birds", "value": 4}, {"name": "Ladies dancing", "value": 9}, {"name": "Turtle doves", "value": 2}]},
+      {"topic": "Calories (approx.)", "unit": "kcal", "items": [{"name": "Mince pie", "value": 250}, {"name": "One Quality Street", "value": 45}, {"name": "Christmas pudding slice", "value": 330}, {"name": "Brussels sprout", "value": 8}, {"name": "Pig in blanket", "value": 100}, {"name": "Whole Christmas Day", "value": 6000}]},
+      {"topic": "First shown on TV", "unit": "", "items": [{"name": "The Snowman", "value": 1982}, {"name": "The Gruffalo", "value": 2009}, {"name": "The Wrong Trousers", "value": 1993}, {"name": "Stick Man", "value": 2015}, {"name": "A Close Shave", "value": 1995}, {"name": "Zog", "value": 2018}], "year": true},
+      {"topic": "Year it first appeared", "unit": "", "items": [{"name": "A Christmas Carol (book)", "value": 1843}, {"name": "The Snowman (book)", "value": 1978}, {"name": "Night Before Christmas", "value": 1823}, {"name": "The Polar Express (book)", "value": 1985}, {"name": "The Nutcracker (ballet)", "value": 1892}, {"name": "The Grinch (book)", "value": 1957}], "year": true}
+     ],
     pool:[
       {"topic": "Year founded", "unit": "", "items": [{"name": "University of Cambridge", "value": 1209}, {"name": "Tenochtitlan (Aztecs)", "value": 1325}, {"name": "Ottoman Empire", "value": 1299}, {"name": "Harvard University", "value": 1636}, {"name": "Nintendo", "value": 1889}, {"name": "University of St Andrews", "value": 1413}], "year": true},
       {"topic": "Area", "unit": "km²", "items": [{"name": "Ukraine", "value": 603550}, {"name": "Texas", "value": 695662}, {"name": "France (mainland)", "value": 551695}, {"name": "Sweden", "value": 450295}, {"name": "Thailand", "value": 513120}, {"name": "California", "value": 423970}]},
@@ -882,6 +1131,46 @@ const ROUNDS = [
       {"prompt": "In what year was the Great Fire of London?", "answer": 1666, "plain": true},
       {"prompt": "How many sides does a UK 50p coin have?", "answer": 7}
     ],
+    xmasPool:[ 
+      {"prompt": "In what year was the first commercial Christmas card sent?", "answer": 1843, "plain": true},
+      {"prompt": "In what year did Charles Dickens publish A Christmas Carol?", "answer": 1843, "plain": true},
+      {"prompt": "In total, how many gifts are given across all Twelve Days of Christmas?", "answer": 364, "unit": "gifts"},
+      {"prompt": "In total, how many birds are given across the Twelve Days of Christmas?", "answer": 184, "unit": "birds"},
+      {"prompt": "How many gifts does my true love send on the twelfth day alone?", "answer": 78, "unit": "gifts"},
+      {"prompt": "Counting every repeat, how many geese a-laying are given in the song?", "answer": 42, "unit": "geese"},
+      {"prompt": "Since what year has Norway given London the Trafalgar Square tree?", "answer": 1947, "plain": true},
+      {"prompt": "In what year did King George V give the first royal Christmas broadcast?", "answer": 1932, "plain": true},
+      {"prompt": "In what year did Elizabeth II give her first Christmas broadcast?", "answer": 1952, "plain": true},
+      {"prompt": "In what year was the Queen’s Christmas message first shown on TV?", "answer": 1957, "plain": true},
+      {"prompt": "In what year is Tom Smith said to have invented the Christmas cracker?", "answer": 1847, "plain": true},
+      {"prompt": "In what year did builders put up the first Rockefeller Center tree?", "answer": 1931, "plain": true},
+      {"prompt": "In what year was ’Twas the Night Before Christmas first published?", "answer": 1823, "plain": true},
+      {"prompt": "In what year was Rudolph the Red-Nosed Reindeer created?", "answer": 1939, "plain": true},
+      {"prompt": "In what year was the film Home Alone released?", "answer": 1990, "plain": true},
+      {"prompt": "In what year was the film Elf, starring Will Ferrell, released?", "answer": 2003, "plain": true},
+      {"prompt": "In what year was the animated film The Snowman first shown on TV?", "answer": 1982, "plain": true},
+      {"prompt": "In what year was It’s a Wonderful Life released?", "answer": 1946, "plain": true},
+      {"prompt": "In what year was The Muppet Christmas Carol released?", "answer": 1992, "plain": true},
+      {"prompt": "In what year did Bing Crosby first record White Christmas?", "answer": 1942, "plain": true},
+      {"prompt": "In what year was Band Aid’s Do They Know It’s Christmas? released?", "answer": 1984, "plain": true},
+      {"prompt": "In what year was The Pogues’ Fairytale of New York released?", "answer": 1987, "plain": true},
+      {"prompt": "In what year was Slade’s Merry Xmas Everybody released?", "answer": 1973, "plain": true},
+      {"prompt": "In what year was Mariah Carey’s All I Want for Christmas Is You released?", "answer": 1994, "plain": true},
+      {"prompt": "In what year was Jingle Bells first published?", "answer": 1857, "plain": true},
+      {"prompt": "In what year was Silent Night first performed?", "answer": 1818, "plain": true},
+      {"prompt": "How long is the film Home Alone, in minutes?", "answer": 103, "unit": "minutes"},
+      {"prompt": "At the start of A Christmas Carol, how many years has Marley been dead?", "answer": 7, "unit": "years"},
+      {"prompt": "In what year did the famous WWI Christmas Day truce take place?", "answer": 1914, "plain": true},
+      {"prompt": "In what year did Parliament ban Christmas celebrations in England?", "answer": 1647, "plain": true},
+      {"prompt": "In what year was the famous picture of Victoria and Albert’s tree printed?", "answer": 1848, "plain": true},
+      {"prompt": "In what year was there the first ever UK Christmas number one single?", "answer": 1952, "plain": true},
+      {"prompt": "How many UK Christmas number ones did The Beatles have?", "answer": 4, "unit": "number ones"},
+      {"prompt": "How many compartments does a reindeer’s stomach have?", "answer": 4, "unit": "compartments"},
+      {"prompt": "In what year was Dr Seuss’s How the Grinch Stole Christmas! published?", "answer": 1957, "plain": true},
+      {"prompt": "In what year was Tchaikovsky’s ballet The Nutcracker first performed?", "answer": 1892, "plain": true},
+      {"prompt": "In what year was Jingle Bells played in space by astronauts?", "answer": 1965, "plain": true},
+      {"prompt": "In what year was the original Miracle on 34th Street released?", "answer": 1947, "plain": true}
+     ],
     pool:[
       {"prompt": "In what year was Magna Carta sealed?", "answer": 1215, "plain": true},
       {"prompt": "In what year did the Great Fire of London happen?", "answer": 1666, "plain": true},
@@ -1034,9 +1323,10 @@ function renderStart(){
 /* ============================================================ HOST */
 const VOTE_SECS = 15;
 /* Question set: "adult" (default) or "teen" (ages 11–14). Rounds without a teenPool share one set. */
-const poolFor = r => H.mode === "teen" && r.teenPool ? r.teenPool : r.pool;
+const poolFor = r => H.mode === "teen" && r.teenPool ? r.teenPool : H.mode === "xmas" && r.xmasPool && r.xmasPool.length ? r.xmasPool : r.pool;
+const MODES = { adult:"Grown-ups", teen:"Young teens", xmas:"Christmas" };
 const H = { net:null, connected:false, gid:"", code:"", ph:"lobby", ri:0, qi:0, endsAt:0, dur:1, scores:{}, answers:{}, players:[], shown:[], reveal:null,
-            mode:(store.get("hpq-mode") === "teen" ? "teen" : "adult"), played:[], qs:[], cats:[], strikes:{}, spinStart:0, spinTo:0, opts:[], votes:{}, tally:{}, tie:false };
+            mode:(MODES[store.get("hpq-mode")] ? store.get("hpq-mode") : "adult"), played:[], qs:[], cats:[], strikes:{}, spinStart:0, spinTo:0, opts:[], votes:{}, tally:{}, tie:false };
 const vKey = () => `${H.gid}.v${H.played.length}`;
 const curR = () => ROUNDS[H.ri];
 const curQ = () => H.qs[H.qi];
@@ -1116,7 +1406,7 @@ const hlFmt = (v, q) => q.year ? String(v) : Number(v).toLocaleString("en-GB") +
 const hlActive = () => H.players.filter(n => !(H.out && H.out.has(n)));
 /* Random draw each game. Questions already seen on this screen are held back until the pool runs low. */
 function drawQuestions(r){
-  const k = "hpq-used2-" + r.id + (H.mode === "teen" && r.teenPool ? "-teen" : "");
+  const pl = poolFor(r), k = "hpq-used2-" + r.id + (pl === r.teenPool ? "-teen" : pl === r.xmasPool ? "-xmas" : "");
   const pool = poolFor(r);
   let used = []; try { used = JSON.parse(store.get(k) || "[]"); } catch(e){}
   let fresh = pool.map((_, i) => i).filter(i => !used.includes(i));
@@ -1143,8 +1433,8 @@ function startQ(){
   if(curR().type === "hilo" && (curQ().step === 0 || !H.out)) H.out = new Set();
   if(curR().type === "letters"){
     const r = curR();
-    const teen = H.mode === "teen";
-    H.cats = (teen ? r.teenFixed : r.fixed).concat((teen ? r.teenExtras : r.extras).slice().sort(() => Math.random() - .5).slice(0, 2));
+    const fx = H.mode === "teen" ? r.teenFixed : H.mode === "xmas" ? r.xmasFixed : r.fixed, ex = H.mode === "teen" ? r.teenExtras : H.mode === "xmas" ? r.xmasExtras : r.extras;
+    H.cats = fx.concat(ex.slice().sort(() => Math.random() - .5).slice(0, 2));
     H.spinTo = 360 * 6 - WHEEL.indexOf(curQ().letter) * (360 / WHEEL.length);
     H.spinStart = Date.now(); H.ph = "spin";
     push(); renderHost(); requestAnimationFrame(spinLoop); return;
@@ -1187,7 +1477,8 @@ const CATLISTS = {
   "Sport":["sport"], "Job":["job"], "Flower or plant":["flower"], "Cheese":["cheese"], "Pizza topping":["pizza","cheese","fruitveg"],
   "Superhero":["superhero"], "Drink":["drink"], "Cocktail or drink":["drink"], "Dessert":["dessert"], "Pokémon":["pokemon"],
   "Chocolate bar or sweet":["sweet"], "Snack or sweet":["sweet"], "Food":["food","fruitveg","dessert","cheese","sweet"],
-  "Breakfast food":["food","fruitveg"], "Holiday destination":["country","city","capital"]
+  "Breakfast food":["food","fruitveg"], "Christmas food":["food","fruitveg","dessert","cheese","sweet"], "Christmas sweet or chocolate":["sweet"],
+  "Christmas drink":["drink"], "Christmas dinner trimming":["food","fruitveg"], "Holiday destination":["country","city","capital"]
 };
 const LISTIDX = {};
 function listIndex(key){
@@ -1352,6 +1643,7 @@ function renderHost(){
         <div class="seg" role="radiogroup" aria-label="Question set">
           <button type="button" role="radio" id="m-adult" aria-checked="${H.mode === "adult"}" class="${H.mode === "adult" ? "on" : ""}">Grown-ups</button>
           <button type="button" role="radio" id="m-teen" aria-checked="${H.mode === "teen"}" class="${H.mode === "teen" ? "on" : ""}">Young teens</button>
+          <button type="button" role="radio" id="m-xmas" aria-checked="${H.mode === "xmas"}" class="${H.mode === "xmas" ? "on xmas-on" : ""}">🎄 Christmas</button>
         </div></div>
       <div class="stack" style="gap:10px"><div class="label">${H.players.length} player${H.players.length === 1 ? "" : "s"} in</div>
         <div class="chips">${H.players.map(n => `<span class="chip" style="--c:${colorFor(n)}">${esc(n)}</span>`).join("") || `<span class="chip wait">Waiting for players…</span>`}</div></div>`;
@@ -1461,14 +1753,15 @@ function renderHost(){
 
   app.innerHTML = `
     <div class="hbar"><div class="logo" style="font-size:28px"><span>House</span> <span>Party</span> <span>Quiz</span></div>
-      <div class="row">${H.mode === "teen" ? `<span class="teen-badge">Young teens</span>` : ""}<span class="label">Code</span><span class="code-chip">${H.code}</span></div></div>
+      <div class="row">${H.mode === "teen" ? `<span class="teen-badge">Young teens</span>` : H.mode === "xmas" ? `<span class="teen-badge xmas-badge">🎄 Christmas</span>` : ""}<span class="label">Code</span><span class="code-chip">${H.code}</span></div></div>
     ${status}
     <div class="stage">${body}</div>
     <div class="controls"><span class="label">Space bar = next</span>
       <div class="row">${H.ph !== "lobby" && H.ph !== "final" ? `<button class="ghost" id="h-end">End game</button>` : ""}<button id="h-next" ${H.ph === "lobby" && !H.players.length && H.net ? "disabled" : ""}>${esc(ctrl)}</button></div></div>`;
   $("#h-next").onclick = next;
   const setMode = m => { H.mode = m; store.set("hpq-mode", m); renderHost(); };
-  if($("#m-adult")){ $("#m-adult").onclick = () => setMode("adult"); $("#m-teen").onclick = () => setMode("teen"); }
+  if($("#m-adult")){ $("#m-adult").onclick = () => setMode("adult"); $("#m-teen").onclick = () => setMode("teen"); $("#m-xmas").onclick = () => setMode("xmas"); }
+  document.body.classList.toggle("xmas", H.mode === "xmas");
   document.querySelectorAll(".ans[data-k]").forEach(b => b.onclick = () => toggleStrike(b.dataset.k));
   document.querySelectorAll(".gm-yes, .gm-no").forEach(b => b.onclick = () => { const i = +b.dataset.i, v = b.classList.contains("gm-yes"); H.decide[i] = H.decide[i] === v ? undefined : v; renderHost(); });
   if($("#gm-all")) $("#gm-all").onclick = () => { H.chk.forEach(it => { if(H.decide[it.i] === undefined) H.decide[it.i] = true; }); renderHost(); };
