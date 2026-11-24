@@ -13,7 +13,7 @@
 :root{
   --studio:#15112e; --panel:#221c4a; --panel-2:#2c2560; --line:#40378a;
   --text:#f7f4ff; --muted:#b4acdf;
-  --t1:#ff7a2f; --t2:#14c4b0; --t3:#ff4f9a; --t4:#ffd23f; --t5:#8e9bff; --t6:#b5e655; --t7:#5ec8ff; --t8:#f7a8ff; --t9:#ffb347; --t10:#ff8f70; --t11:#ff6fb1;
+  --t1:#ff7a2f; --t2:#14c4b0; --t3:#ff4f9a; --t4:#ffd23f; --t5:#8e9bff; --t6:#b5e655; --t7:#5ec8ff; --t8:#f7a8ff; --t9:#ffb347; --t10:#ff8f70; --t11:#ff6fb1; --t12:#c9a7ff;
   --sea:#1d3a63; --land:#3f8f6b; --land-edge:#5fb88f;
   --good:#40e08a; --bad:#ff6363; --on-tile:#15112e;
   --display:"Bowlby One","Arial Black",Impact,sans-serif;
@@ -220,6 +220,10 @@ body.xmas #app{position:relative;z-index:1}
 .delta{font-family:var(--display);font-size:72px;line-height:1}
 .delta.good{color:var(--good)}.delta.bad{color:var(--bad)}
 .res .pts.neg{color:var(--bad)}
+.pic-wrap{display:flex;justify-content:center;overflow:hidden;border-radius:18px;background:#000}
+.pic{display:block;max-width:100%;max-height:min(46vh,520px);object-fit:contain;filter:invert(1) blur(4px);transform:scale(1.04)}
+.pic-wrap.small .pic{max-height:32vh;filter:invert(1) blur(2.5px)}
+.kind-chip.pic-chip{background:var(--t12);align-self:flex-start}
 .stepper{display:flex;align-items:center;gap:6px;background:var(--panel);border-radius:16px;padding:6px}
 .stepper button{width:44px;height:44px;padding:0;font-size:24px;line-height:1}
 .stepper button:disabled{opacity:.35;cursor:default}
@@ -780,6 +784,109 @@ const ROUNDS = [
       {"emoji": "🏄", "name": "Bondi Beach", "the": false, "place": "Sydney, Australia", "lat": -33.891, "lon": 151.277},
       {"emoji": "🦈", "name": "K'gari (Fraser Island)", "the": false, "place": "Queensland, Australia", "lat": -25.25, "lon": 153.15}
     ]},
+  { id:"pic", type:"pic", title:"Photo Negative", secs:30, color:"--t12", perGame:5,
+    blurb:"Famous faces and things, inside out",
+    rules:"A famous person or thing appears slightly blurred, with its colours flipped like an old photo negative. Type who or what it is on your phone.",
+    scoring:"2 points for a right answer, plus 1 for the fastest.",
+    pool:[
+      {"w": "Elton John", "answer": "Elton John", "alt": ["Elton"], "kind": "p"},
+      {"w": "David Beckham", "answer": "David Beckham", "alt": ["Beckham"], "kind": "p"},
+      {"w": "Adele", "answer": "Adele", "kind": "p"},
+      {"w": "Ed Sheeran", "answer": "Ed Sheeran", "alt": ["Sheeran"], "kind": "p"},
+      {"w": "Paul McCartney", "answer": "Paul McCartney", "alt": ["McCartney"], "kind": "p"},
+      {"w": "Mick Jagger", "answer": "Mick Jagger", "alt": ["Jagger"], "kind": "p"},
+      {"w": "Gordon Ramsay", "answer": "Gordon Ramsay", "alt": ["Ramsay"], "kind": "p"},
+      {"w": "David Attenborough", "answer": "David Attenborough", "alt": ["Attenborough", "Sir David Attenborough"], "kind": "p"},
+      {"w": "Taylor Swift", "answer": "Taylor Swift", "alt": ["Swift"], "kind": "p"},
+      {"w": "Beyoncé", "answer": "Beyoncé", "kind": "p"},
+      {"w": "Tom Cruise", "answer": "Tom Cruise", "alt": ["Cruise"], "kind": "p"},
+      {"w": "Barack Obama", "answer": "Barack Obama", "alt": ["Obama"], "kind": "p"},
+      {"w": "Lionel Messi", "answer": "Lionel Messi", "alt": ["Messi"], "kind": "p"},
+      {"w": "Usain Bolt", "answer": "Usain Bolt", "alt": ["Bolt"], "kind": "p"},
+      {"w": "Serena Williams", "answer": "Serena Williams", "kind": "p"},
+      {"w": "Lewis Hamilton", "answer": "Lewis Hamilton", "alt": ["Hamilton"], "kind": "p"},
+      {"w": "Oprah Winfrey", "answer": "Oprah Winfrey", "alt": ["Oprah"], "kind": "p"},
+      {"w": "Dolly Parton", "answer": "Dolly Parton", "alt": ["Dolly"], "kind": "p"},
+      {"w": "Keanu Reeves", "answer": "Keanu Reeves", "alt": ["Keanu"], "kind": "p"},
+      {"w": "Kylie Minogue", "answer": "Kylie Minogue", "alt": ["Kylie"], "kind": "p"},
+      {"w": "Rowan Atkinson", "answer": "Rowan Atkinson", "alt": ["Mr Bean", "Atkinson"], "kind": "p"},
+      {"w": "Judi Dench", "answer": "Judi Dench", "alt": ["Dame Judi Dench"], "kind": "p"},
+      {"w": "Albert Einstein", "answer": "Albert Einstein", "alt": ["Einstein"], "kind": "p"},
+      {"w": "Marilyn Monroe", "answer": "Marilyn Monroe", "alt": ["Marilyn"], "kind": "p"},
+      {"w": "Elvis Presley", "answer": "Elvis Presley", "alt": ["Elvis"], "kind": "p"},
+      {"w": "Billy Connolly", "answer": "Billy Connolly", "alt": ["Connolly"], "kind": "p"},
+      {"w": "Stephen Hawking", "answer": "Stephen Hawking", "alt": ["Hawking"], "kind": "p"},
+      {"w": "Elizabeth II", "answer": "Queen Elizabeth II", "alt": ["Elizabeth II", "The Queen", "Queen Elizabeth"], "kind": "p"},
+      {"w": "Charles III", "answer": "King Charles III", "alt": ["King Charles", "Charles III", "Prince Charles"], "kind": "p"},
+      {"w": "Mona Lisa", "answer": "The Mona Lisa", "alt": ["Mona Lisa", "La Gioconda"], "kind": "t"},
+      {"w": "Statue of Liberty", "answer": "The Statue of Liberty", "alt": ["Statue of Liberty"], "kind": "t"},
+      {"w": "Taj Mahal", "answer": "The Taj Mahal", "alt": ["Taj Mahal"], "kind": "t"},
+      {"w": "Rubik's Cube", "answer": "A Rubik’s Cube", "alt": ["Rubiks Cube", "Rubik Cube"], "kind": "t"},
+      {"w": "Sydney Opera House", "answer": "Sydney Opera House", "alt": ["Sydney Opera House"], "kind": "t"}
+    ],
+    teenPool:[
+      {"w": "Taylor Swift", "answer": "Taylor Swift", "alt": ["Swift"], "kind": "p"},
+      {"w": "Ed Sheeran", "answer": "Ed Sheeran", "alt": ["Sheeran"], "kind": "p"},
+      {"w": "Billie Eilish", "answer": "Billie Eilish", "alt": ["Billie"], "kind": "p"},
+      {"w": "Harry Styles", "answer": "Harry Styles", "alt": ["Styles"], "kind": "p"},
+      {"w": "Dua Lipa", "answer": "Dua Lipa", "kind": "p"},
+      {"w": "Ariana Grande", "answer": "Ariana Grande", "alt": ["Ariana"], "kind": "p"},
+      {"w": "Lionel Messi", "answer": "Lionel Messi", "alt": ["Messi"], "kind": "p"},
+      {"w": "Cristiano Ronaldo", "answer": "Cristiano Ronaldo", "alt": ["Ronaldo", "CR7"], "kind": "p"},
+      {"w": "Kylian Mbappé", "answer": "Kylian Mbappé", "alt": ["Mbappe"], "kind": "p"},
+      {"w": "Erling Haaland", "answer": "Erling Haaland", "alt": ["Haaland"], "kind": "p"},
+      {"w": "Marcus Rashford", "answer": "Marcus Rashford", "alt": ["Rashford"], "kind": "p"},
+      {"w": "Bukayo Saka", "answer": "Bukayo Saka", "alt": ["Saka"], "kind": "p"},
+      {"w": "Jude Bellingham", "answer": "Jude Bellingham", "alt": ["Bellingham"], "kind": "p"},
+      {"w": "Harry Kane", "answer": "Harry Kane", "alt": ["Kane"], "kind": "p"},
+      {"w": "Tom Holland", "answer": "Tom Holland", "kind": "p"},
+      {"w": "Zendaya", "answer": "Zendaya", "kind": "p"},
+      {"w": "Emma Watson", "answer": "Emma Watson", "kind": "p"},
+      {"w": "Daniel Radcliffe", "answer": "Daniel Radcliffe", "alt": ["Radcliffe"], "kind": "p"},
+      {"w": "Dwayne Johnson", "answer": "Dwayne Johnson", "alt": ["The Rock", "Dwayne The Rock Johnson"], "kind": "p"},
+      {"w": "MrBeast", "answer": "MrBeast", "alt": ["Mr Beast", "Jimmy Donaldson"], "kind": "p"},
+      {"w": "KSI", "answer": "KSI", "kind": "p"},
+      {"w": "Lewis Hamilton", "answer": "Lewis Hamilton", "alt": ["Hamilton"], "kind": "p"},
+      {"w": "Usain Bolt", "answer": "Usain Bolt", "alt": ["Bolt"], "kind": "p"},
+      {"w": "Simone Biles", "answer": "Simone Biles", "alt": ["Biles"], "kind": "p"},
+      {"w": "Millie Bobby Brown", "answer": "Millie Bobby Brown", "alt": ["Millie Brown"], "kind": "p"},
+      {"w": "Giant panda", "answer": "A giant panda", "alt": ["Panda", "Giant panda"], "kind": "t"},
+      {"w": "Eiffel Tower", "answer": "The Eiffel Tower", "alt": ["Eiffel Tower"], "kind": "t"},
+      {"w": "Statue of Liberty", "answer": "The Statue of Liberty", "alt": ["Statue of Liberty"], "kind": "t"},
+      {"w": "Great Pyramid of Giza", "answer": "The Great Pyramid of Giza", "alt": ["Pyramid", "Pyramids", "Great Pyramid", "Pyramids of Giza"], "kind": "t"},
+      {"w": "Flamingo", "answer": "A flamingo", "alt": ["Flamingo"], "kind": "t"},
+      {"w": "Sloth", "answer": "A sloth", "alt": ["Sloth"], "kind": "t"},
+      {"w": "Rubik's Cube", "answer": "A Rubik’s Cube", "alt": ["Rubiks Cube", "Rubik Cube"], "kind": "t"}
+    ],
+    xmasPool:[
+      {"w": "Mariah Carey", "answer": "Mariah Carey", "alt": ["Mariah"], "kind": "p"},
+      {"w": "Michael Bublé", "answer": "Michael Bublé", "alt": ["Buble"], "kind": "p"},
+      {"w": "Will Ferrell", "answer": "Will Ferrell", "alt": ["Ferrell"], "kind": "p"},
+      {"w": "Hugh Grant", "answer": "Hugh Grant", "kind": "p"},
+      {"w": "Macaulay Culkin", "answer": "Macaulay Culkin", "alt": ["Culkin"], "kind": "p"},
+      {"w": "Bing Crosby", "answer": "Bing Crosby", "alt": ["Crosby"], "kind": "p"},
+      {"w": "Jim Carrey", "answer": "Jim Carrey", "alt": ["Carrey"], "kind": "p"},
+      {"w": "Noddy Holder", "answer": "Noddy Holder", "alt": ["Noddy"], "kind": "p"},
+      {"w": "Shakin' Stevens", "answer": "Shakin’ Stevens", "alt": ["Shakin Stevens", "Shaky"], "kind": "p"},
+      {"w": "Cliff Richard", "answer": "Cliff Richard", "alt": ["Sir Cliff Richard", "Cliff"], "kind": "p"},
+      {"w": "George Michael", "answer": "George Michael", "kind": "p"},
+      {"w": "Elton John", "answer": "Elton John", "alt": ["Elton"], "kind": "p"},
+      {"w": "Christmas pudding", "answer": "Christmas pudding", "alt": ["Figgy pudding", "Plum pudding", "Pudding"], "kind": "t"},
+      {"w": "Mince pie", "answer": "A mince pie", "alt": ["Mince pie", "Mince pies"], "kind": "t"},
+      {"w": "Poinsettia", "answer": "A poinsettia", "alt": ["Poinsettia"], "kind": "t"},
+      {"w": "Ilex aquifolium", "answer": "Holly", "alt": ["Holly"], "kind": "t"},
+      {"w": "Viscum album", "answer": "Mistletoe", "alt": ["Mistletoe"], "kind": "t"},
+      {"w": "Reindeer", "answer": "A reindeer", "alt": ["Reindeer", "Caribou"], "kind": "t"},
+      {"w": "Brussels sprout", "answer": "Brussels sprouts", "alt": ["Sprouts", "Sprout", "Brussels sprout"], "kind": "t"},
+      {"w": "Gingerbread house", "answer": "A gingerbread house", "alt": ["Gingerbread house"], "kind": "t"},
+      {"w": "Christmas cracker", "answer": "A Christmas cracker", "alt": ["Cracker", "Christmas cracker"], "kind": "t"},
+      {"w": "Candy cane", "answer": "A candy cane", "alt": ["Candy cane"], "kind": "t"},
+      {"w": "Snowman", "answer": "A snowman", "alt": ["Snowman"], "kind": "t"},
+      {"w": "Rockefeller Center Christmas Tree", "answer": "The Rockefeller Center Christmas tree", "alt": ["Rockefeller Christmas tree", "Rockefeller tree", "Rockefeller Center tree"], "kind": "t"},
+      {"w": "Panettone", "answer": "Panettone", "kind": "t"},
+      {"w": "Bûche de Noël", "answer": "A Yule log (bûche de Noël)", "alt": ["Yule log", "Buche de Noel", "Chocolate log"], "kind": "t"},
+      {"w": "European robin", "answer": "A robin", "alt": ["Robin", "European robin"], "kind": "t"}
+    ] },
   { id:"emoji", type:"emoji", title:"Emoji Charades", secs:30, color:"--t7", perGame:5,
     blurb:"Films and songs spelled in emoji",
     rules:"Each puzzle is a film or song title spelled out in emoji. Type the title on your phone. Small spelling slips and a missing ‘The’ are fine.",
@@ -1786,12 +1893,12 @@ function renderStart(){
 
 /* ============================================================ HOST */
 const VOTE_SECS = 15;
-const NR = () => ROUNDS.filter(r => !r.secret).length;
+const NR = () => ROUNDS.filter(r => !r.secret && (r.type !== "pic" || H.picOK)).length;
 /* Game length, set by the quizmaster in the lobby: how many rounds, and roughly how many questions in each. */
 const NG = () => Math.max(2, Math.min(NR(), H.nRounds || NR()));
 const QMIN = 3, QMAX = 10;
 // Spin the Letter and Higher or Lower have long turns (a spin, a chain of steps), so they get fewer.
-const perFor = r => r.type === "letters" || r.type === "hilo" ? Math.max(1, Math.round(H.nQ / 2.5)) : r.secret ? Math.min(7, H.nQ) : H.nQ;
+const perFor = r => r.type === "pic" ? H.nQ + 4 : r.type === "letters" || r.type === "hilo" ? Math.max(1, Math.round(H.nQ / 2.5)) : r.secret ? Math.min(7, H.nQ) : H.nQ;
 const SECRET_PICK_SECS = 20, SECRET_BONUS = 2, BUZZ_RIGHT = 2, BUZZ_WRONG = 2;
 /* Question set: "adult" (default) or "teen" (ages 11–14). Rounds without a teenPool share one set. */
 const poolFor = r => H.mode === "teen" && r.teenPool ? r.teenPool : H.mode === "xmas" && r.xmasPool && r.xmasPool.length ? r.xmasPool : r.pool;
@@ -1809,6 +1916,7 @@ async function startHost(){
   H.gid = Math.random().toString(36).slice(2, 7);
   try { navigator.wakeLock && navigator.wakeLock.request("screen").catch(() => {}); } catch(e){}
   renderHost();
+  picCheck();
   H.net = await createNet(H.code);
   if(H.net){
     H.net.onStatus(c => { H.connected = c; renderHost(); });
@@ -1854,7 +1962,7 @@ function next(){
   if(H.ph === "lobby" || H.ph === "final"){ if(H.ph === "final"){ Object.keys(H.scores).forEach(k => H.scores[k] = 0); H.gid = Math.random().toString(36).slice(2,7); } H.played = []; H.secretDone = false; H.secretAt = 1 + Math.floor(Math.random() * (NG() - 1)); startVote(); return; }
   else if(H.ph === "vote"){ resolveVote(); return; }
   else if(H.ph === "voted") H.ph = "intro";
-  else if(H.ph === "intro") startQ();
+  else if(H.ph === "intro"){ if(H.picLoading) return; if(!H.qs.length){ H.ph = "board"; push(); renderHost(); return; } startQ(); }
   else if(H.ph === "spin"){ beginLetters(); return; }
   else if(H.ph === "q"){ if(curR().type === "buzz" && bzNow() && !H.bshow){ bzShow(); return; } doReveal(); }
   else if(H.ph === "check"){ finishCheck(); return; }
@@ -1915,13 +2023,40 @@ function buzzSound(alarm){
 }
 
 function startVote(){
-  H.opts = ROUNDS.map((_, i) => i).filter(i => !H.played.includes(i) && !ROUNDS[i].secret);
+  H.opts = ROUNDS.map((_, i) => i).filter(i => !H.played.includes(i) && !ROUNDS[i].secret && (ROUNDS[i].type !== "pic" || H.picOK));
   H.votes = {}; H.tally = {}; H.tie = false;
   if(H.opts.length === 1){ pickRound(H.opts[0]); H.ph = "intro"; push(); renderHost(); return; }
   H.ph = "vote"; H.dur = VOTE_SECS * 1000; H.endsAt = Date.now() + H.dur;
   push(); renderHost();
 }
-function pickRound(i){ H.ri = i; H.qi = 0; H.played.push(i); H.qs = drawQuestions(ROUNDS[i]); if(ROUNDS[i].type === "hilo") H.qs = hiloSteps(H.qs); }
+/* ---- Photo Negative: free-licensed lead photos from Wikipedia, looked up live by the TV ---- */
+const WIKI = "https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*";
+function picCheck(){
+  fetch(WIKI + "&prop=pageimages&piprop=thumbnail&pithumbsize=64&pilicense=free&titles=Mona%20Lisa").then(r => r.json())
+    .then(j => { H.picOK = Object.values(j.query.pages).some(p => p.thumbnail); renderHost(); }).catch(() => { H.picOK = false; });
+}
+async function loadPics(){
+  const qs = H.qs.map(q => Object.assign({}, q)), titles = qs.map(q => q.w);
+  try {
+    const j = await (await fetch(WIKI + "&redirects=1&prop=pageimages&piprop=thumbnail|name&pithumbsize=800&pilicense=free&titles=" + encodeURIComponent(titles.join("|")))).json();
+    const to = {}; titles.forEach(t => to[t] = t);
+    for(const list of [j.query.normalized || [], j.query.redirects || []]) list.forEach(x => titles.forEach(t => { if(to[t] === x.from) to[t] = x.to; }));
+    const pages = {}; Object.values(j.query.pages || {}).forEach(pg => pages[pg.title] = pg);
+    qs.forEach(q => { const pg = pages[to[q.w]]; if(pg && pg.thumbnail){ q.img = pg.thumbnail.source; q.file = pg.pageimage; } });
+    const files = qs.filter(q => q.file).map(q => "File:" + q.file);
+    if(files.length){ try {
+      const c = await (await fetch("https://commons.wikimedia.org/w/api.php?action=query&format=json&origin=*&prop=imageinfo&iiprop=extmetadata&iiextmetadatafilter=Artist|LicenseShortName&titles=" + encodeURIComponent(files.join("|")))).json();
+      const plain = h => { const d = document.createElement("div"); d.innerHTML = h || ""; return d.textContent.replace(/\s+/g, " ").trim().slice(0, 80); };
+      const cred = {}; Object.values(c.query.pages || {}).forEach(pg => { const m = pg.imageinfo && pg.imageinfo[0].extmetadata; if(m) cred[pg.title.replace(/^File:/, "").replace(/ /g, "_")] = [plain(m.Artist && m.Artist.value), m.LicenseShortName && m.LicenseShortName.value].filter(Boolean).join(", "); });
+      qs.forEach(q => { if(q.file) q.credit = cred[q.file.replace(/ /g, "_")] || ""; });
+    } catch(e){} }
+  } catch(e){}
+  const ok = qs.filter(q => q.img).slice(0, H.nQ);
+  ok.forEach(q => { const im = new Image(); im.src = q.img; });   // warm the cache so pictures appear instantly
+  return ok;
+}
+function pickRound(i){ H.ri = i; H.qi = 0; H.played.push(i); H.qs = drawQuestions(ROUNDS[i]);
+  if(ROUNDS[i].type === "pic"){ H.picLoading = true; loadPics().then(qs => { H.qs = qs; H.picLoading = false; push(); renderHost(); }); } if(ROUNDS[i].type === "hilo") H.qs = hiloSteps(H.qs); }
 /* Higher or Lower: each chain of 6 becomes 5 steps (A known, guess B). */
 function hiloSteps(chains){ const out = [];
   chains.forEach((c, ci) => c.items.slice(1).forEach((b, k) => out.push({ topic:c.topic, unit:c.unit || "", year:!!c.year, a:c.items[k], b, chain:ci, step:k, steps:c.items.length - 1, last:k === c.items.length - 2 })));
@@ -2077,6 +2212,8 @@ function score(){
   if(r.type === "titles"){ const start = H.endsAt - H.dur;
     names.filter(n => ltMatch(A[n].v, q)).forEach(n => { const t = A[n].t - start; res[n] = t <= H.dur / 3 ? 3 : t <= H.dur * 2 / 3 ? 2 : 1; }); }
   if(r.type === "buzz") Object.assign(res, H.bres);
+  if(r.type === "pic"){ const strip = x => String(x || "").replace(/^\s*(the|a|an)\s+/i, "");
+    speedRank(n => [q.answer].concat(q.alt || []).some(t => close(strip(A[n].v), strip(t)))); }
   if(r.type === "tf") speedRank(n => A[n].v === (q.answer ? "t" : "f"));
   if(r.type === "hilo"){ const up = q.b.value > q.a.value;
     [...new Set(H.players.concat(names))].forEach(n => { if(H.out.has(n)) return; const a = A[n];
@@ -2106,6 +2243,7 @@ function answerText(){
   if(r.type === "titles") return { main:q.title, sub:q.artist };
   if(r.type === "tf") return { main:q.answer ? "True" : "False", sub:q.why };
   if(r.type === "buzz") return { main:q.a, sub:"" };
+  if(r.type === "pic") return { main:q.answer, sub:"Photo: " + (q.credit || "Wikipedia") + (q.credit ? ", via Wikimedia Commons" : "") };
   if(r.type === "hilo") return { main:`${q.b.name}: ${hlFmt(q.b.value, q)}`, sub:`${q.b.value > q.a.value ? "Higher" : "Lower"} than ${q.a.name} (${hlFmt(q.a.value, q)})` };
   if(r.type === "emoji") return { main:q.answer, sub:q.kind === "song" ? `Song by ${q.by}` : `Film, ${q.year}` };
   return { main:fmtNum(q.answer, q.plain) + (q.unit ? " " + q.unit : ""), sub:"" };
@@ -2138,6 +2276,7 @@ function publicState(){
     if(r.type === "order") s.q = { prompt:q.prompt, items:H.shown };
     if(r.type === "odd") s.q = { items:H.shown };
     if(r.type === "tf") s.q = { statement:q.statement };
+    if(r.type === "pic") s.q = { img:q.img, kind:q.kind };
     if(r.type === "buzz") s.q = { q:q.q, now:bzNow() || "", out:H.bout, queue:bzQueue() };
     if(r.type === "titles"){ const hn = H.ph === "q" ? ltHint() : { a:true, l:99 }; s.q = { mask:ltMask(q.title, hn.l), artist:hn.a ? q.artist : "" }; }
     if(r.type === "hilo") s.q = { topic:q.topic, a:{ n:q.a.name, v:hlFmt(q.a.value, q) }, b:{ n:q.b.name }, step:q.step, steps:q.steps, out:[...H.out] };
@@ -2224,6 +2363,8 @@ function renderHost(){
       <h1 class="intro-title" style="--c:${c}">${esc(r.title)}</h1>
       <p class="rules">${esc(r.rules)}</p><p class="reveal-sub" style="margin:0">${esc(r.scoring)}</p>`;
     ctrl = "First question";
+    if(r.type === "pic" && H.picLoading){ ctrl = "Loading pictures…"; body += `<p class="reveal-sub" style="margin:0">Fetching the photos…</p>`; }
+    else if(r.type === "pic" && !H.qs.length){ ctrl = "Skip to scores"; body += `<p class="reveal-sub" style="margin:0;color:var(--bad)">Couldn’t load the photos right now, so this round is skipped.</p>`; }
   }
   if(H.ph === "spin"){
     body = `<div class="row" style="justify-content:space-between"><div class="round-no" style="color:${c}">${esc(r.title)}</div><div class="round-no">Spin ${H.qi + 1} / ${H.qs.length}</div></div>
@@ -2247,6 +2388,7 @@ function renderHost(){
     if(r.type === "pair") qhtml = `<div class="pair"><div class="clue">${esc(q.c1)}</div><div class="plus">+</div><div class="clue">${esc(q.c2)}</div></div>`;
     if(r.type === "titles"){ const hn = H.ph === "q" ? ltHint() : { a:true, l:99 };
       qhtml = `<div class="kind-chip lt-chip">🎵 Name the song</div>${ltTiles(q.title, hn.l, H.ph === "reveal")}${hn.a ? `<div class="reveal-sub">Artist: <b style="color:var(--text)">${esc(q.artist)}</b></div>` : ""}`; }
+    if(r.type === "pic") qhtml = `<div class="kind-chip pic-chip">${q.kind === "p" ? "👤 Who is this?" : "🖼️ What is this?"}</div><div class="pic-wrap"><img class="pic" src="${esc(q.img || "")}" alt="Mystery picture, blurred with colours inverted"></div>`;
     if(r.type === "buzz") qhtml = `<div class="row" style="justify-content:space-between"><div class="kind-chip secret-chip">🚨 ${esc(H.secretCat)}</div><div class="label">${esc(H.chooser)} gets +${SECRET_BONUS} extra</div></div><div class="qtext">${esc(q.q)}</div>`;
     if(r.type === "tf") qhtml = `<div class="kind-chip tf-chip">True or false?</div><div class="qtext">${esc(q.statement)}</div>${H.ph === "reveal" ? `<div class="tf-verdict ${q.answer ? "yes" : "no"}">${q.answer ? "✓ True" : "✗ False"}</div>` : ""}`;
     if(r.type === "odd") qhtml = `<div class="qtext">Which is the odd one out?</div><div class="order-items odd-items">${H.shown.map(it => `<div class="oi ${H.ph === "reveal" ? (it === q.items[q.odd] ? "hit" : "dim") : ""}">${esc(it)}</div>`).join("")}</div>`;
@@ -2288,7 +2430,7 @@ function renderHost(){
         return `<div class="res"><div style="min-width:0"><div class="who">${esc(n)}</div><div class="what">${esc(said)}</div></div><div class="pts ${p > 0 ? "" : p < 0 ? "neg" : "zero"}">${p < 0 ? "−" + -p : "+" + p}</div></div>`;
       }).join("");
       const mapReveal = r.type === "map" ? `<div class="host-map">${mapSvg(FULL, Object.entries(H.answers).filter(([, a]) => Array.isArray(a.v)).map(([n, a]) => `<line x1="${toXY(a.v[0], a.v[1])[0]}" y1="${toXY(a.v[0], a.v[1])[1]}" x2="${toXY(q.lat, q.lon)[0]}" y2="${toXY(q.lat, q.lon)[1]}" stroke="${colorFor(n)}" stroke-width=".5" stroke-dasharray="1.5 1.5"/>`).join("") + Object.entries(H.answers).filter(([, a]) => Array.isArray(a.v)).map(([n, a]) => pin(a.v[0], a.v[1], colorFor(n), 360, n)).join("") + star(q.lat, q.lon, 360))}</div>` : "";
-      const cardReveal = r.type === "odd" || r.type === "hilo" || r.type === "tf" || r.type === "titles" || r.type === "buzz" ? `<div class="qcard" style="--c:${c}">${qhtml}</div>` : "";
+      const cardReveal = r.type === "odd" || r.type === "hilo" || r.type === "tf" || r.type === "titles" || r.type === "buzz" || r.type === "pic" ? `<div class="qcard" style="--c:${c}">${qhtml}</div>` : "";
       body = `${head}${mapReveal}${cardReveal}<div class="stack" style="gap:8px"><div class="label">The answer</div><div class="reveal-ans" style="--c:${c}">${esc(H.reveal.main)}</div>${H.reveal.sub ? `<div class="reveal-sub">${esc(H.reveal.sub)}</div>` : ""}</div>
         <div class="results">${rows}</div>`;
       if(r.type === "letters"){
@@ -2439,6 +2581,8 @@ function renderPlayer(force){
       <label class="stack" style="gap:6px"><span class="pclue">${esc(q.c1)}</span><input id="pa" autocomplete="off" placeholder="First word"></label>
       <label class="stack" style="gap:6px"><span class="pclue">${esc(q.c2)}</span><input id="pb" autocomplete="off" placeholder="Rhyming word"></label>
       <button class="full" type="submit">Lock in</button></form>`;
+    if(s.rt === "pic") main = `${top}<div class="pic-wrap small"><img class="pic" src="${esc(q.img || "")}" alt="Mystery picture, blurred with colours inverted"></div>
+      <form id="pf" class="stack"><input id="pa" autocomplete="off" autocapitalize="words" placeholder="${q.kind === "p" ? "Who is it?" : "What is it?"}"><button class="full" type="submit">Lock in</button></form>`;
     if(s.rt === "titles") main = `${top}<div class="pclue stack" style="gap:8px"><span class="label">Name the song</span><div class="lt-mask">${esc(q.mask || "")}</div>${q.artist ? `<div>Artist: <b>${esc(q.artist)}</b></div>` : ""}</div>
       <form id="pf" class="stack"><input id="pa" autocomplete="off" autocapitalize="words" placeholder="Type the song title"><button class="full" type="submit">Lock in</button></form>`;
     if(s.rt === "tf") main = `${top}<div class="pclue" style="font-size:20px;font-weight:700">${esc(q.statement || "")}</div>
