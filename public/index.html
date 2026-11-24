@@ -220,6 +220,10 @@ body.xmas #app{position:relative;z-index:1}
 .delta{font-family:var(--display);font-size:72px;line-height:1}
 .delta.good{color:var(--good)}.delta.bad{color:var(--bad)}
 .res .pts.neg{color:var(--bad)}
+.stepper{display:flex;align-items:center;gap:6px;background:var(--panel);border-radius:16px;padding:6px}
+.stepper button{width:44px;height:44px;padding:0;font-size:24px;line-height:1}
+.stepper button:disabled{opacity:.35;cursor:default}
+.stepper b{min-width:84px;text-align:center;font-family:var(--display);font-size:24px}
 .kind-chip.secret-chip{background:var(--bad)}
 .secret-alarm{display:flex;flex-direction:column;gap:22px;border:4px solid var(--bad);border-radius:26px;padding:clamp(18px,3vw,34px);animation:alarm 1s ease-in-out infinite}
 .secret-title{font-family:var(--display);color:var(--bad);font-size:clamp(40px,7vw,88px);line-height:1}
@@ -652,46 +656,46 @@ const ROUNDS = [
     rules:"A landmark appears on the big screen. Tap the map on your phone to zoom in, tap again to drop your pin, then lock in.",
     scoring:"Closest pin gets 3, next 2, then 1. Within 250 km earns 2 extra.",
     teenPool:[
-      {"emoji": "⚽", "name": "San Siro stadium", "the": false, "place": "Milan, Italy", "lat": 45.478, "lon": 9.124},
-      {"emoji": "🏟️", "name": "Allianz Arena", "the": true, "place": "Munich, Germany", "lat": 48.219, "lon": 11.625},
-      {"emoji": "🎢", "name": "PortAventura", "the": false, "place": "Salou, Spain", "lat": 41.087, "lon": 1.157},
-      {"emoji": "🧙", "name": "Harry Potter Studio Tour", "the": true, "place": "Leavesden, near Watford, England", "lat": 51.69, "lon": -0.418},
-      {"emoji": "🐉", "name": "Dubrovnik (King's Landing)", "the": false, "place": "Dubrovnik, Croatia", "lat": 42.641, "lon": 18.11},
-      {"emoji": "🌌", "name": "Tromsø", "the": false, "place": "Tromsø, Norway", "lat": 69.649, "lon": 18.956},
-      {"emoji": "🌋", "name": "Mount Vesuvius", "the": false, "place": "Near Naples, Italy", "lat": 40.821, "lon": 14.426},
-      {"emoji": "♨️", "name": "Blue Lagoon", "the": true, "place": "Near Grindavík, Iceland", "lat": 63.88, "lon": -22.449},
-      {"emoji": "👑", "name": "Palace of Versailles", "the": true, "place": "Versailles, near Paris, France", "lat": 48.805, "lon": 2.12},
-      {"emoji": "📖", "name": "Anne Frank House", "the": true, "place": "Amsterdam, Netherlands", "lat": 52.375, "lon": 4.884},
-      {"emoji": "⚱️", "name": "Valley of the Kings", "the": true, "place": "Luxor, Egypt", "lat": 25.74, "lon": 32.601},
-      {"emoji": "🦁", "name": "Ngorongoro Crater", "the": true, "place": "Northern Tanzania", "lat": -3.175, "lon": 35.575},
-      {"emoji": "🐘", "name": "Kruger National Park", "the": false, "place": "North-east South Africa", "lat": -23.99, "lon": 31.55},
-      {"emoji": "🏝️", "name": "Robben Island", "the": false, "place": "Off Cape Town, South Africa", "lat": -33.806, "lon": 18.366},
-      {"emoji": "💙", "name": "Chefchaouen, the Blue City", "the": false, "place": "Rif Mountains, Morocco", "lat": 35.171, "lon": -5.27},
-      {"emoji": "🌳", "name": "Avenue of the Baobabs", "the": true, "place": "Near Morondava, Madagascar", "lat": -20.251, "lon": 44.419},
-      {"emoji": "🐭", "name": "Tokyo Disneyland", "the": false, "place": "Urayasu, near Tokyo, Japan", "lat": 35.633, "lon": 139.88},
-      {"emoji": "🚀", "name": "Baikonur Cosmodrome", "the": true, "place": "Kazakhstan", "lat": 45.965, "lon": 63.305},
-      {"emoji": "🗼", "name": "Tokyo Skytree", "the": false, "place": "Tokyo, Japan", "lat": 35.71, "lon": 139.811},
-      {"emoji": "🦁", "name": "Merlion", "the": true, "place": "Marina Bay, Singapore", "lat": 1.287, "lon": 103.854},
-      {"emoji": "🏯", "name": "Potala Palace", "the": true, "place": "Lhasa, Tibet, China", "lat": 29.658, "lon": 91.117},
-      {"emoji": "🧂", "name": "Dead Sea", "the": true, "place": "Between Israel, the West Bank and Jordan", "lat": 31.5, "lon": 35.5},
-      {"emoji": "🦎", "name": "Komodo Island", "the": false, "place": "Indonesia", "lat": -8.55, "lon": 119.45},
-      {"emoji": "🎬", "name": "Universal Studios Hollywood", "the": false, "place": "Los Angeles, USA", "lat": 34.138, "lon": -118.353},
-      {"emoji": "👨‍🚀", "name": "Space Center Houston", "the": false, "place": "Houston, Texas, USA", "lat": 29.551, "lon": -95.098},
-      {"emoji": "🏜️", "name": "Antelope Canyon", "the": false, "place": "Page, Arizona, USA", "lat": 36.862, "lon": -111.374},
-      {"emoji": "💧", "name": "Hoover Dam", "the": true, "place": "Nevada–Arizona border, USA", "lat": 36.016, "lon": -114.737},
-      {"emoji": "🏙️", "name": "Empire State Building", "the": true, "place": "New York City, USA", "lat": 40.748, "lon": -73.986},
-      {"emoji": "👽", "name": "Area 51", "the": false, "place": "Nevada desert, USA", "lat": 37.235, "lon": -115.811},
-      {"emoji": "🌋", "name": "Kīlauea volcano", "the": false, "place": "Big Island, Hawaii, USA", "lat": 19.421, "lon": -155.287},
-      {"emoji": "🔺", "name": "Teotihuacan pyramids", "the": true, "place": "Near Mexico City, Mexico", "lat": 19.692, "lon": -98.844, "are": true},
-      {"emoji": "⚽", "name": "Maracanã Stadium", "the": true, "place": "Rio de Janeiro, Brazil", "lat": -22.912, "lon": -43.23},
-      {"emoji": "🛰️", "name": "Guiana Space Centre", "the": true, "place": "Kourou, French Guiana", "lat": 5.236, "lon": -52.769},
-      {"emoji": "💙", "name": "La Bombonera stadium", "the": false, "place": "Buenos Aires, Argentina", "lat": -34.636, "lon": -58.365},
-      {"emoji": "🏔️", "name": "Torres del Paine", "the": false, "place": "Patagonia, Chile", "lat": -50.94, "lon": -73.0},
-      {"emoji": "🐧", "name": "Ushuaia", "the": false, "place": "Tierra del Fuego, Argentina", "lat": -54.801, "lon": -68.303},
-      {"emoji": "✨", "name": "Waitomo Glowworm Caves", "the": true, "place": "North Island, New Zealand", "lat": -38.261, "lon": 175.104, "are": true},
-      {"emoji": "🗼", "name": "Sky Tower", "the": true, "place": "Auckland, New Zealand", "lat": -36.848, "lon": 174.762},
-      {"emoji": "🏏", "name": "Melbourne Cricket Ground", "the": true, "place": "Melbourne, Australia", "lat": -37.82, "lon": 144.983},
-      {"emoji": "🏄", "name": "Bondi Beach", "the": false, "place": "Sydney, Australia", "lat": -33.891, "lon": 151.277}
+      {"emoji": "🗼", "name": "Eiffel Tower", "the": true, "place": "Paris, France", "lat": 48.858, "lon": 2.294},
+      {"emoji": "🗽", "name": "Statue of Liberty", "the": true, "place": "New York, USA", "lat": 40.689, "lon": -74.045},
+      {"emoji": "🕰️", "name": "Big Ben", "the": false, "place": "London, England", "lat": 51.501, "lon": -0.125},
+      {"emoji": "🏛️", "name": "Colosseum", "the": true, "place": "Rome, Italy", "lat": 41.89, "lon": 12.492},
+      {"emoji": "🔺", "name": "Pyramids of Giza", "the": true, "place": "Near Cairo, Egypt", "lat": 29.979, "lon": 31.134, "are": true},
+      {"emoji": "🧱", "name": "Great Wall of China", "the": true, "place": "Badaling section, near Beijing, China", "lat": 40.359, "lon": 116.02},
+      {"emoji": "🕌", "name": "Taj Mahal", "the": true, "place": "Agra, India", "lat": 27.175, "lon": 78.042},
+      {"emoji": "🎭", "name": "Sydney Opera House", "the": true, "place": "Sydney, Australia", "lat": -33.857, "lon": 151.215},
+      {"emoji": "🍕", "name": "Leaning Tower of Pisa", "the": true, "place": "Pisa, Italy", "lat": 43.723, "lon": 10.397},
+      {"emoji": "⛰️", "name": "Christ the Redeemer statue", "the": true, "place": "Rio de Janeiro, Brazil", "lat": -22.952, "lon": -43.211},
+      {"emoji": "🌉", "name": "Golden Gate Bridge", "the": true, "place": "San Francisco, USA", "lat": 37.82, "lon": -122.478},
+      {"emoji": "🏰", "name": "Disneyland Paris", "the": false, "place": "Marne-la-Vallée, near Paris, France", "lat": 48.872, "lon": 2.776},
+      {"emoji": "🐭", "name": "Walt Disney World", "the": false, "place": "Orlando, Florida, USA", "lat": 28.385, "lon": -81.564},
+      {"emoji": "🏔️", "name": "Mount Everest", "the": false, "place": "Nepal–China border", "lat": 27.988, "lon": 86.925},
+      {"emoji": "💦", "name": "Niagara Falls", "the": false, "place": "USA–Canada border", "lat": 43.083, "lon": -79.074, "are": true},
+      {"emoji": "🏜️", "name": "Grand Canyon", "the": true, "place": "Arizona, USA", "lat": 36.107, "lon": -112.113},
+      {"emoji": "🪨", "name": "Stonehenge", "the": false, "place": "Wiltshire, England", "lat": 51.179, "lon": -1.826},
+      {"emoji": "⚽", "name": "Old Trafford", "the": false, "place": "Manchester, England", "lat": 53.463, "lon": -2.291},
+      {"emoji": "🏟️", "name": "Camp Nou", "the": false, "place": "Barcelona, Spain", "lat": 41.381, "lon": 2.123},
+      {"emoji": "🎬", "name": "Hollywood Sign", "the": true, "place": "Los Angeles, USA", "lat": 34.134, "lon": -118.322},
+      {"emoji": "🏙️", "name": "Burj Khalifa", "the": true, "place": "Dubai, UAE", "lat": 25.197, "lon": 55.274},
+      {"emoji": "🦙", "name": "Machu Picchu", "the": false, "place": "Andes mountains, Peru", "lat": -13.163, "lon": -72.545},
+      {"emoji": "🗻", "name": "Mount Fuji", "the": false, "place": "Near Tokyo, Japan", "lat": 35.361, "lon": 138.727},
+      {"emoji": "👑", "name": "Buckingham Palace", "the": false, "place": "London, England", "lat": 51.501, "lon": -0.142},
+      {"emoji": "🏴󠁧󠁢󠁳󠁣󠁴󠁿", "name": "Edinburgh Castle", "the": false, "place": "Edinburgh, Scotland", "lat": 55.949, "lon": -3.2},
+      {"emoji": "🟠", "name": "Uluru", "the": false, "place": "Northern Territory, Australia", "lat": -25.344, "lon": 131.036},
+      {"emoji": "🌃", "name": "Times Square", "the": false, "place": "New York City, USA", "lat": 40.758, "lon": -73.986},
+      {"emoji": "⛪", "name": "Sagrada Família", "the": true, "place": "Barcelona, Spain", "lat": 41.404, "lon": 2.174},
+      {"emoji": "🏺", "name": "Acropolis", "the": true, "place": "Athens, Greece", "lat": 37.972, "lon": 23.726},
+      {"emoji": "🧅", "name": "St Basil’s Cathedral", "the": false, "place": "Red Square, Moscow, Russia", "lat": 55.753, "lon": 37.623},
+      {"emoji": "🛶", "name": "Venice canals", "the": true, "place": "Venice, Italy", "lat": 45.438, "lon": 12.335, "are": true},
+      {"emoji": "🎰", "name": "Las Vegas Strip", "the": true, "place": "Las Vegas, Nevada, USA", "lat": 36.114, "lon": -115.173},
+      {"emoji": "🏟️", "name": "Wembley Stadium", "the": false, "place": "London, England", "lat": 51.556, "lon": -0.28},
+      {"emoji": "🦕", "name": "Loch Ness", "the": false, "place": "Scottish Highlands", "lat": 57.322, "lon": -4.424},
+      {"emoji": "🧱", "name": "the very first Legoland", "the": false, "place": "Billund, Denmark", "lat": 55.735, "lon": 9.127},
+      {"emoji": "🌈", "name": "Victoria Falls", "the": false, "place": "Zambia–Zimbabwe border", "lat": -17.925, "lon": 25.857, "are": true},
+      {"emoji": "🦒", "name": "Mount Kilimanjaro", "the": false, "place": "Tanzania", "lat": -3.067, "lon": 37.356},
+      {"emoji": "🎅", "name": "Santa Claus Village", "the": false, "place": "Rovaniemi, Lapland, Finland", "lat": 66.543, "lon": 25.847},
+      {"emoji": "🚀", "name": "Kennedy Space Center", "the": false, "place": "Cape Canaveral, Florida, USA", "lat": 28.573, "lon": -80.649},
+      {"emoji": "🐠", "name": "Great Barrier Reef", "the": true, "place": "Off Queensland, Australia", "lat": -18.29, "lon": 147.7}
     ],
     xmasPool:[ 
       {"emoji": "🎅", "name": "Santa Claus Village", "the": false, "place": "Rovaniemi, Finland", "lat": 66.543, "lon": 25.847},
@@ -1783,12 +1787,17 @@ function renderStart(){
 /* ============================================================ HOST */
 const VOTE_SECS = 15;
 const NR = () => ROUNDS.filter(r => !r.secret).length;
+/* Game length, set by the quizmaster in the lobby: how many rounds, and roughly how many questions in each. */
+const NG = () => Math.max(2, Math.min(NR(), H.nRounds || NR()));
+const QMIN = 3, QMAX = 10;
+// Spin the Letter and Higher or Lower have long turns (a spin, a chain of steps), so they get fewer.
+const perFor = r => r.type === "letters" || r.type === "hilo" ? Math.max(1, Math.round(H.nQ / 2.5)) : r.secret ? Math.min(7, H.nQ) : H.nQ;
 const SECRET_PICK_SECS = 20, SECRET_BONUS = 2, BUZZ_RIGHT = 2, BUZZ_WRONG = 2;
 /* Question set: "adult" (default) or "teen" (ages 11–14). Rounds without a teenPool share one set. */
 const poolFor = r => H.mode === "teen" && r.teenPool ? r.teenPool : H.mode === "xmas" && r.xmasPool && r.xmasPool.length ? r.xmasPool : r.pool;
 const MODES = { adult:"Grown-ups", teen:"Young teens", xmas:"Christmas" };
 const H = { net:null, connected:false, gid:"", code:"", ph:"lobby", ri:0, qi:0, endsAt:0, dur:1, scores:{}, answers:{}, players:[], shown:[], reveal:null,
-            mode:(MODES[store.get("hpq-mode")] ? store.get("hpq-mode") : "adult"), played:[], qs:[], cats:[], strikes:{}, spinStart:0, spinTo:0, opts:[], votes:{}, tally:{}, tie:false };
+            mode:(MODES[store.get("hpq-mode")] ? store.get("hpq-mode") : "adult"), played:[], qs:[], nRounds:+store.get("hpq-rounds") || 0, nQ:Math.max(QMIN, Math.min(QMAX, +store.get("hpq-nq") || 5)), cats:[], strikes:{}, spinStart:0, spinTo:0, opts:[], votes:{}, tally:{}, tie:false };
 const vKey = () => `${H.gid}.v${H.played.length}`;
 const curR = () => ROUNDS[H.ri];
 const curQ = () => H.qs[H.qi];
@@ -1842,7 +1851,7 @@ function shuffled(items){
 }
 
 function next(){
-  if(H.ph === "lobby" || H.ph === "final"){ if(H.ph === "final"){ Object.keys(H.scores).forEach(k => H.scores[k] = 0); H.gid = Math.random().toString(36).slice(2,7); } H.played = []; H.secretDone = false; H.secretAt = 1 + Math.floor(Math.random() * (NR() - 1)); startVote(); return; }
+  if(H.ph === "lobby" || H.ph === "final"){ if(H.ph === "final"){ Object.keys(H.scores).forEach(k => H.scores[k] = 0); H.gid = Math.random().toString(36).slice(2,7); } H.played = []; H.secretDone = false; H.secretAt = 1 + Math.floor(Math.random() * (NG() - 1)); startVote(); return; }
   else if(H.ph === "vote"){ resolveVote(); return; }
   else if(H.ph === "voted") H.ph = "intro";
   else if(H.ph === "intro") startQ();
@@ -1852,7 +1861,7 @@ function next(){
   else if(H.ph === "reveal"){ let j = H.qi + 1;
     if(curR().type === "hilo" && H.players.length && !hlActive().length){ const c = curQ().chain; while(j < H.qs.length && H.qs[j].chain === c) j++; }
     if(j < H.qs.length){ H.qi = j; startQ(); return; } H.ph = "board"; }
-  else if(H.ph === "board"){ if(H.played.length < NR()){ if(maybeSecret()) return; startVote(); return; } H.ph = "final"; }
+  else if(H.ph === "board"){ if(H.played.length < NG()){ if(maybeSecret()) return; startVote(); return; } H.ph = "final"; }
   else if(H.ph === "secret"){ pickSecretCat(null); return; }
   push(); renderHost();
 }
@@ -1861,7 +1870,7 @@ function next(){
 function secretCats(){ const r = ROUNDS.find(x => x.secret); return r.cats[H.mode] || r.cats.adult; }
 function maybeSecret(){
   if(H.secretDone || !H.players.length) return false;
-  if(!H.secretAt) H.secretAt = 1 + Math.floor(Math.random() * (NR() - 1));
+  if(!H.secretAt) H.secretAt = 1 + Math.floor(Math.random() * (NG() - 1));
   if(H.played.length < H.secretAt) return false;
   H.secretDone = true; H.secretChosen = false;
   // the picker comes from the bottom third of the table (ties broken at random)
@@ -1878,7 +1887,7 @@ function pickSecretCat(cat){
   if(H.secretAuto) cat = H.secretOpts[Math.floor(Math.random() * H.secretOpts.length)];
   H.secretCat = cat;
   H.ri = ROUNDS.findIndex(r => r.secret); H.qi = 0;
-  H.qs = secretCats()[cat].slice().sort(() => Math.random() - .5).slice(0, ROUNDS[H.ri].perGame);
+  H.qs = secretCats()[cat].slice().sort(() => Math.random() - .5).slice(0, perFor(ROUNDS[H.ri]));
   H.ph = "intro"; push(); renderHost();
 }
 /* Buzzer queue: buzzes in the order the host received them; anyone marked wrong is out for that question. */
@@ -1925,8 +1934,9 @@ function drawQuestions(r){
   const pool = poolFor(r);
   let used = []; try { used = JSON.parse(store.get(k) || "[]"); } catch(e){}
   let fresh = pool.map((_, i) => i).filter(i => !used.includes(i));
-  if(fresh.length < r.perGame){ used = []; fresh = pool.map((_, i) => i); }
-  const pick = fresh.sort(() => Math.random() - .5).slice(0, r.perGame);
+  const n = perFor(r);
+  if(fresh.length < n){ used = []; fresh = pool.map((_, i) => i); }
+  const pick = fresh.sort(() => Math.random() - .5).slice(0, n);
   store.set(k, JSON.stringify(used.concat(pick)));
   return pick.map(i => pool[i]);
 }
@@ -2115,7 +2125,7 @@ function sortedScores(){ return Object.entries(H.scores).sort((a, b) => b[1] - a
 
 function publicState(){
   const r = curR(), q = curQ();
-  const s = { gid:H.gid, ph:H.ph, ri:H.ri, qi:H.qi, nr:NR(), secret:!!r.secret, chooser:H.chooser || "", cat:H.secretCat || "", nq:H.qs.length, rt:r.type, title:r.title, col:r.color,
+  const s = { gid:H.gid, ph:H.ph, ri:H.ri, qi:H.qi, nr:NG(), secret:!!r.secret, chooser:H.chooser || "", cat:H.secretCat || "", nq:H.qs.length, rt:r.type, title:r.title, col:r.color,
               k:qKey(), endsAt:H.endsAt, now:Date.now(), rn:H.played.length };
   if(H.ph === "vote"){ s.k = vKey(); s.opts = H.opts.map(i => ({ i, t:ROUNDS[i].title, b:ROUNDS[i].blurb, c:ROUNDS[i].color })); }
   if(H.ph === "secret"){ s.k = H.gid + ".secret"; s.opts = H.secretOpts; }
@@ -2173,6 +2183,10 @@ function renderHost(){
           <button type="button" role="radio" id="m-teen" aria-checked="${H.mode === "teen"}" class="${H.mode === "teen" ? "on" : ""}">Young teens</button>
           <button type="button" role="radio" id="m-xmas" aria-checked="${H.mode === "xmas"}" class="${H.mode === "xmas" ? "on xmas-on" : ""}">🎄 Christmas</button>
         </div></div>
+      <div class="row" style="gap:28px;align-items:flex-start">
+        <div class="stack" style="gap:8px"><div class="label">Rounds</div><div class="stepper"><button type="button" id="r-dn" aria-label="Fewer rounds" ${NG() <= 2 ? "disabled" : ""}>−</button><b aria-live="polite">${NG()}${NG() === NR() ? " (all)" : ""}</b><button type="button" id="r-up" aria-label="More rounds" ${NG() >= NR() ? "disabled" : ""}>+</button></div></div>
+        <div class="stack" style="gap:8px"><div class="label">Questions per round</div><div class="stepper"><button type="button" id="q-dn" aria-label="Fewer questions" ${H.nQ <= QMIN ? "disabled" : ""}>−</button><b aria-live="polite">${H.nQ}</b><button type="button" id="q-up" aria-label="More questions" ${H.nQ >= QMAX ? "disabled" : ""}>+</button></div></div>
+        <p class="reveal-sub" style="margin:0;max-width:34ch;font-size:15px;align-self:center">About ${Math.round(NG() * (H.nQ * 0.6 + 1.5))} minutes. Spin the Letter and Higher or Lower get ${Math.max(1, Math.round(H.nQ / 2.5))} longer turn${Math.max(1, Math.round(H.nQ / 2.5)) === 1 ? "" : "s"} instead.</p></div>
       <div class="stack" style="gap:10px"><div class="label">${H.players.length} player${H.players.length === 1 ? "" : "s"} in</div>
         <div class="chips">${H.players.map(n => `<span class="chip" style="--c:${colorFor(n)}">${esc(n)}</span>`).join("") || `<span class="chip wait">Waiting for players…</span>`}</div></div>`;
     ctrl = "Start game";
@@ -2181,7 +2195,7 @@ function renderHost(){
   if(H.ph === "vote"){
     const t = {}; H.opts.forEach(i => t[i] = 0); Object.values(H.votes).forEach(v => t[v]++);
     const n = Object.keys(H.votes).length;
-    body = `<div class="round-no">Round ${H.played.length + 1} of ${NR()}</div>
+    body = `<div class="round-no">Round ${H.played.length + 1} of ${NG()}</div>
       <div class="qwrap"><div class="stack"><h1 style="font-size:clamp(40px,6vw,76px);line-height:1">Vote for the next round</h1><p class="rules" style="margin:0">Pick on your phone. Most votes wins. A tie gets settled at random.</p></div>
         <div class="stack" style="align-items:center">${timerHtml("var(--t4)")}<div class="answered">${n} / ${H.players.length} voted</div></div></div>
       <div class="vote-opts">${H.opts.map(i => `<div class="vopt" style="--c:var(${ROUNDS[i].color})"><b>${esc(ROUNDS[i].title)}</b><small>${esc(ROUNDS[i].blurb)}</small><div class="vcount">${t[i]} vote${t[i] === 1 ? "" : "s"}</div><div class="track"><div class="fill" style="width:${n ? (t[i] / n * 100).toFixed(0) : 0}%"></div></div></div>`).join("")}</div>
@@ -2206,7 +2220,7 @@ function renderHost(){
       <h1 class="intro-title" style="--c:${c}">${esc(H.secretCat)}</h1>
       <p class="rules">${H.secretAuto ? `Time ran out, so the category was picked at random for ${esc(H.chooser)}.` : `${esc(H.chooser)} picked this category.`} ${esc(r.rules)}</p>
       <p class="reveal-sub" style="margin:0">Right answer <b>+${BUZZ_RIGHT}</b>. Wrong answer <b>−${BUZZ_WRONG}</b>. ${esc(H.chooser)} gets <b>+${SECRET_BONUS} extra</b> for each one they get right.</p>`
-      : `<div class="round-no">Round ${H.played.length} of ${NR()}</div>
+      : `<div class="round-no">Round ${H.played.length} of ${NG()}</div>
       <h1 class="intro-title" style="--c:${c}">${esc(r.title)}</h1>
       <p class="rules">${esc(r.rules)}</p><p class="reveal-sub" style="margin:0">${esc(r.scoring)}</p>`;
     ctrl = "First question";
@@ -2290,9 +2304,9 @@ function renderHost(){
   }
   if(H.ph === "board"){
     const sc = sortedScores(), top = Math.max(1, ...sc.map(s => s[1]));
-    body = `<div class="round-no">After round ${H.played.length} of ${NR()}</div><h2 style="font-size:clamp(36px,5vw,60px)">Scores</h2>
+    body = `<div class="round-no">After round ${H.played.length} of ${NG()}</div><h2 style="font-size:clamp(36px,5vw,60px)">Scores</h2>
       <div class="board">${sc.map(([n, p], i) => `<div class="bar" style="--c:${colorFor(n)}"><span class="pos">${i + 1}</span><span class="nm">${esc(n)}</span><div class="track"><div class="fill" style="width:${(Math.max(0, p) / top * 100).toFixed(1)}%"></div></div><span class="sc">${p}</span></div>`).join("") || `<p class="reveal-sub">No players yet.</p>`}</div>`;
-    ctrl = H.played.length < NR() - 1 ? "Vote for the next round" : H.played.length < NR() ? "Final round" : "Final results";
+    ctrl = H.played.length < NG() - 1 ? "Vote for the next round" : H.played.length < NG() ? "Final round" : "Final results";
   }
   if(H.ph === "final"){
     const sc = sortedScores(); const [a, b, d] = sc;
@@ -2312,6 +2326,8 @@ function renderHost(){
       <div class="row">${H.ph !== "lobby" && H.ph !== "final" ? `<button class="ghost" id="h-end">End game</button>` : ""}<button id="h-next" ${H.ph === "lobby" && !H.players.length && H.net ? "disabled" : ""}>${esc(ctrl)}</button></div></div>`;
   $("#h-next").onclick = next;
   const setMode = m => { H.mode = m; store.set("hpq-mode", m); renderHost(); };
+  const setLen = (r, q) => { H.nRounds = Math.max(2, Math.min(NR(), r)); H.nQ = Math.max(QMIN, Math.min(QMAX, q)); store.set("hpq-rounds", String(H.nRounds)); store.set("hpq-nq", String(H.nQ)); renderHost(); };
+  if($("#r-dn")){ $("#r-dn").onclick = () => setLen(NG() - 1, H.nQ); $("#r-up").onclick = () => setLen(NG() + 1, H.nQ); $("#q-dn").onclick = () => setLen(NG(), H.nQ - 1); $("#q-up").onclick = () => setLen(NG(), H.nQ + 1); }
   if($("#m-adult")){ $("#m-adult").onclick = () => setMode("adult"); $("#m-teen").onclick = () => setMode("teen"); $("#m-xmas").onclick = () => setMode("xmas"); }
   document.body.classList.toggle("xmas", H.mode === "xmas");
   document.querySelectorAll(".ans[data-k]").forEach(b => b.onclick = () => toggleStrike(b.dataset.k));
