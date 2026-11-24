@@ -1055,7 +1055,9 @@ const ROUNDS = [
       {"w": "Catherine O'Hara", "answer": "Catherine O’Hara", "alt": ["O’Hara", "Catherine OHara"], "kind": "p", "why": "Kevin’s mum in Home Alone"},
       {"w": "Dolly Parton", "answer": "Dolly Parton", "alt": ["Dolly", "Parton"], "kind": "p", "why": "Christmas albums and Hard Candy Christmas"},
       {"w": "Kylie Minogue", "answer": "Kylie Minogue", "alt": ["Kylie", "Minogue"], "kind": "p", "why": "Kylie Christmas album"},
-      {"w": "Darlene Love", "answer": "Darlene Love", "alt": ["Love"], "kind": "p", "why": "Christmas (Baby Please Come Home)"}
+      {"w": "Darlene Love", "answer": "Darlene Love", "alt": ["Love"], "kind": "p", "why": "Christmas (Baby Please Come Home)"},
+      {"w": "Bruce Willis", "answer": "Bruce Willis", "alt": ["Willis"], "kind": "p", "why": "John McClane in Die Hard (yes, it’s a Christmas film)"},
+      {"w": "", "file": "Macaulay Culkin 1991 B.jpg", "answer": "Macaulay Culkin", "alt": ["Culkin", "Kevin", "Kevin McCallister"], "kind": "p", "why": "Kevin in Home Alone, pictured in 1991"}
     ] },
   { id:"emoji", type:"emoji", title:"Emoji Charades", secs:30, color:"--t7", perGame:5,
     blurb:"Films and songs spelled in emoji",
@@ -2206,22 +2208,22 @@ function picCheck(){
     .then(j => { H.picOK = Object.values(j.query.pages).some(p => p.thumbnail); renderHost(); }).catch(() => { H.picOK = false; });
 }
 async function loadPics(){
-  const qs = H.qs.map(q => Object.assign({}, q)), titles = qs.map(q => q.w);
+  const qs = H.qs.map(q => Object.assign({}, q)), titles = qs.filter(q => !q.file).map(q => q.w);
   try {
-    const j = await (await fetch(WIKI + "&redirects=1&prop=pageimages&piprop=thumbnail|name&pithumbsize=800&pilicense=free&titles=" + encodeURIComponent(titles.join("|")))).json();
+    const j = await (await fetch(WIKI + "&redirects=1&prop=pageimages&piprop=thumbnail|name&pithumbsize=800&pilicense=free&titles=" + encodeURIComponent(titles.join("|") || "Main Page"))).json();
     const to = {}; titles.forEach(t => to[t] = t);
     for(const list of [j.query.normalized || [], j.query.redirects || []]) list.forEach(x => titles.forEach(t => { if(to[t] === x.from) to[t] = x.to; }));
     const pages = {}; Object.values(j.query.pages || {}).forEach(pg => pages[pg.title] = pg);
-    qs.forEach(q => { const pg = pages[to[q.w]]; if(pg && pg.thumbnail){ q.img = pg.thumbnail.source; q.file = pg.pageimage; } });
+    qs.forEach(q => { if(q.file) return; const pg = pages[to[q.w]]; if(pg && pg.thumbnail){ q.img = pg.thumbnail.source; q.file = pg.pageimage; } });
     const files = qs.filter(q => q.file).map(q => "File:" + q.file);
     if(files.length){ try {
-      const c = await (await fetch("https://commons.wikimedia.org/w/api.php?action=query&format=json&origin=*&prop=imageinfo&iiprop=extmetadata&iiextmetadatafilter=Artist|LicenseShortName&titles=" + encodeURIComponent(files.join("|")))).json();
+      const c = await (await fetch("https://commons.wikimedia.org/w/api.php?action=query&format=json&origin=*&prop=imageinfo&iiprop=url|extmetadata&iiurlwidth=800&iiextmetadatafilter=Artist|LicenseShortName&titles=" + encodeURIComponent(files.join("|")))).json();
       const plain = h => { const d = document.createElement("div"); d.innerHTML = h || ""; return d.textContent.replace(/\s+/g, " ").trim().slice(0, 80); };
-      const cred = {}; Object.values(c.query.pages || {}).forEach(pg => { const m = pg.imageinfo && pg.imageinfo[0].extmetadata; if(m) cred[pg.title.replace(/^File:/, "").replace(/ /g, "_")] = [plain(m.Artist && m.Artist.value), m.LicenseShortName && m.LicenseShortName.value].filter(Boolean).join(", "); });
-      qs.forEach(q => { if(q.file) q.credit = cred[q.file.replace(/ /g, "_")] || ""; });
+      const cred = {}, thumb = {}; Object.values(c.query.pages || {}).forEach(pg => { const ii = pg.imageinfo && pg.imageinfo[0]; if(ii && ii.thumburl) thumb[pg.title.replace(/^File:/, "").replace(/ /g, "_")] = ii.thumburl; const m = ii && ii.extmetadata; if(m) cred[pg.title.replace(/^File:/, "").replace(/ /g, "_")] = [plain(m.Artist && m.Artist.value), m.LicenseShortName && m.LicenseShortName.value].filter(Boolean).join(", "); });
+      qs.forEach(q => { if(!q.file) return; const k = q.file.replace(/ /g, "_"); q.credit = cred[k] || ""; if(!q.img && thumb[k]) q.img = thumb[k]; });
     } catch(e){} }
   } catch(e){}
-  const ok = qs.filter(q => q.img).slice(0, H.nQ);
+  const ok = qs.filter((q, i, all) => q.img && all.findIndex(o => o.img && o.answer === q.answer) === i).slice(0, H.nQ);
   ok.forEach(q => { const im = new Image(); im.src = q.img; });   // warm the cache so pictures appear instantly
   return ok;
 }
